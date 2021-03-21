@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <title>Trainer's Coin Pouch</title>
 
     <style>
@@ -48,8 +50,68 @@
           </div>
     </nav>
     
+   
+    <div class="col d-flex justify-content-center" style="margin-top: 0.5%;">
+      <div class="card" style="width:70%">
+          <div class="card-body" >
+              <table>
+                  <tr>
+                      <td> 
+                          <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" style="width:10rem">
+                      </td>
 
+                      <td style="width: 5%"></td>
+                      
+                      <td style="width: 60%">
+                          <h5 class="card-title">Charizard</h5>
+                          <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
+                          <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
+                          <h6 class="card-subtitle mb-2">Description: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam laboriosam praesentium autem, eaque unde provident sequi quae dolores quam molestiae, saepe nihil non alias!</h6>
+
+                      </td>
+
+                      <td style="width:5%"></td>
+
+                      <td>
+                        <div id="paypal-button-container"></div>
+                      </td>
+
+                  </tr>
+              </table>
+
+          </div>
+      </div>
+  </div>
   
+   <!-- Include the PayPal JavaScript SDK -->
+   <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=SGD"></script>
+
+   <script>
+       // Render the PayPal button into #paypal-button-container
+       paypal.Buttons({
+
+           // Set up the transaction
+           createOrder: function(data, actions) {
+               return actions.order.create({
+                   purchase_units: [{
+                       amount: {
+                           value: '20'
+                       }
+                   }]
+               });
+           },
+
+           // Finalize the transaction
+           onApprove: function(data, actions) {
+               return actions.order.capture().then(function(details) {
+                   // Show a success message to the buyer
+                   alert('Transaction completed by ' + details.payer.name.given_name + '!');
+               });
+           }
+
+
+       }).render('#paypal-button-container');
+   </script>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
