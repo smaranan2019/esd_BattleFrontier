@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
 
     <title>Trainer's Coin Pouch</title>
 
@@ -16,7 +18,15 @@
           background-repeat: no-repeat;
           background-attachment: fixed;
           background-size: cover;
-}
+      }
+
+      .tick {
+        width: 5rem;
+      }
+
+      .paid {
+        margin-left: 15px;
+      }
   </style>
 
 </head>
@@ -82,6 +92,43 @@
           </div>
       </div>
   </div>
+
+
+  <div class="col d-flex justify-content-center" style="margin-top: 0.5%;">
+    <div class="card" style="width:70%">
+        <div class="card-body" >
+            <table>
+                <tr>
+                    <td> 
+                        <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" style="width:10rem">
+                    </td>
+
+                    <td style="width: 5%"></td>
+                    
+                    <td >
+                        <h5 class="card-title">Charizard</h5>
+                        <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
+                        <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
+                        <h6 class="card-subtitle mb-2">Description: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam laboriosam praesentium autem, eaque unde provident sequi quae dolores quam molestiae, saepe nihil non alias!</h6>
+
+                    </td>
+
+                    <td style="width:5%"></td>
+
+                    <td>
+                      <img class="tick" src="../assets/tick.png">
+                      <h4 class="paid">Paid!</h4>
+                    </td>
+
+                    <td style="width:2%"></td>
+
+
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</div>
   
    <!-- Include the PayPal JavaScript SDK -->
    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=SGD"></script>
