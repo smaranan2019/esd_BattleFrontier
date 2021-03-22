@@ -38,6 +38,10 @@ class PokemonCard(db.Model):
             "price": self.price
         }
 
+@app.route('/')
+def serviceIsRunning():
+    return "Service is running!"
+
 @app.route('/addPokemonCard/<string:card_id>', methods=['POST'])
 def addPokemonCard(card_id):
     try:
@@ -90,10 +94,11 @@ def findPokemon():
     print(data)
     card = PokemonCard.query.filter_by(name=data["name"], level=data["level"], price=data["price"])
     if (card):
+        # print(type(card))
         print(card)
         return "Card found!"
     else:
         return "Card not found!"
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    app.run(port=5100, debug=True)
