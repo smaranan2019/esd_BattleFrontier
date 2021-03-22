@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Pokedex</title>
+    <title>Choose your Pokemon!</title>
 
     <style>
         body {
@@ -13,7 +13,12 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-size: cover;
-}
+        }
+
+        a {
+            text-decoration: none;
+        }
+        
     </style>
 </head>
 <body>
@@ -42,6 +47,7 @@
               <li class="nav-item">
                 <a class="nav-link" href="Shipping.html">S.S. Ann</a>
               </li>
+
             </ul>
           </div>
     </nav>
@@ -58,12 +64,38 @@
                             <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" >
                             <br><br>
                             <h5 class="card-title">Charizard</h5>
-                            <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                             <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
-                            <a href="paypal.html" class="btn btn-primary">Find out more!</a>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Find out more!</button>
                         </div>
                     </div>
+
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+                        
+                          <!-- Modal content-->
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h3 class="modal-title">Charizard</h3>
+                              <!-- <br><br> -->
+                            </div>
+                            <div class="modal-body" style="width: 25 rem;">
+                                <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" style="max-width:30%; height: auto; float: left; margin-right: 10px;">
+                              <h4 class="modal-title">Fire Type</h4>
+                              <h5 class="modal-title">Price: $50</h5>
+                              <p> Sold By: Trainer Pood</p>
+                              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt odit animi iusto voluptatibus dolores ipsa et! Alias earum aliquid enim eius ut.</p>
+                            </div>
+                            <div class="modal-footer">
+                              <a href="Payment.html"> <button type="button" class="btn btn-warning">Charizard, I CHOOSE YOU</button></a>
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                          
+                        </div>
+                      </div>
                 </td>
+
+                
     
                 <td>            
                     <div class="card bg-light" style="width: 18rem">
@@ -71,7 +103,6 @@
                             <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" >
                             <br><br>
                             <h5 class="card-title">Charizard</h5>
-                            <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                             <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
                             <a href="#" class="btn btn-primary">Find out more!</a>
                         </div>
@@ -84,7 +115,6 @@
                             <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" >
                             <br><br>
                             <h5 class="card-title">Charizard</h5>
-                            <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                             <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
                             <a href="#" class="btn btn-primary">Find out more!</a>
                         </div>
@@ -97,7 +127,6 @@
                             <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap">
                             <br><br>
                             <h5 class="card-title">Charizard</h5>
-                            <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                             <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
                             <a href="#" class="btn btn-primary">Find out more!</a>
                         </div>
@@ -112,7 +141,6 @@
                             <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" >
                             <br><br>
                             <h5 class="card-title">Charizard</h5>
-                            <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                             <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
                             <a href="#" class="btn btn-primary">Find out more!</a>
                         </div>
@@ -125,7 +153,6 @@
                             <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" >
                             <br><br>
                             <h5 class="card-title">Charizard</h5>
-                            <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                             <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
                             <a href="#" class="btn btn-primary">Find out more!</a>
                         </div>
@@ -138,7 +165,6 @@
                             <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" >
                             <br><br>
                             <h5 class="card-title">Charizard</h5>
-                            <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                             <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
                             <a href="#" class="btn btn-primary">Find out more!</a>
                         </div>
@@ -151,7 +177,6 @@
                             <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap">
                             <br><br>
                             <h5 class="card-title">Charizard</h5>
-                            <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                             <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
                             <a href="#" class="btn btn-primary">Find out more!</a>
                         </div>
@@ -166,7 +191,6 @@
                             <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" >
                             <br><br>
                             <h5 class="card-title">Charizard</h5>
-                            <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                             <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
                             <a href="#" class="btn btn-primary">Find out more!</a>
                         </div>
@@ -179,7 +203,6 @@
                             <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" >
                             <br><br>
                             <h5 class="card-title">Charizard</h5>
-                            <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                             <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
                             <a href="#" class="btn btn-primary">Find out more!</a>
                         </div>
@@ -192,7 +215,6 @@
                             <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" >
                             <br><br>
                             <h5 class="card-title">Charizard</h5>
-                            <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                             <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
                             <a href="#" class="btn btn-primary">Find out more!</a>
                         </div>
@@ -205,7 +227,6 @@
                             <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap">
                             <br><br>
                             <h5 class="card-title">Charizard</h5>
-                            <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                             <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
                             <a href="#" class="btn btn-primary">Find out more!</a>
                         </div>
