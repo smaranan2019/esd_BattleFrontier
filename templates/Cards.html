@@ -5,27 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/cards.css">
     <title>Choose your Pokemon!</title>
-
-    <style>
-        body {
-            background-image: url('../assets/pokemon_background_faded.jpg');
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
-        }
-
-        a {
-            text-decoration: none;
-        }
-        
-    </style>
 </head>
 <body>
 
     <!-- Nav Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="login.html">Battle Frontier</a>
+        <a class="navbar-brand" href="login.html">
+            <img src="../assets/BF_Logo.png" height="70">
+        </a>
       
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -51,9 +40,6 @@
             </ul>
           </div>
     </nav>
-    
-    
-    
 
     <div class="col d-flex justify-content-center">
         <table>
@@ -76,10 +62,9 @@
                           <div class="modal-content">
                             <div class="modal-header">
                               <h3 class="modal-title">Charizard</h3>
-                              <!-- <br><br> -->
                             </div>
                             <div class="modal-body" style="width: 25 rem;">
-                                <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" style="max-width:30%; height: auto; float: left; margin-right: 10px;">
+                                <img class="card-img-top card_popup" src="../assets/charizard.jpg" alt="Card image cap">
                               <h4 class="modal-title">Fire Type</h4>
                               <h5 class="modal-title">Price: $50</h5>
                               <p> Sold By: Trainer Pood</p>

@@ -5,25 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/shipping.css">
+  
     <title>All Aboard S.S. Ann!</title>
 
-    <style>
-        body {
-            background-image: url('../assets/pokemonship.png');
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
-        }
-
-
-    </style>
 </head>
 <body>
 
     <!-- Nav Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="login.html">Battle Frontier</a>
+        <a class="navbar-brand" href="login.html">
+            <img src="../assets/BF_Logo.png" height="70">
+         </a>
       
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -32,7 +25,7 @@
             <ul class="navbar-nav">
 
                 <!-- list of cards -->
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" href="Cards.html">Pokedex<span class="sr-only">(current)</span></a>
               </li>
 
@@ -42,7 +35,7 @@
               </li>
 
               <!-- shipping -->
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link" href="Shipping.html">S.S. Ann</a>
               </li>
               
@@ -50,18 +43,18 @@
           </div>
     </nav>
 
-    <div class="col d-flex justify-content-center" style="margin-top: 0.5%;">
-        <div class="card" style="width:70%">
+    <div class="col d-flex justify-content-center space_above">
+        <div class="card card_box">
             <div class="card-body" >
                 <table>
                     <tr>
                         <td> 
-                            <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" style="width:10rem">
+                            <img class="card-img-top card_img" src="../assets/charizard.jpg" alt="Card image cap">
                         </td>
 
-                        <td style="width: 5%"></td>
+                        <td class="space"></td>
                         
-                        <td style="width: 60%">
+                        <td class="card_details">
                             <h5 class="card-title">Charizard (Buyer)</h5>
                             <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                             <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
@@ -69,13 +62,14 @@
 
                         </td>
 
-                        <td style="width:5%"></td>
+                        <td class="space"></td>
 
                         <td>
-                            <button type="button" class="btn btn-success" style="width:150px">Received!</button>
-                            <!-- <br> -->
-                            <p style="margin-top: 5px;"></p>
-                            <button type="button" class="btn btn-danger" style="width:150px">Did not receive!</button>
+                            <button type="button" class="btn btn-success width_btn">Received!</button>
+        
+                            <p class="spacing"></p>
+
+                            <button type="button" class="btn btn-danger width_btn">Did not receive!</button>
                         </td>
 
                     </tr>
@@ -85,18 +79,18 @@
         </div>
     </div>
 
-    <div class="col d-flex justify-content-center" style="margin-top: 0.5%;">
-      <div class="card" style="width:70%">
+    <div class="col d-flex justify-content-center space_above">
+      <div class="card card_box">
           <div class="card-body" >
               <table>
                   <tr>
                       <td> 
-                          <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" style="width:10rem">
+                          <img class="card-img-top card_img" src="../assets/charizard.jpg" alt="Card image cap">
                       </td>
 
-                      <td style="width: 5%"></td>
+                      <td class="space"></td>
                       
-                      <td style="width: 60%">
+                      <td class="card_details" >
                           <h5 class="card-title">Charizard (seller)</h5>
                           <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
                           <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
@@ -104,13 +98,13 @@
 
                       </td>
 
-                      <td style="width:5%"></td>
+                      <td class="space"></td>
 
                       <td>
-                          <button type="button" class="btn btn-success" style="width:150px">Shipped!</button>
+                          <button type="button" class="btn btn-success width_btn">Shipped!</button>
                           <!-- <br> -->
-                          <p style="margin-top: 5px;"></p>
-                          <button type="button" class="btn btn-danger" style="width:150px">Did not ship!</button>
+                          <p class="spacing"></p>
+                          <button type="button" class="btn btn-danger width_btn">Did not ship!</button>
                       </td>
 
                   </tr>
@@ -119,10 +113,6 @@
           </div>
       </div>
   </div>
-    
-    
-
-  
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

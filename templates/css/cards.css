@@ -1,0 +1,17 @@
+body {
+    background-image: url('../assets/pokemon_background_faded.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+a {
+    text-decoration: none;
+}
+
+.card_popup {
+    max-width:30%; 
+    height: auto; 
+    float: left; 
+    margin-right: 10px;
+}

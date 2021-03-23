@@ -5,36 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/payment.css"> 
 
     <title>Trainer's Coin Pouch</title>
-
-    <style>
-      body {
-          background-image: url('../assets/pokemart.png');
-          background-repeat: no-repeat;
-          background-attachment: fixed;
-          background-size: cover;
-      }
-
-      .tick {
-        width: 5rem;
-      }
-
-      .paid {
-        margin-left: 15px;
-      }
-  </style>
 
 </head>
 <body>
 
     <!-- Nav Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="login.html">Battle Frontier</a>
+      <a class="navbar-brand" href="login.html">
+        <img src="../assets/BF_Logo.png" height="70">
+     </a>
       
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -43,12 +27,12 @@
             <ul class="navbar-nav">
 
                 <!-- list of cards -->
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" href="Cards.html">Pokedex<span class="sr-only">(current)</span></a>
               </li>
 
               <!-- purchases -->
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link" href="Payment.html">Trainer's Coins</a>
               </li>
 
@@ -62,16 +46,16 @@
     </nav>
     
    
-    <div class="col d-flex justify-content-center" style="margin-top: 0.5%;">
-      <div class="card" style="width:70%">
+    <div class="col d-flex justify-content-center space_above">
+      <div class="card card_box">
           <div class="card-body" >
               <table>
                   <tr>
                       <td> 
-                          <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" style="width:10rem">
+                          <img class="card-img-top card_img" src="../assets/charizard.jpg" alt="Card image cap">
                       </td>
 
-                      <td style="width: 5%"></td>
+                      <td class="space"></td>
                       
                       <td style="width: 60%">
                           <h5 class="card-title">Charizard</h5>
@@ -81,7 +65,7 @@
 
                       </td>
 
-                      <td style="width:5%"></td>
+                      <td class="space"></td>
 
                       <td>
                         <div id="paypal-button-container"></div>
@@ -95,16 +79,16 @@
   </div>
 
 
-  <div class="col d-flex justify-content-center" style="margin-top: 0.5%;">
-    <div class="card" style="width:70%">
+  <div class="col d-flex justify-content-center space_above">
+    <div class="card card_box">
         <div class="card-body" >
             <table>
                 <tr>
                     <td> 
-                        <img class="card-img-top" src="../assets/charizard.jpg" alt="Card image cap" style="width:10rem">
+                        <img class="card-img-top card_img" src="../assets/charizard.jpg" alt="Card image cap" >
                     </td>
 
-                    <td style="width: 5%"></td>
+                    <td class="space"></td>
                     
                     <td >
                         <h5 class="card-title">Charizard</h5>
@@ -114,7 +98,7 @@
 
                     </td>
 
-                    <td style="width:5%"></td>
+                    <td class="space"></td>
 
                     <td>
                       <img class="tick" src="../assets/tick.png">
@@ -154,7 +138,7 @@
                return actions.order.capture().then(function(details) {
                    // Show a success message to the buyer
                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
-                   
+
                });
            }
 

@@ -1,0 +1,38 @@
+body {
+    background-image: url('../../assets/pokemonship.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.paid {
+    margin-left: 15px;
+  }
+  
+  .card_img {
+      width: 10rem;
+  }
+  
+  .space {
+      width:5%
+  }
+  
+  .card_details {
+      width: 60%;
+  }
+  
+  .space_above {
+      margin-top: 0.5%;
+  }
+  
+  .card_box {
+      width:70%;
+  }
+
+  .width_btn {
+    width:150px
+  }
+
+  .spacing {
+    margin-top: 5px;
+  }

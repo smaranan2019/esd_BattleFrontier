@@ -1,0 +1,29 @@
+.box {
+    width:30%;
+    height: auto;
+    position:fixed;
+    margin-top: 80px;
+    margin-left:35%;
+    /* top:50%;
+    left:50%; */
+    
+}
+
+ .welcome_msg1 {
+    margin-left: 20%;
+ }
+ 
+ .welcome_msg2 {
+    margin-left: 20%;
+ }
+
+ .download_img {
+    margin-left: 35%;
+    height: 70%;
+    width: auto;  
+    margin-bottom: 1%; 
+ }  
+
+ .release_btn {
+    margin-left: 30%;
+ }

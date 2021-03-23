@@ -4,36 +4,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Welcome Trainer!</title>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="css/signup.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Join Us!</title>
 </head>
 <body>
-    <!-- sign up details -->
-    <form>
-        <label for="username">Username:</label><br>
-        <input type="text" id="name" name="name"><br>
+  
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
 
-        <label for="telehandle">Telehandle:</label><br>
-        <input type="text" id="telehandle" name="telehandle"><br>
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="../assets/BF_Logo.png" id="icon" alt="User Icon" />
+    </div>
 
-        <label for="email">Paypal Email:</label><br>
-        <input type="text" id="email" name="email"><br>
+    <table>
+        <tr>
+            <td>
+                <img src="../assets/trainer.png" class="trainer_img">
+            </td>
+            
+            <td>
+                <h1> Welcome trainer! </h1>
+                <!-- Login Form -->
+                <form action="login.html" method="GET" class="form_aligment" >
+                    <input type="text" id="username" class="fadeIn second" name="username" placeholder="username">
+                    <input type="text" id="telegram_handle" class="fadeIn second" name="telegram_handle" placeholder="telegram handle">
+                    <input type="text" id="email" class="fadeIn second" name="email" placeholder="paypal_email">
+                    <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
+                    <input type="submit" class="fadeIn fourth" value="Join the Club!" >
+                </form>
+            </td>
+        </tr>
+    </table>    
 
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br>
+    <!-- Sign Up Page Redirect -->
+    <div id="formFooter">
+      <a class="underlineHover" href="login.html">Already have an eixsting account? Login here!</a>
+    </div>
 
-        <br>
-        <input type="submit" value="Submit">
-
-        <!-- popup to confirm if they have added the telebot to their telegram -->
-
-    </form>
-
-    <p>Already have an account? <a href="login.html">Login here!</a>
-    </p>
-
-    
-
+  </div>    
+</div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
