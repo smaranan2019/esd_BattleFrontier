@@ -35,7 +35,7 @@ class User(db.Model):
             "password": self.password
         }
 
-@app.route('/addUser', methods=['POST'])
+@app.route('/add-user', methods=['POST'])
 def addUser():
     data = request.get_json()
     print(data)
@@ -72,7 +72,7 @@ def addUser():
         }
     ), 201
 
-@app.route("/findUser/<string:email>")
+@app.route("/find-user/<string:email>")
 def findUser(email):
     user = User.query.filter_by(PaypalEmail=email).first()
     if user:

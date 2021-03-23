@@ -31,12 +31,12 @@
             <td>
                 <h1> Welcome trainer! </h1>
                 <!-- Login Form -->
-                <form action="login.html" method="GET" class="form_aligment" >
+                <form action="login.html" method="GET" class="form_aligment" id="myForm">
                     <input type="text" id="username" class="fadeIn second" name="username" placeholder="username">
-                    <input type="text" id="telegram_handle" class="fadeIn second" name="telegram_handle" placeholder="telegram handle">
-                    <input type="text" id="email" class="fadeIn second" name="email" placeholder="paypal_email">
+                    <input type="text" id="telehandle" class="fadeIn second" name="telegram_handle" placeholder="telegram handle">
+                    <input type="text" id="PaypalEmail" class="fadeIn second" name="email" placeholder="paypal email">
                     <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-                    <input type="submit" class="fadeIn fourth" value="Join the Club!" >
+                    <input type="submit" class="fadeIn fourth" value="Join the Club!" onclick="add_user()">
                 </form>
             </td>
         </tr>
@@ -44,11 +44,76 @@
 
     <!-- Sign Up Page Redirect -->
     <div id="formFooter">
-      <a class="underlineHover" href="login.html">Already have an eixsting account? Login here!</a>
+      <a class="underlineHover" href="login.html">Already have an existing account? Login here!</a>
     </div>
 
   </div>    
 </div>
+
+
+<script>
+  var form = document.getElementById("myForm");
+  function handleForm(event) { event.preventDefault(); } 
+  form.addEventListener('submit', handleForm);
+
+
+  function add_user() {
+    var username = document.getElementById('username').value;
+    var telehandle = document.getElementById('telehandle').value; 
+    var PaypalEmail = document.getElementById('PaypalEmail').value; 
+    var password = document.getElementById('password').value;
+
+    
+    $(sync() => {      
+
+      // Change serviceURL to your own
+      var new_user = "http://127.0.0.1:5000/add-user";
+      conosle.log(new_user);
+      console.log("godchi");
+
+      try {
+            await fetch(
+              new_user, {
+              method: 'POST',
+              headers: { "Content-Type": "application/json" },
+              body: ({
+                  "username": username,
+                  "telehandle": telehandle,
+                  "PaypalEmail": PaypalEmail,
+                  "password": password 
+              })
+          });
+
+      } catch (error) {
+          // Errors when calling the service; such as network error, 
+          // service offline, etc
+          showError('There is a problem registering for an account, please try again later.<br />' + error);
+          }
+  });
+
+  }
+  
+
+  
+  // // Helper function to display error message
+  // function showError(message) {
+  //     // Hide the table and button in the event of error
+  //     $('#booksTable').hide();
+  //     $('#addBookBtn').hide();
+
+  //     // Display an error under the main container
+  //     $('#main-container')
+  //         .append("<label>"+message+"</label>");
+  // }
+
+  // anonymous async function 
+  // - using await requires the function that calls it to be async
+
+  
+</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"crossorigin="anonymous"></script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
