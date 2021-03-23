@@ -8,7 +8,7 @@ import json
 from os import environ
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/order'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/orderDB'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
@@ -22,7 +22,7 @@ class Order(db.Model):
     order_id = db.Column(db.Integer, primary_key=True)
     buyer_id = db.Column(db.Integer, nullable=False)
     seller_id = db.Column(db.Integer, nullable=False)
-    price = db.Column(db.Float, nullable=False)
+    price = db.Column(db.Numeric(4,2), nullable=False)
     #status = db.Column(db.String(10), nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.now)
     modified = db.Column(db.DateTime, nullable=False,
@@ -51,11 +51,9 @@ class Item(db.Model):
     order_id = db.Column(db.ForeignKey(
         'order.order_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True, primary_key=True)
 
-    card_id = db.Column(db.String(13), nullable=False)
+    card_id = db.Column(db.Integer, nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
 
-    # order_id = db.Column(db.String(36), db.ForeignKey('order.order_id'), nullable=False)
-    # order = db.relationship('Order', backref='order_item')
     order = db.relationship(
         'Order', primaryjoin='Item.order_id == Order.order_id', backref='item')
 
@@ -71,9 +69,7 @@ class Contact(db.Model):
 
     seller_chat_id = db.Column(db.Integer, nullable=False)
     buyer_chat_id = db.Column(db.Integer, nullable=False)
-
-    # order_id = db.Column(db.String(36), db.ForeignKey('order.order_id'), nullable=False)
-    # order = db.relationship('Order', backref='order_item')
+    
     order = db.relationship(
         'Order', primaryjoin='Contact.order_id == Order.order_id', backref='contact')
 
