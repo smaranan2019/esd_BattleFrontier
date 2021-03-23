@@ -37,6 +37,7 @@ class User(db.Model):
 
 @app.route('/add-user', methods=['POST'])
 def addUser():
+    print("hello world")
     data = request.get_json()
     print(data)
     try:
