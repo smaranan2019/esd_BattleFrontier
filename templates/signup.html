@@ -22,17 +22,7 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script 
     src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    
-    <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-    crossorigin="anonymous"></script>
-    
-    <script 
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-    crossorigin="anonymous"></script>
-
+  
     <title>Join Us!</title>
 </head>
 <body>
@@ -86,32 +76,43 @@
     var telehandle = document.getElementById('telehandle').value; 
     var PaypalEmail = document.getElementById('PaypalEmail').value; 
     var password = document.getElementById('password').value;
-    // console.log("godchi");
-
+    console.log("godchi");
+    var new_user = "http://127.0.0.1:5000/add-user";
+    console.log(username)
     
     $(async() => {      
 
       // Change serviceURL to your own
-      var new_user = "http://127.0.0.1:5000/add-user";
-      conosle.log(new_user);
+      
+      console.log(new_user);
 
       try {
-            await fetch(
-              new_user, {
-              method: 'POST',
-              headers: { "Content-Type": "application/json" },
-              body: ({
-                  "username": username,
-                  "telehandle": telehandle,
-                  "PaypalEmail": PaypalEmail,
-                  "password": password 
-              })
-          });
-
+        const response = 
+          await fetch(
+            new_user, {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                "username": username,
+                "telehandle": telehandle,
+                "PaypalEmail": PaypalEmail,
+                "password": password 
+            })
+        });
+        const result = await response.json();
+        if (response.status === 201) {
+          var data = result.data;
+          console.log(data);
+        } else if (response.status == 400 || response.status == 500) {
+          console.log(result.message);
+        } else {
+          throw response.status;
+        }
       } catch (error) {
           // Errors when calling the service; such as network error, 
           // service offline, etc
-          showError('There is a problem registering for an account, please try again later.<br />' + error);
+          // showError('There is a problem registering for an account, please try again later.<br />' + error);
+          console.log(error)
           }
   });
 
