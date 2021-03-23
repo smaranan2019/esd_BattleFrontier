@@ -7,9 +7,10 @@ create table account
 Username varchar(255) not null,
 telehandle varchar(255) not null,
 telechatID varchar(255) not null,
-PaypalEmail varchar(255) not null 
+PaypalEmail varchar(255) not null,
+password varchar(255) not null 
 );
 
-insert into account (Username, telehandle, PaypalEmail) values
-('AshKetchum', '@pikapika', 'ilovepokemon@yahoo.com'),
-('ProfessorWillow', '@pokeballer', 'CardSeller@yahoo.com');
+insert into account (Username, telehandle, PaypalEmail, password) values
+('AshKetchum', '@pikapika', 'ilovepokemon@yahoo.com', "pikachu"),
+('ProfessorWillow', '@pokeballer', 'CardSeller@yahoo.com', "bulbasaur");
