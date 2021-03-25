@@ -2,21 +2,21 @@ DROP DATABASE IF EXISTS CardB;
 CREATE DATABASE CardDB;
 use CardDB;
 
-create table CardDetails
-(CardID int not null primary key AUTO_INCREMENT,
-PokemonName varchar(255),
-PokemonType varchar(10),
-ImageID int(10) NOT NULL
+create table Card_Details
+(Card_ID int not null primary key AUTO_INCREMENT,
+Pokemon_Name varchar(255),
+Pokemon_Type varchar(10),
+Image_ID int(10) NOT NULL
 );
 
-create table CardList
-(CardID int not null primary key,
-SellerID int not null,
+create table Card_List
+(Card_ID int not null primary key,
+Seller_ID int not null,
 Price decimal(3,2),
-constraint CardListfk foreign key(CardID) references CardDetails(CardID)
+constraint Card_List_fk foreign key(Card_ID) references Card_Details(Card_ID)
 );
 
-insert into CardDetails (PokemonName, PokemonType) values
+insert into Card_Details (Pokemon_Name, Pokemon_Type) values
 ('Charizard', 'fire'),
 ('Bulbasaur', 'grass'),
 ('Squirtle', 'water'),
