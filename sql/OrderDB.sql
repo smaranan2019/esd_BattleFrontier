@@ -10,7 +10,7 @@ use `orderDB`;
 create table `order` 
 (`order_id` int not null primary key AUTO_INCREMENT,
 `buyer_id` int not null, 
-`status` varchar(10) not null default "NEW",
+# `status` varchar(10) not null default "NEW",
 `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 `seller_id` int not null, 
