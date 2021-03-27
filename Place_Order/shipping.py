@@ -8,7 +8,7 @@ import json
 from os import environ
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/order'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/shippingDB'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
@@ -21,8 +21,6 @@ class Shipping(db.Model):
 
     shipping_id = db.Column(db.Integer, primary_key=True)
     payment_id = db.Column(db.Integer, nullable=False)
-    # seller_id = db.Column(db.Integer, nullable=False)
-    # price = db.Column(db.Float, nullable=False)
     shipping_status = db.Column(db.String(10), nullable=False)
     receive_status = db.Column(db.String(10), nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -70,8 +68,6 @@ class Contact(db.Model):
     seller_chat_id = db.Column(db.Integer, nullable=False)
     buyer_chat_id = db.Column(db.Integer, nullable=False)
 
-    # order_id = db.Column(db.String(36), db.ForeignKey('order.order_id'), nullable=False)
-    # order = db.relationship('Order', backref='order_item')
     shipping = db.relationship(
         'Shipping', primaryjoin='Contact.shipping_id == Shipping.shipping_id', backref='contact')
 

@@ -1,18 +1,23 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-import os
+import os, sys
+from os import environ
 
 import requests
 from invokes import invoke_http
+
+import amqp_setup
+import pika
+import json
 
 app = Flask(__name__)
 CORS(app)
 
 # card_URL = "http://localhost:5000/card"
-order_URL = "http://localhost:5001/order"
-payment_URL = "http://localhost:5002/payment"
-shipping_URL = "http://localhost:5003/shipping"
+order_URL = "http://localhost:5001/"
+payment_URL = "http://localhost:5002/"
+shipping_URL = "http://localhost:5003/"
 
 
 @app.route("/place_order", methods=['POST'])
@@ -22,9 +27,6 @@ def place_order():
         try:
             order = request.get_json()
             print("\nReceived an order in JSON:", order)
-
-            # do the actual work
-            # 1. Send order info {cart items}
             result = processPlaceOrder(order)
             return jsonify(result), result["code"]
 
@@ -48,19 +50,13 @@ def place_order():
 
 
 def processPlaceOrder(order):
-    # 2. Send the order info {cart items}
+    # 2. Send the order info {order}
     # Invoke the order microservice
     print('\n-----Invoking order microservice-----')
-    order_result = invoke_http(order_URL, method='POST', json=order)
+    order_result = invoke_http(order_URL+"order", method='POST', json=order)
     print('order_result:', order_result)
 
     # # 4. Record new order
-    # # record the activity log anyway
-    # print('\n\n-----Invoking activity_log microservice-----')
-    # invoke_http(activity_log_URL, method="POST", json=order_result)
-    # print("\nOrder sent to activity log.\n")
-    # # - reply from the invocation is not used;
-    # # continue even if this invocation fails
 
     # Check the order result; if a failure, send it to the error microservice.
     code = order_result["code"]
@@ -85,7 +81,7 @@ def processPlaceOrder(order):
     # Invoke the payment microservice
     print('\n\n-----Invoking payment microservice-----')
     payment_result = invoke_http(
-        payment_URL, method="POST", json=order_result['data'])
+        payment_URL+"payment", method="POST", json=order_result['data'])
     print("payment_result:", payment_result, '\n')
 
     # Check the payment result; 
@@ -118,31 +114,87 @@ def processPlaceOrder(order):
         }
     }
 
-@app.route("/see_order/<string:buyer_id>", methods=['GET'])
+@app.route("/see-payment/<string:buyer_id>", methods=['GET'])    
 def find_by_buyer_id(buyer_id):
     print('\n-----Invoking order microservice-----')
-    order_result = invoke_http(order_URL + '/' + buyer_id, method='GET')
-    print('order_result:', order_result)
+    payment_result = invoke_http(payment_URL + '/payment-new/' + buyer_id, method='GET')
+    print('payment_result:', payment_result)
     
-    code = order_result["code"]
+    code = payment_result["code"]
     if code not in range(200, 300):
 
         # 7. Return error
-        return {
+        return jsonify({
             "code": 400,
             "data": {
-                "order_result": order_result,
+                "payment_result": payment_result,
             },
-            "message": "You have not place any order yet."
-        }
-
+            "message": "You have no order with pending payment."
+        })
+    
+    payments = payment_result["data"]
+    order_result = []
+    for payment in payments:
+        order_id = payment["order_id"]
+        order_result_temp = invoke_http(order_URL+"/order/"+order_id,method="GET")
+        order_result.append(order_result_temp)
+    
     # 7. Return all orders
-    return {
+    return jsonify({
         "code": 200,
         "data": {
+            "payment_result": payment_result,
             "order_result": order_result
         }
+    })
+
+@app.route("/change-payment-status/<string:payment_id>", method="PUT")
+def change_payment_status(payment_id):
+    # Simple check of input format and data of the request are JSON
+    if request.is_json:
+        try:
+            payment = request.get_json()
+            print("\nReceived an payment change in JSON:", payment)
+            result = processChangePaymentStatus(payment,payment_id)
+            return jsonify(result), result["code"]
+
+        except Exception as e:
+            # Unexpected error in code
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
+            print(ex_str)
+
+            return jsonify({
+                "code": 500,
+                "message": "buyerOrch.py internal error: " + ex_str
+            }), 500
+
+def processChangePaymentStatus(payment,payment_id):
+    print('\n-----Invoking payment microservice-----')
+    payment_result = invoke_http(payment_URL+"/payment/"+payment_id, method='PUT', json=payment)
+    print('payment_result:', payment_result)
+
+    # # 4. Record new payment
+
+    # Check the payment result; if a failure, send it to the error microservice.
+    code = payment_result["code"]
+    if code not in range(200, 300):
+        # 7. Return error
+        return {
+            "code": 500,
+            "data": {"payment_result": payment_result},
+            "message": "Payment status change failure sent for error handling."
+        }
+
+    # 7. Return created order, payment
+    return {
+        "code": 201,
+        "data": {
+            "payment_result": payment_result
+        }
     }
+    
 
 # Execute this program if it is run as a main script (not by 'import')
 if __name__ == "__main__":
