@@ -7,7 +7,7 @@ create table account
 Username varchar(255) not null,
 telehandle varchar(255) not null,
 telechat_ID varchar(255) not null default '307267966',
-PaypalEmail varchar(255) not null,
+Paypal_Email varchar(255) not null,
 password varchar(255) not null 
 );
 
