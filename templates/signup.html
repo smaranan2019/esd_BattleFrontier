@@ -99,7 +99,7 @@
                 console.log('hi');
                 var username = $('#username').val();
                 var telehandle = $('#telehandle').val();
-                var PaypalEmail = $("#PaypalEmail").val();
+                var Paypal_Email = $("#PaypalEmail").val();
                 var password = $("#password").val();
                 console.log(username);
                 var serviceURL = "http://127.0.0.1:5000/add-user";
@@ -113,7 +113,7 @@
                                 body: JSON.stringify({ 
                                   username: username, 
                                   telehandle: telehandle, 
-                                  PaypalEmail: PaypalEmail, 
+                                  Paypal_Email: Paypal_Email, 
                                   password: password})
                                 }
                     );
