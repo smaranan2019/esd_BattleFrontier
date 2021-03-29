@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/payment.css"> 
 
@@ -15,110 +16,129 @@
 <body>
 
     <!-- Nav Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="login.html">
-        <img src="../assets/BF_Logo.png" height="70">
-     </a>
+    <div id="to_pay">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="login.html">
+              <img src="../assets/BF_Logo.png" height="70">
+           </a>
+            
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav">
       
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-
-                <!-- list of cards -->
-              <li class="nav-item">
-                <a class="nav-link" href="Cards.html">Pokedex<span class="sr-only">(current)</span></a>
-              </li>
-
-              <!-- purchases -->
-              <li class="nav-item active">
-                <a class="nav-link" href="Payment.html">Trainer's Coins</a>
-              </li>
-
-              <!-- shipping -->
-              <li class="nav-item">
-                <a class="nav-link" href="Shipping.html">S.S. Ann</a>
-              </li>
-              
-            </ul>
-          </div>
-    </nav>
-    
-   
-    <div class="col d-flex justify-content-center space_above">
-      <div class="card card_box">
-          <div class="card-body" >
-              <table>
-                  <tr>
-                      <td> 
-                          <img class="card-img-top card_img" src="../assets/charizard.jpg" alt="Card image cap">
-                      </td>
-
-                      <td class="space"></td>
-                      
-                      <td style="width: 60%">
-                          <h5 class="card-title">Charizard</h5>
-                          <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
-                          <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
-                          <h6 class="card-subtitle mb-2">Description: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam laboriosam praesentium autem, eaque unde provident sequi quae dolores quam molestiae, saepe nihil non alias!</h6>
-
-                      </td>
-
-                      <td class="space"></td>
-
-                      <td>
-                        <div id="paypal-button-container"></div>
-                      </td>
-
-                  </tr>
-              </table>
-
-          </div>
-      </div>
-  </div>
-
-
-  <div class="col d-flex justify-content-center space_above">
-    <div class="card card_box">
-        <div class="card-body" >
-            <table>
-                <tr>
-                    <td> 
-                        <img class="card-img-top card_img" src="../assets/charizard.jpg" alt="Card image cap" >
-                    </td>
-
-                    <td class="space"></td>
+                      <!-- list of cards -->
+                    <li class="nav-item">
+                      <a class="nav-link" href="Cards.html">Pokedex<span class="sr-only">(current)</span></a>
+                    </li>
+      
+                    <!-- purchases -->
+                    <li class="nav-item active">
+                      <a class="nav-link" href="Payment.html">Trainer's Coins</a>
+                    </li>
+      
+                    <!-- shipping -->
+                    <li class="nav-item">
+                      <a class="nav-link" href="Shipping.html">S.S. Ann</a>
+                    </li>
                     
-                    <td >
-                        <h5 class="card-title">Charizard</h5>
-                        <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
-                        <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
-                        <h6 class="card-subtitle mb-2">Description: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam laboriosam praesentium autem, eaque unde provident sequi quae dolores quam molestiae, saepe nihil non alias!</h6>
-
-                    </td>
-
-                    <td class="space"></td>
-
-                    <td>
-                      <img class="tick" src="../assets/tick.png">
-                      <h4 class="paid">Paid!</h4>
-                    </td>
-
-                    <td style="width:2%"></td>
-
-
-                </tr>
-            </table>
-
+                  </ul>
+                </div>
+          </nav>
+          
+         
+          <div class="col d-flex justify-content-center space_above">
+            <div class="card card_box">
+                <div class="card-body" >
+                    <table>
+                        <tr>
+                            <td> 
+                                <img class="card-img-top card_img" src="../assets/charizard.jpg" alt="Card image cap">
+                            </td>
+      
+                            <td class="space"></td>
+                            
+                            <td style="width: 60%">
+                                <h5 class="card-title">Charizard</h5>
+                                <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
+                                <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
+                                <h6 class="card-subtitle mb-2">Description: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam laboriosam praesentium autem, eaque unde provident sequi quae dolores quam molestiae, saepe nihil non alias!</h6>
+      
+                            </td>
+      
+                            <td class="space"></td>
+      
+                            <td>
+                              <div id="paypal-button-container"></div>
+                            </td>
+      
+                        </tr>
+                    </table>
+      
+                </div>
+            </div>
         </div>
     </div>
-</div>
+   
+
+  <!-- paid card -->
+  <div id="paid_card">
+
+  </div>
   
+
    <!-- Include the PayPal JavaScript SDK -->
    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=SGD"></script>
 
    <script>
+
+       function paid() {
+            $('#paid_card').append(`
+            <div class="col d-flex justify-content-center space_above">
+                <div class="card card_box">
+                    <div class="card-body" >
+                        <table>
+                            <tr>
+                                <td> 
+                                    <img class="card-img-top card_img" src="../assets/charizard.jpg" alt="Card image cap" >
+                                </td>
+
+                                <td class="space"></td>
+                                
+                                <td >
+                                    <h5 class="card-title">Charizard</h5>
+                                    <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
+                                    <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
+                                    <h6 class="card-subtitle mb-2">Description: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam laboriosam praesentium autem, eaque unde provident sequi quae dolores quam molestiae, saepe nihil non alias!</h6>
+
+                                </td>
+
+                                <td class="space"></td>
+
+                                <!-- paid card -->
+                            
+                                        
+                                <td>
+                                    <img class="tick" src="../assets/tick.png">
+                                    <h4 class="paid">Paid!</h4>
+                                </td>
+                            
+                            
+
+                                <td style="width:2%"></td>
+
+
+                            </tr>
+                        </table>
+
+                        </div>
+                    </div>
+                </div>
+            `);
+
+            $('#to_pay') = "";
+       }
        // Render the PayPal button into #paypal-button-container
        paypal.Buttons({
 
@@ -139,6 +159,11 @@
                    // Show a success message to the buyer
                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
 
+
+                //    send payment ID and status
+
+                // show approved card
+
                });
            }
 
@@ -146,8 +171,73 @@
        }).render('#paypal-button-container');
    </script>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>
+  
+    // Helper function to display error message
+    function showMsg(message) {
+        // Display an error under the main container
+        $('#msg')
+            .append("<label>"+message+"</label>");
+
+    }
+
+
+    $("#submit").click(function(){
+        $("#msg").empty()
+        // anonymous async function 
+        // - using await requires the function that calls it to be async
+        $(async() => {           
+            var username = $('#username').val();
+            var telehandle = $('#telehandle').val();
+            var PaypalEmail = $("#PaypalEmail").val();
+            var password = $("#password").val();
+            console.log(username);
+            var serviceURL = "http://127.0.0.1:5000/add-user";
+    
+            try {
+                const response =
+                await fetch(
+                serviceURL, {
+                            method: 'POST',
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ 
+                              username: username, 
+                              telehandle: telehandle, 
+                              PaypalEmail: PaypalEmail, 
+                              password: password})
+                            }
+                );
+                const result = await response.json();
+                if (response.status === 201) {
+                    // success case
+                    var data = result.data; //get data of new account
+                    console.log(data);
+                    // showMsg('Account created successfully :>');
+                    login();
+
+
+                    } else if (response.status == 400 || response.status == 500) {
+                        // Cannot create account
+                     
+                        showMsg(result.message);
+                    } else {
+                        // unexpected outcome, throw the error
+                        throw response.status;
+                    }
+                } catch (error) {
+                    // Errors when calling the service; such as network error, 
+                    // service offline, etc
+                    showMsg
+        ('There is a problem creating account, please try again later.<br />' + error);
+                } // error
+        });
+    }); 
+
+</script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
