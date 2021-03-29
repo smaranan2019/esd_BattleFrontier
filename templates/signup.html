@@ -44,21 +44,28 @@
                     <input type="text" id="password" class="fadeIn third form-control" name="login" placeholder="password">
                   </div>          
                   <input type="submit" id='submit' class="fadeIn fourth" value="Join the Club!">
+               
                 </div>
             </td>
         </tr>
     </table>    
+
+    
+    <div id="msg">          
+    </div>
 
     <!-- Sign Up Page Redirect -->
     <div id="formFooter">
       <a class="underlineHover" href="login.html">Already have an existing account? Login here!</a>
     </div>
 
-    <div id="msg">          
-    </div>
+   
 
   </div>    
 </div>
+
+
+
 
 <script>
   
@@ -66,7 +73,22 @@
         function showMsg(message) {
             // Display an error under the main container
             $('#msg')
-                .append("<label>"+message+"</label>");
+                .append("<label>"+message+"</label>"
+
+                
+                );
+
+        }
+
+        function login() {
+          $("#msg").append(
+            `
+            <h4> Login Now! </h4>
+            <form method="GET" action="login.html">
+              <input type="submit" value="This way trainer!!!">
+            </form>
+            `
+          )
         }
 
         $("#submit").click(function(){
@@ -100,10 +122,13 @@
                         // success case
                         var data = result.data; //get data of new account
                         console.log(data);
-                        showMsg('Account created successfully :>');
+                        // showMsg('Account created successfully :>');
+                        login();
+  
 
                         } else if (response.status == 400 || response.status == 500) {
                             // Cannot create account
+                         
                             showMsg(result.message);
                         } else {
                             // unexpected outcome, throw the error

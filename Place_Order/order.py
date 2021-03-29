@@ -160,19 +160,15 @@ def find_by_seller_id(seller_id):
 
 @app.route("/order", methods=['POST'])
 def create_order():
-    buyer_id = request.json.get('buyer_id', None)
-    seller_id = request.json.get('seller_id', None)
-    price = request.json.get('price', None)
-    order = Order(buyer_id=buyer_id, seller_id=seller_id, price=price) #, status='NEW')
-
+    buyer = request.json.get('buyer')
     item = request.json.get('item')
-    order.item.append(Item(
-        card_id=item['card_id'], quantity=item['quantity']))
     
-    buyer_chat_id = request.json.get('buyer_chat_id', None)
-    seller_chat_id = request.json.get('seller_chat_id', None)
+    order = Order(buyer_id=buyer['buyer_id'], seller_id=item['card']['seller_id'], price=item['card']['price']) #, status='NEW')   
+    order.item.append(Item(
+        card_id=item['card']['card_id'], quantity=item['quantity']))
+    
     order.contact.append(Contact(
-        seller_chat_id=seller_chat_id, buyer_chat_id=buyer_chat_id))
+        seller_chat_id=item['card']['seller_chat_id'], buyer_chat_id=buyer['buyer_chat_id']))
 
     try:
         db.session.add(order)

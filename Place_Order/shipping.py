@@ -8,7 +8,7 @@ import json
 from os import environ
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/order'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/shippingDB'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
@@ -21,8 +21,6 @@ class Shipping(db.Model):
 
     shipping_id = db.Column(db.Integer, primary_key=True)
     payment_id = db.Column(db.Integer, nullable=False)
-    # seller_id = db.Column(db.Integer, nullable=False)
-    # price = db.Column(db.Float, nullable=False)
     shipping_status = db.Column(db.String(10), nullable=False)
     receive_status = db.Column(db.String(10), nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -70,8 +68,6 @@ class Contact(db.Model):
     seller_chat_id = db.Column(db.Integer, nullable=False)
     buyer_chat_id = db.Column(db.Integer, nullable=False)
 
-    # order_id = db.Column(db.String(36), db.ForeignKey('order.order_id'), nullable=False)
-    # order = db.relationship('Order', backref='order_item')
     shipping = db.relationship(
         'Shipping', primaryjoin='Contact.shipping_id == Shipping.shipping_id', backref='contact')
 
@@ -142,6 +138,75 @@ def find_by_buyer_id(buyer_id):
         }
     ), 404
     
+@app.route("/shipping-new/<string:buyer_id>")
+def find_new_by_buyer_id(buyer_id):
+    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.buyer_id==buyer_id,Shipping.shipping_status=="PENDING")
+    
+    if len(shippinglist):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "shippings": [shipping.json() for shipping in shippinglist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "buyer_id": buyer_id
+            },
+            "message": "You haven't made any shipping yet."
+        }
+    ), 404
+    
+@app.route("/shipping-sent/<string:buyer_id>")
+def find_sent_by_buyer_id(buyer_id):
+    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.buyer_id==buyer_id,Shipping.shipping_status=="SENT",Shipping.receive_status=="PENDING")
+    
+    if len(shippinglist):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "shippings": [shipping.json() for shipping in shippinglist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "buyer_id": buyer_id
+            },
+            "message": "You haven't had any sent shipping yet."
+        }
+    ), 404
+    
+@app.route("/shipping-received/<string:buyer_id>")
+def find_received_by_buyer_id(buyer_id):
+    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.buyer_id==buyer_id,Shipping.shipping_status=="SENT",Shipping.receive_status=="RECEIVED")
+    
+    if len(shippinglist):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "shippings": [shipping.json() for shipping in shippinglist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "buyer_id": buyer_id
+            },
+            "message": "You haven't received any shipping yet."
+        }
+    ), 404
+    
 @app.route("/shipping/<string:seller_id>")
 def find_by_seller_id(seller_id):
     shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.seller_id==seller_id)
@@ -164,7 +229,75 @@ def find_by_seller_id(seller_id):
             "message": "You haven't had any shipping yet."
         }
     ), 404
+    
+@app.route("/shipping-new/<string:seller_id>")
+def find_new_by_seller_id(seller_id):
+    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.seller_id==seller_id, Shipping.shipping_status=="PENDING", Shipping.receive_status=="PENDING")
+    
+    if len(shippinglist):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "shippings": [shipping.json() for shipping in shippinglist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "seller_id": seller_id
+            },
+            "message": "You haven't had any shipping yet."
+        }
+    ), 404
+    
+@app.route("/shipping-sent/<string:seller_id>")
+def find_sent_by_seller_id(seller_id):
+    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.seller_id==seller_id, Shipping.shipping_status=="SENT", Shipping.receive_status=="PENDING")
+    
+    if len(shippinglist):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "shippings": [shipping.json() for shipping in shippinglist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "seller_id": seller_id
+            },
+            "message": "You haven't had any shipping yet."
+        }
+    ), 404
 
+@app.route("/shipping-received/<string:seller_id>")
+def find_received_by_seller_id(seller_id):
+    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.seller_id==seller_id, Shipping.shipping_status=="SENT",Shipping.receive_status=="RECEIVED")
+    
+    if len(shippinglist):
+        return jsonify(
+            {
+                "code": 200,
+                "data": {
+                    "shippings": [shipping.json() for shipping in shippinglist]
+                }
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "seller_id": seller_id
+            },
+            "message": "You haven't had any shipping yet."
+        }
+    ), 404
 
 @app.route("/shipping", methods=['POST'])
 def create_order():
