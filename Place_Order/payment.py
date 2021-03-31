@@ -21,7 +21,9 @@ class Payment(db.Model):
 
     payment_id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, nullable=False)
-    status = db.Column(db.String(10), nullable=False)
+    payment_status = db.Column(db.String(10), nullable=False, default="NEW")
+    complete_status = db.Column(db.String(10), nullable=False, default="PENDING")
+    refund_status = db.Column(db.String(10), nullable=False, default="NULL")
     created = db.Column(db.DateTime, nullable=False, default=datetime.now)
     modified = db.Column(db.DateTime, nullable=False,
                          default=datetime.now, onupdate=datetime.now)
@@ -30,7 +32,8 @@ class Payment(db.Model):
         dto = {
             'payment_id': self.payment_id,
             'order_id': self.order_id,
-            'status': self.status,
+            'payment_status': self.payment_status,
+            'refund_status': self.refund_status,
             'created': self.created,
             'modified': self.modified
         }
@@ -136,7 +139,7 @@ def find_by_buyer_id(buyer_id):
 
 @app.route("/payment-new/<string:buyer_id>")
 def find_new_by_buyer_id(buyer_id):
-    paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.buyer_id==buyer_id,Payment.status=="NEW")
+    paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.buyer_id==buyer_id,Payment.payment_status=="NEW")
     if len(paymentlist):
         return jsonify(
             {
@@ -177,7 +180,7 @@ def find_by_seller_id(seller_id):
     
 @app.route("/payment-new/<string:seller_id>")
 def find_new_by_seller_id(seller_id):
-    paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.seller_id==seller_id, Payment.status=="NEW")
+    paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.seller_id==seller_id, Payment.payment_status=="NEW")
     
     if len(paymentlist):
         return jsonify(
@@ -252,8 +255,8 @@ def update_payment(payment_id):
 
         # update status
         data = request.get_json()
-        if data['status']:
-            payment.status = data['status']
+        if data['payment_status']:
+            payment.payment_status = data['payment_status']
             db.session.commit()
             return jsonify(
                 {
@@ -261,6 +264,17 @@ def update_payment(payment_id):
                     "data": payment.json()
                 }
             ), 201
+            
+        elif data['refund_status']:
+            payment.refund_status = data['refund_status']
+            db.session.commit()
+            return jsonify(
+                {
+                    "code": 201,
+                    "data": payment.json()
+                }
+            ), 201
+            
     except Exception as e:
         return jsonify(
             {
@@ -268,7 +282,7 @@ def update_payment(payment_id):
                 "data": {
                     "payment_id": payment_id
                 },
-                "message": "An error occurred while updating the payment. " + str(e)
+                "message": "An error occurred while updating the payment status. " + str(e)
             }
         ), 500
 

@@ -10,7 +10,8 @@ use `paymentDB`;
 create table `payment`
 (`payment_id` int not null primary key AUTO_INCREMENT, 
 `order_id` int not null,   
-`status` varchar(10) not null default "NEW",
+`payment_status` varchar(10) not null default "NEW",
+`refund_status` varchar(10) not null "NULL",
 `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
