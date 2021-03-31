@@ -1,12 +1,12 @@
-DROP DATABASE IF EXISTS AccountDB;
-CREATE DATABASE AccountDB;
-use AccountDB;
+DROP DATABASE IF EXISTS accountDB;
+CREATE DATABASE accountDB;
+use accountDB;
 
 create table account
 (User_ID int not null primary key AUTO_INCREMENT,
 Username varchar(255) not null,
 telehandle varchar(255) not null,
-telechat_ID varchar(255) not null default '307267966',
+telechat_ID int not null default 307267966,
 Paypal_Email varchar(255) not null,
 password varchar(255) not null 
 );

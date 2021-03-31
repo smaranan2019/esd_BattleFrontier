@@ -39,8 +39,13 @@ class Order(db.Model):
             'modified': self.modified
         }
 
-        dto['item'] = self.item.json()
-        dto['contact'] = self.contact.json()
+        dto['item'] = []
+        for item in self.item:
+            dto['item'].append(item.json())
+            
+        dto['contact'] = []
+        for ct in self.contact:
+            dto['contact'].append(ct.json())
         
         return dto
 

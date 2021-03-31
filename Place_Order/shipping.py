@@ -37,8 +37,13 @@ class Shipping(db.Model):
             'modified': self.modified
         }
 
-        dto['shipping_details'] = self.shipping_details.json()
-        dto['contact'] = self.contact.json()
+        dto['shipping_details'] = []
+        for detail in self.shipping_details:
+            dto['shipping_details'].append(shipping.json())
+            
+        dto['contact'] = []
+        for ct in self.contact:
+            dto['contact'].append(ct.json())
         
         return dto
 

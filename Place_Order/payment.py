@@ -21,9 +21,8 @@ class Payment(db.Model):
 
     payment_id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, nullable=False)
-    payment_status = db.Column(db.String(10), nullable=False, default="NEW")
-    complete_status = db.Column(db.String(10), nullable=False, default="PENDING")
-    refund_status = db.Column(db.String(10), nullable=False, default="NULL")
+    payment_status = db.Column(db.String(25), nullable=False, default="NEW")
+    refund_status = db.Column(db.String(25), nullable=False, default="NULL")
     created = db.Column(db.DateTime, nullable=False, default=datetime.now)
     modified = db.Column(db.DateTime, nullable=False,
                          default=datetime.now, onupdate=datetime.now)
@@ -38,8 +37,13 @@ class Payment(db.Model):
             'modified': self.modified
         }
 
-        dto['payment_details'] = self.payment_details.json()
-        dto['contact'] = self.contact.json()
+        dto['payment_details'] = []
+        for detail in self.payment_details:
+            dto['payment_details'].append(detail.json())
+            
+        dto['contact'] = []
+        for ct in self.contact:
+            dto['contact'].append(ct.json())
         
         return dto
 
@@ -95,6 +99,41 @@ def get_all():
         }
     ), 404
 
+@app.route("/payment-release")
+def find_all_need_release():
+    paymentlist = Payment.query.filter(Payment.payment_status=="RELEASEABLE")
+    
+    if len(paymentlist):
+        return jsonify(
+            {
+                "code": 200,
+                "data": [payment.json() for payment in paymentlist]
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There is no payment to release."
+        }
+    ), 404
+    
+@app.route("/payment-refund")
+def find_all_need_refund():
+    paymentlist = Payment.query.filter(Payment.payment_status=="RELEASEABLE")
+    
+    if len(paymentlist):
+        return jsonify(
+            {
+                "code": 200,
+                "data": [payment.json() for payment in paymentlist]
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There is no payment to refund."
+        }
+    ), 404
 
 @app.route("/payment/<string:payment_id>")
 def find_by_payment_id(payment_id):

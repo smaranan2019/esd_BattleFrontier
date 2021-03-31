@@ -17,7 +17,7 @@ class User(db.Model):
     User_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(255), nullable=False)
     telehandle = db.Column(db.String(255), nullable=False)
-    telechat_ID = db.Column(db.String(255), nullable=False)
+    telechat_ID = db.Column(db.Integer, nullable=False, default=307267966)
     Paypal_Email = db.Column(db.String(255))
     password = db.Column(db.String(255))
 
