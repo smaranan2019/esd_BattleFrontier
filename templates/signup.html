@@ -73,10 +73,7 @@
         function showMsg(message) {
             // Display an error under the main container
             $('#msg')
-                .append("<label>"+message+"</label>"
-
-                
-                );
+                .append("<label>"+message+"</label>");
 
         }
 
@@ -96,10 +93,9 @@
             // anonymous async function 
             // - using await requires the function that calls it to be async
             $(async() => {           
-                console.log('hi');
                 var username = $('#username').val();
                 var telehandle = $('#telehandle').val();
-                var PaypalEmail = $("#PaypalEmail").val();
+                var Paypal_Email = $("#PaypalEmail").val();
                 var password = $("#password").val();
                 console.log(username);
                 var serviceURL = "http://127.0.0.1:5000/add-user";
@@ -113,7 +109,7 @@
                                 body: JSON.stringify({ 
                                   username: username, 
                                   telehandle: telehandle, 
-                                  PaypalEmail: PaypalEmail, 
+                                  Paypal_Email: Paypal_Email, 
                                   password: password})
                                 }
                     );

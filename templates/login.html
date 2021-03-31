@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     
     <link rel="stylesheet" href="css/login.css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Welcome Trainer!</title>
 </head>
 <body>
@@ -24,25 +24,92 @@
     </div>
     
     <!-- Login Form -->
-    <form action="buy_sell.html" method="GET">
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
-      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-      <input type="submit" class="fadeIn fourth" value="Log In" >
-    </form>
+    <div class="form_aligment">
+      <div class="form-group"></div>
+        <input type="text" id="username" class="fadeIn second form-control" name="login" placeholder="login">
+      </div>  
+      <div class="form-group">
+        <input type="text" id="password" class="fadeIn third form-control" name="login" placeholder="password">
+      </div>
+      <input type="submit" id = "submit" class="fadeIn fourth" value="Log In" >
+    </div>
+
 
     <!-- Sign Up Page Redirect -->
     <div id="formFooter">
       <a class="underlineHover" href="signup.html">New Trainer? Sign up here!</a>
     </div>
 
+    <div id = 'msg'></div>
+
   </div>
 </div>
 
 
+<script>
+  
+  // Helper function to display error message
+  function showMsg(message) {
+      // Display an error under the main container
+      $('#msg')
+          .append("<label>"+message+"</label>");
+
+  }
+
+  $("#submit").click(function(){
+      $("#msg").empty()
+      // anonymous async function 
+      // - using await requires the function that calls it to be async
+      $(async() => {           
+          var username = $('#username').val();
+          var password = $("#password").val();
+          console.log(username);
+          var serviceURL = "http://127.0.0.1:5000/login-user";
+  
+          try {
+              const response =
+              await fetch(
+              serviceURL, {
+                          method: 'POST',
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ 
+                            username: username, 
+                            password: password})
+                          }
+              );
+              const result = await response.json();
+              if (response.status === 200) {
+                  // success case
+                  var data = result.data; //get data of new account
+                  console.log(data);
+                  // showMsg('Account created successfully :>');
+
+                  //redirect to buy_sell.html
+                  //<meta http-equiv="Refresh" content="0; url='buy_sell.html'" />
+                  window.location.replace("buy_sell.html");
 
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+                  } else if (response.status == 404) {
+                      // Cannot create account
+                   
+                      showMsg(result.message);
+                  } else {
+                      // unexpected outcome, throw the error
+                      throw response.status;
+                  }
+              } catch (error) {
+                  // Errors when calling the service; such as network error, 
+                  // service offline, etc
+                  showMsg
+      ('There is a problem creating account, please try again later.<br />' + error);
+              } // error
+      });
+  }); 
+
+</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>        
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>
