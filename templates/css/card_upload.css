@@ -1,7 +1,7 @@
 .box {
     width:30%;
     height: auto;
-    position:fixed;
+    /* position:fixed; */
     margin-top: 80px;
     margin-left:35%;
     /* top:50%;
