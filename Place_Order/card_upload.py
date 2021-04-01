@@ -1,9 +1,10 @@
+import simplejson as json
 import os
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
-import json
+#import json
 from os import environ
 
 app = Flask(__name__)

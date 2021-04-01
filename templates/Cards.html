@@ -78,6 +78,60 @@
       
         }
         console.log('Hi');
+
+        function chooseCard(card_id) {
+            var price_chosen_card = document.getElementById(card_id).value;
+            console.log(price_chosen_card);
+
+            $(async() => {           
+                var serviceURL = "http://127.0.0.1:5100/place-order";
+                var buyer_id = 1;
+                var quantity = 1
+                console.log(serviceURL);
+        
+                try {
+                    const response =
+                    await fetch(
+                    serviceURL, {
+                                method: 'POST',
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ 
+                                    buyer_id: buyer_id, 
+                                    item: {card:{card_id:card_id,
+                                                price:price_chosen_card},
+                                            quantity:quantity}})
+                                }
+                    );
+                    console.log('U there?');
+                    const result = await response.json();
+                    if (response.status === 201) {
+                        // success case
+                        var data = result.data; //get data of new account
+                        console.log(data);
+                        // showMsg('Account created successfully :>');
+
+                        //redirect to buy_sell.html
+                        //<meta http-equiv="Refresh" content="0; url='buy_sell.html'" />
+                        window.location.replace("Payment.html");
+
+
+                        } else if (response.status == 500) {
+                            // Cannot create account
+                        
+                            showError(result.message);
+                        } else {
+                            // unexpected outcome, throw the error
+                            throw response.status;
+                        }
+                    } catch (error) {
+                        // Errors when calling the service; such as network error, 
+                        // service offline, etc
+                        showError
+                        ('There is a problem logging in, please try again later.<br />' + error);
+                    } // error
+            });
+            
+        }
       
         $(async() => {           
             // Change serviceURL to your own
@@ -133,7 +187,7 @@
                                             <p>`+description+`</p>
                                             </div>
                                             <div class="modal-footer">
-                                            <a href="Payment.html"> <button type="button" class="btn btn-warning">`+pokemon_name+`, I CHOOSE YOU</button></a>
+                                            <button type="button" id="`+card_id+`" value="`+card_details.price+`" onClick="chooseCard(this.id)" class="btn btn-warning">`+pokemon_name+`, I CHOOSE YOU</button>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                             </div>
                                         </div>
