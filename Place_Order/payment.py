@@ -155,11 +155,11 @@ def find_by_payment_id(payment_id):
         }
     ), 404
     
-@app.route("/payment/<string:buyer_id>")
+@app.route("/payment-buyer/<string:buyer_id>")
 def find_by_buyer_id(buyer_id):
     paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.buyer_id==buyer_id)
     
-    if len(paymentlist):
+    if paymentlist.count():
         return jsonify(
             {
                 "code": 200,
@@ -176,10 +176,10 @@ def find_by_buyer_id(buyer_id):
         }
     ), 404
 
-@app.route("/payment-new/<string:buyer_id>")
+@app.route("/payment-new-buyer/<string:buyer_id>")
 def find_new_by_buyer_id(buyer_id):
     paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.buyer_id==buyer_id,Payment.payment_status=="NEW")
-    if len(paymentlist):
+    if paymentlist.count():
         return jsonify(
             {
                 "code": 200,
@@ -196,11 +196,11 @@ def find_new_by_buyer_id(buyer_id):
         }
     ), 404
     
-@app.route("/payment/<string:seller_id>")
+@app.route("/payment-seller/<string:seller_id>")
 def find_by_seller_id(seller_id):
     paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.seller_id==seller_id)
     
-    if len(paymentlist):
+    if paymentlist.count():
         return jsonify(
             {
                 "code": 200,
@@ -217,11 +217,11 @@ def find_by_seller_id(seller_id):
         }
     ), 404
     
-@app.route("/payment-new/<string:seller_id>")
+@app.route("/payment-new-seller/<string:seller_id>")
 def find_new_by_seller_id(seller_id):
     paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.seller_id==seller_id, Payment.payment_status=="NEW")
     
-    if len(paymentlist):
+    if paymentlist.count():
         return jsonify(
             {
                 "code": 200,

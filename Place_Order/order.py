@@ -122,7 +122,7 @@ def find_by_order_id(order_id):
         }
     ), 404
     
-@app.route("/order/<string:buyer_id>")
+@app.route("/order-buyer/<string:buyer_id>")
 def find_by_buyer_id(buyer_id):
     order = Order.query.filter_by(buyer_id=buyer_id)
     if order:
@@ -142,7 +142,7 @@ def find_by_buyer_id(buyer_id):
         }
     ), 404
     
-@app.route("/order/<string:seller_id>")
+@app.route("/order-seller/<string:seller_id>")
 def find_by_seller_id(seller_id):
     order = Order.query.filter_by(seller_id=seller_id)
     if order:
