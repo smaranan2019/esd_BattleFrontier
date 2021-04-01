@@ -62,7 +62,7 @@
                             <td style="width: 60%">
                                 <h5 class="card-title">Charizard</h5>
                                 <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
-                                <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
+                                <h6 class="card-subtitle mb-2">SGD $20</h6>
                                 <h6 class="card-subtitle mb-2">Description: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam laboriosam praesentium autem, eaque unde provident sequi quae dolores quam molestiae, saepe nihil non alias!</h6>
       
                             </td>
@@ -109,7 +109,7 @@
                                 <td >
                                     <h5 class="card-title">Charizard</h5>
                                     <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
-                                    <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
+                                    <h6 class="card-subtitle mb-2" id="charge">Amount: SGD$50</h6>
                                     <h6 class="card-subtitle mb-2">Description: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam laboriosam praesentium autem, eaque unde provident sequi quae dolores quam molestiae, saepe nihil non alias!</h6>
 
                                 </td>
@@ -139,33 +139,83 @@
 
             $('#to_pay') = "";
        }
-       // Render the PayPal button into #paypal-button-container
-       paypal.Buttons({
 
+    //    // Render the PayPal button into #paypal-button-container
+    //    let amt = document.getElementById("charge").value;
+    //    alert(amt)
+       paypal.Buttons({
+            // alert(document.getElementById("charge").value);
+            // alert(amt);
            // Set up the transaction
+
            createOrder: function(data, actions) {
                return actions.order.create({
-                   purchase_units: [{
+                //    purchase_units: [{
+                    // amount: { value: amt}        
+
                        amount: {
                            value: '20'
                        }
-                   }]
-               });
+
+
+                    // amount: { total:document.getElementById("charge").value, currency: 'SGD' }        
+                //     payment: {
+    	        //         transactions: [
+    	        //             {
+                //                 amount: { total:'20', currency: 'SGD' }        
+                //             }
+    	        //         ],
+    	                
+                //         redirect_urls: {
+                //             // return_url: 'http://localhost:8090/index',
+                //             // cancel_url: 'http://localhost:8090/order'
+    	        //         }
+                //    }
+                   
+                // }]
+            });
            },
 
-           // Finalize the transaction
-           onApprove: function(data, actions) {
-               return actions.order.capture().then(function(details) {
-                   // Show a success message to the buyer
-                   alert('Transaction completed by ' + details.payer.name.given_name + '!');
+        //    // Finalize the transaction
+        //    onApprove: function(data, actions) {
+        //        return actions.order.capture().then(function(details) {
+        //            // Show a success message to the buyer
+        //            alert('Transaction completed by ' + details.payer.name.given_name + '!');
 
 
-                //    send payment ID and status
+        //         //    send payment ID and status
 
-                // show approved card
+        //         // show approved card
 
-               });
-           }
+        //        });
+        //    }
+
+        // onAuthorize() is called when the buyer approves the payment
+    	  onAuthorize: function(data, actions) {
+                alert("Booking successfully!");
+
+    	    //  actions.payment.execute().then(function() {
+    	    // 	    alert("Booking successfully!");
+    	    	
+    	    // 	 fetch('http://localhost:8060/order/', {
+       	    //         method: 'post',
+       	    //         headers: {
+       	    //             'content-type': 'application/json'
+       	    //         },
+       	    //       body: JSON.stringify({
+       	    //         orderID: data.orderID,
+       	    //         data: mapToObj(Items),
+			// 		user_id:Cookies.get("user_id")
+       	    //       })
+       	    //     });
+    	    // 	 return  actions.redirect();
+    	    //   }
+    	    // );
+    	  },
+
+    	//   onCancel: function(data, actions) {
+    	//     actions.redirect();
+    	//     }
 
 
        }).render('#paypal-button-container');
@@ -175,64 +225,64 @@
 <script>
   
     // Helper function to display error message
-    function showMsg(message) {
-        // Display an error under the main container
-        $('#msg')
-            .append("<label>"+message+"</label>");
+    // function showMsg(message) {
+    //     // Display an error under the main container
+    //     $('#msg')
+    //         .append("<label>"+message+"</label>");
 
-    }
+    // }
 
 
-    $("#submit").click(function(){
-        $("#msg").empty()
-        // anonymous async function 
-        // - using await requires the function that calls it to be async
-        $(async() => {           
-            var username = $('#username').val();
-            var telehandle = $('#telehandle').val();
-            var PaypalEmail = $("#PaypalEmail").val();
-            var password = $("#password").val();
-            console.log(username);
-            var serviceURL = "http://127.0.0.1:5000/add-user";
+    // $("#submit").click(function(){
+    //     $("#msg").empty()
+    //     // anonymous async function 
+    //     // - using await requires the function that calls it to be async
+    //     $(async() => {           
+    //         var username = $('#username').val();
+    //         var telehandle = $('#telehandle').val();
+    //         var PaypalEmail = $("#PaypalEmail").val();
+    //         var password = $("#password").val();
+    //         console.log(username);
+    //         var serviceURL = "http://127.0.0.1:5000/add-user";
     
-            try {
-                const response =
-                await fetch(
-                serviceURL, {
-                            method: 'POST',
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ 
-                              username: username, 
-                              telehandle: telehandle, 
-                              PaypalEmail: PaypalEmail, 
-                              password: password})
-                            }
-                );
-                const result = await response.json();
-                if (response.status === 201) {
-                    // success case
-                    var data = result.data; //get data of new account
-                    console.log(data);
-                    // showMsg('Account created successfully :>');
-                    login();
+    //         try {
+    //             const response =
+    //             await fetch(
+    //             serviceURL, {
+    //                         method: 'POST',
+    //                         headers: { "Content-Type": "application/json" },
+    //                         body: JSON.stringify({ 
+    //                           username: username, 
+    //                           telehandle: telehandle, 
+    //                           PaypalEmail: PaypalEmail, 
+    //                           password: password})
+    //                         }
+    //             );
+    //             const result = await response.json();
+    //             if (response.status === 201) {
+    //                 // success case
+    //                 var data = result.data; //get data of new account
+    //                 console.log(data);
+    //                 // showMsg('Account created successfully :>');
+    //                 login();
 
 
-                    } else if (response.status == 400 || response.status == 500) {
-                        // Cannot create account
+    //                 } else if (response.status == 400 || response.status == 500) {
+    //                     // Cannot create account
                      
-                        showMsg(result.message);
-                    } else {
-                        // unexpected outcome, throw the error
-                        throw response.status;
-                    }
-                } catch (error) {
-                    // Errors when calling the service; such as network error, 
-                    // service offline, etc
-                    showMsg
-        ('There is a problem creating account, please try again later.<br />' + error);
-                } // error
-        });
-    }); 
+    //                     showMsg(result.message);
+    //                 } else {
+    //                     // unexpected outcome, throw the error
+    //                     throw response.status;
+    //                 }
+    //             } catch (error) {
+    //                 // Errors when calling the service; such as network error, 
+    //                 // service offline, etc
+    //                 showMsg
+    //     ('There is a problem creating account, please try again later.<br />' + error);
+    //             } // error
+    //     });
+    // }); 
 
 </script>
 
