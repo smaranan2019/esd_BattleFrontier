@@ -54,9 +54,6 @@ def addUser():
             ), 400
     except:
         pass
-    
-    if not data["telechat_ID"]:
-        data["telechat_ID"] = 307267966
 
     user = User(**data)
 

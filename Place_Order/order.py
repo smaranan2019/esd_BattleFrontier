@@ -21,7 +21,7 @@ class Order(db.Model):
 
     order_id = db.Column(db.Integer, primary_key=True)
     buyer_id = db.Column(db.Integer, nullable=False)
-    seller_id = db.Column(db.Integer, nullable=False)
+    #seller_id = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Numeric(4,2), nullable=False)
     #status = db.Column(db.String(10), nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -32,7 +32,7 @@ class Order(db.Model):
         dto = {
             'order_id': self.order_id,
             'buyer_id': self.buyer_id,
-            'seller_id': self.seller_id,
+            #'seller_id': self.seller_id,
             'price': self.price,
             #'status': self.status,
             'created': self.created,
@@ -43,9 +43,9 @@ class Order(db.Model):
         for item in self.item:
             dto['item'].append(item.json())
             
-        dto['contact'] = []
-        for ct in self.contact:
-            dto['contact'].append(ct.json())
+        # dto['contact'] = []
+        # for ct in self.contact:
+        #     dto['contact'].append(ct.json())
         
         return dto
 
@@ -57,7 +57,7 @@ class Item(db.Model):
         'order.order_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True, primary_key=True)
 
     card_id = db.Column(db.Integer, nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
+    quantity = db.Column(db.Integer, nullable=False, default=1)
 
     order = db.relationship(
         'Order', primaryjoin='Item.order_id == Order.order_id', backref='item')
@@ -66,20 +66,20 @@ class Item(db.Model):
         return {'card_id': self.card_id, 'quantity': self.quantity, 'order_id': self.order_id}
     
 
-class Contact(db.Model):
-    __tablename__ = 'contact'
+# class Contact(db.Model):
+#     __tablename__ = 'contact'
 
-    order_id = db.Column(db.ForeignKey(
-        'order.order_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True, primary_key=True)
+#     order_id = db.Column(db.ForeignKey(
+#         'order.order_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True, primary_key=True)
 
-    seller_chat_id = db.Column(db.Integer, nullable=False)
-    buyer_chat_id = db.Column(db.Integer, nullable=False)
+#     seller_chat_id = db.Column(db.Integer, nullable=False)
+#     buyer_chat_id = db.Column(db.Integer, nullable=False)
     
-    order = db.relationship(
-        'Order', primaryjoin='Contact.order_id == Order.order_id', backref='contact')
+#     order = db.relationship(
+#         'Order', primaryjoin='Contact.order_id == Order.order_id', backref='contact')
 
-    def json(self):
-        return {'seller_chat_id': self.seller_chat_id, 'buyer_chat_id': self.buyer_chat_id, 'order_id': self.order_id}
+#     def json(self):
+#         return {'seller_chat_id': self.seller_chat_id, 'buyer_chat_id': self.buyer_chat_id, 'order_id': self.order_id}
 
 
 @app.route("/order")
@@ -165,15 +165,15 @@ def find_by_seller_id(seller_id):
 
 @app.route("/order", methods=['POST'])
 def create_order():
-    buyer = request.json.get('buyer')
+    buyer_id = request.json.get('buyer_id',None)
     item = request.json.get('item')
     
-    order = Order(buyer_id=buyer['buyer_id'], seller_id=item['card']['seller_id'], price=item['card']['price']) #, status='NEW')   
+    order = Order(buyer_id=buyer_id, price=item['card']['price']*item['quantity']) #, status='NEW')   
     order.item.append(Item(
         card_id=item['card']['card_id'], quantity=item['quantity']))
     
-    order.contact.append(Contact(
-        seller_chat_id=item['card']['seller_chat_id'], buyer_chat_id=buyer['buyer_chat_id']))
+    # order.contact.append(Contact(
+    #     seller_chat_id=item['card']['seller_chat_id'], buyer_chat_id=buyer['buyer_chat_id']))
 
     try:
         db.session.add(order)
