@@ -41,7 +41,6 @@ class User(db.Model):
 
 @app.route('/add-user', methods=['POST'])
 def addUser():
-    print("hello world")
     data = request.get_json()
     print(data)
     try:
@@ -55,6 +54,9 @@ def addUser():
             ), 400
     except:
         pass
+    
+    if not data["telechat_ID"]:
+        data["telechat_ID"] = 307267966
 
     user = User(**data)
 
@@ -96,7 +98,23 @@ def checkUser():
         }
     ), 404
         
-
+@app.route("/find-user-id/<string:User_ID>")
+def find_user_by_id(User_ID):
+    user = User.query.filter_by(User_ID=User_ID).first()
+    if user:
+        return jsonify(
+            {
+                "code": 200,
+                "data": user.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "User not found."
+        }
+    ), 404
+    
 @app.route("/find-user/<string:email>")
 def findUser(email):
     user = User.query.filter_by(Paypal_Email=email).first()

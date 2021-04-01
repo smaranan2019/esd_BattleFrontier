@@ -1,6 +1,10 @@
+import os
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+
+import json
+from os import environ
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/cardDB'
@@ -17,34 +21,34 @@ class Card(db.Model):
     pokemon_name = db.Column(db.String(255), nullable=False)
     pokemon_type = db.Column(db.String(10), nullable=False)
     image_path = db.Column(db.String(255), nullable=False)
-    # price = db.Column(db.Numeric, nullable=False)
+    description = db.Column(db.Text, nullable=False)
 
     def json(self):
         dto = {
             'card_id': self.card_id,
             'pokemon_name': self.pokemon_name,
             'pokemon_type': self.pokemon_type,
-            'image_path': self.image_path
-            # 'price': self.price
+            'image_path': self.image_path,
+            'description': self.description
         }
-        dto['contact'] = []
-        for ct in self.contact:
-            dto['contact'].append(ct.json())       
+        dto['card_details'] = []
+        for detail in self.card_details:
+            dto['card_details'].append(detail.json())       
         return dto
 
-class Contact(db.Model):
-    __tablename__ = 'contact'
+class Card_details(db.Model):
+    __tablename__ = 'card_details'
 
     card_id = db.Column(db.ForeignKey(
         'card.card_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True, primary_key=True)
     seller_id = db.Column(db.Integer, nullable=False)
-    seller_chat_id = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Numeric(4,2), nullable=False)
 
     card = db.relationship(
-        'Card', primaryjoin='Contact.card_id == Card.card_id', backref='contact')
+        'Card', primaryjoin='Card_details.card_id == Card.card_id', backref='card_details')
 
     def json(self):
-        return {'seller_id': self.seller_id, 'seller_chat_id': self.seller_chat_id, 'card_id': self.card_id}
+        return {'seller_id': self.seller_id, 'price': self.price, 'card_id': self.card_id}
     
 @app.route('/')
 def serviceIsRunning():
@@ -88,12 +92,12 @@ def addPokemonCard(card_id):
     pokemon_name = request.get_json('pokemon_name', None)
     pokemon_type = request.get_json('pokemon_type', None)
     image_path = request.get_json('image_path', None)
-    #price = request.get_json('price', None)
-    card = Card(pokemon_name=pokemon_name, pokemon_type=pokemon_type, image_path=image_path)#, price=price)
+    description = request.get_json('description', None)
+    card = Card(pokemon_name=pokemon_name, pokemon_type=pokemon_type, image_path=image_path, description=description)
     
-    buyer = request.get_json('buyer')
-    card.contact.append(Contact(
-        seller_id=buyer['seller_id'], seller_chat_id=buyer['seller_chat_id']))
+    seller_id = request.get_json('seller_id', None)
+    price = request.get_json('price', None)
+    card.card_details.append(Card_details(seller_id=seller_id, price=price))
 
     try:
         db.session.add(card)
@@ -136,4 +140,5 @@ def findPokemon():
         return "Card not found!"
 
 if __name__ == "__main__":
-    app.run(port=5300, debug=True)
+    print("This is flask for " + os.path.basename(__file__) + ": manage cards ...")
+    app.run(host='0.0.0.0', port=5005, debug=True)

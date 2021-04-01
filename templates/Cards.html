@@ -81,64 +81,70 @@
       
         $(async() => {           
             // Change serviceURL to your own
-            var serviceURL = "http://127.0.0.1:5300/cards";
+            var serviceURL = "http://127.0.0.1:5300/display-cards";
             console.log(serviceURL);
      
             try {
                 const response =
                  await fetch(
-                   serviceURL, { method: 'GET' }
+                   serviceURL, {method: 'GET'}
                 );
                 const result = await response.json();
                  if (response.status === 200) {
                     // success case
-                    var cards = result.data.cards; 
-                    var card_details = "";
+                    var cards = result.data.cards_result.data.cards; 
+                    console.log(cards)
+                    var card_add_on = "";
+                    var count = 0;
+
                     for (const card of cards) {
+                        // console.log(card)
                         var card_id = card.card_id;
                         var image_path = card.image_path;
                         var pokemon_name = card.pokemon_name;
                         var pokemon_type = card.pokemon_type;
-                        var seller = card.contact[0];
+                        var description = card.description;
+                        var card_details = card.card_details[0];
+
                         eachCard = `<div class="card bg-light">
-                                    <div class="card-body text-center">
-                                        <img class="card-img-top" src="`+image_path+`" alt="Card image cap" >
-                                        <br><br>
-                                        <h5 class="card-title">`+pokemon_name+`</h5>
-                                        <h6 class="card-subtitle mb-2">Type: `+pokemon_type+`<br>Amount: SGD$50</h6>
+                                        <div class="card-body text-center">
+                                            <img class="card-img-top" src="`+image_path+`" alt="Card image cap" >
+                                            <br><br>
+                                            <h5 class="card-title">`+pokemon_name+`</h5>
+                                            <h6 class="card-subtitle mb-2">Type: `+pokemon_type+`<br>Amount: SGD$`+card_details.price+`</h6>
 
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal`+card_id+`">Find out more!</button>
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal`+card_id+`">Find out more!</button>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="modal fade" id="myModal`+card_id+`" role="dialog">
-                                    <div class="modal-dialog">
-                                    
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                        <h3 class="modal-title">`+pokemon_name+`</h3>
+                                    <div class="modal fade" id="myModal`+card_id+`" role="dialog">
+                                        <div class="modal-dialog">
+                                        
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h3 class="modal-title">`+pokemon_name+`</h3>
+                                            </div>
+                                            <div class="modal-body" style="width: 25 rem;">
+                                                <img class="card-img-top card_popup" src="`+image_path+`" alt="Card image cap">
+                                            <h4 class="modal-title">`+pokemon_type+` Type</h4>
+                                            <h5 class="modal-title">Price: $`+card_details.price+`</h5>
+                                            <p> Sold By: `+card_details.seller_username+`</p>
+                                            <p>`+description+`</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                            <a href="Payment.html"> <button type="button" class="btn btn-warning">`+pokemon_name+`, I CHOOSE YOU</button></a>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
                                         </div>
-                                        <div class="modal-body" style="width: 25 rem;">
-                                            <img class="card-img-top card_popup" src="`+image_path+`" alt="Card image cap">
-                                        <h4 class="modal-title">`+pokemon_type+` Type</h4>
-                                        <h5 class="modal-title">Price: $50</h5>
-                                        <p> Sold By: `+seller.seller_id+`</p>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt odit animi iusto voluptatibus dolores ipsa et! Alias earum aliquid enim eius ut.</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                        <a href="Payment.html"> <button type="button" class="btn btn-warning">`+pokemon_name+`, I CHOOSE YOU</button></a>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        
                                         </div>
                                     </div>
-                                    
-                                    </div>
-                                </div>
-                                `
-                       card_details += eachCard;
+                                    `
+                        card_add_on += eachCard;
                     }
                         // add all the rows to the table
-                        $('#cards').append(card_details);
+                        $('#cards').append(card_add_on);
                     } else if (response.status == 404) {
                         // No cards
                         showError(result.message);

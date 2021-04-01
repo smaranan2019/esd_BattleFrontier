@@ -14,7 +14,6 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-# card_URL = "http://localhost:5000/card"
 order_URL = "http://localhost:5001/"
 payment_URL = "http://localhost:5002/"
 shipping_URL = "http://localhost:5003/"
