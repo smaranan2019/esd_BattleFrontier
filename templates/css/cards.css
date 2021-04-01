@@ -3,6 +3,8 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
+    /* display: block; */
+
 }
 
 a {
@@ -10,8 +12,28 @@ a {
 }
 
 .card_popup {
-    max-width:30%; 
+    max-width:70%; 
+    height: auto;   
+ 
+}
+
+.modal_width {
+    width: 25 rem;
+}
+
+.modal_img {
+    width: 60%; 
     height: auto; 
-    float: left; 
-    margin-right: 10px;
+    margin-left: 20%; 
+}
+
+.card {
+    float: left;
+    width: 25rem;
+    /* overflow:hidden; */
+
+}
+
+.table {
+    margin-left:6%;
 }

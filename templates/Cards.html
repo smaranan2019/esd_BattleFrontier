@@ -63,10 +63,15 @@
           </div>
     </nav>
 
-    <div class="card-columns" id="cards">
+    <div>
+        <table class="table" >
+            <tr id="cards">
+
+            </tr>
+        </table>
     </div>                
 
-    <div id='msg'></div>
+    <div id='msg' style="float:left"></div>
    
     <script>
   
@@ -160,10 +165,10 @@
                         var description = card.description;
                         var card_details = card.card_details[0];
 
-                        eachCard = `<div class="card bg-light">
+                        eachCard = `<div class="card bg-light" >
                                         <div class="card-body text-center">
-                                            <img class="card-img-top" src="`+image_path+`" alt="Card image cap" >
-                                            <br><br>
+                                            <img class="card-img-top" src="`+image_path+`" alt="Card image cap">
+                                            
                                             <h5 class="card-title">`+pokemon_name+`</h5>
                                             <h6 class="card-subtitle mb-2">Type: `+pokemon_type+`<br>Amount: SGD$`+card_details.price+`</h6>
 
@@ -179,8 +184,9 @@
                                             <div class="modal-header">
                                             <h3 class="modal-title">`+pokemon_name+`</h3>
                                             </div>
-                                            <div class="modal-body" style="width: 25 rem;">
-                                                <img class="card-img-top card_popup" src="`+image_path+`" alt="Card image cap">
+                                            <div class="modal-body modal_width" >
+                                                <img class="card-img-top modal_img" src="`+image_path+`" alt="Card image cap">
+                                            <br>
                                             <h4 class="modal-title">`+pokemon_type+` Type</h4>
                                             <h5 class="modal-title">Price: $`+card_details.price+`</h5>
                                             <p> Sold By: `+card_details.seller_username+`</p>
