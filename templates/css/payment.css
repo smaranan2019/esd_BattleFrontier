@@ -70,6 +70,10 @@ body {
     width: 10rem;
 }
 
+.space {
+    width:5%
+}
+
 .card_details {
     width: 60%;
 }
