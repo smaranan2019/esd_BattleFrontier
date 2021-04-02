@@ -176,7 +176,7 @@ def change_receive_status(shipping_id):
         try:
             shipping = request.get_json()
             print("\nReceived a shipping change in JSON:", shipping)
-            result = processChangeReceiveStatus(shipping,shipping_id)
+            result = processChangeReceiveStatus(shipping, shipping_id)
             return jsonify(result), result["code"]
 
         except Exception as e:
@@ -193,7 +193,7 @@ def change_receive_status(shipping_id):
 
 def processChangeReceiveStatus(shipping,shipping_id):
     print('\n-----Invoking shipping microservice-----')
-    shipping_result = invoke_http(shipping_URL+"/receive-status/"+shipping_id, method='PUT', json=shipping)
+    shipping_result = invoke_http(shipping_URL+"/receive-status/"+str(shipping_id), method='PUT', json=shipping)
     print('shipping_result:', shipping_result)
 
     # # 4. Record new payment
@@ -207,12 +207,30 @@ def processChangeReceiveStatus(shipping,shipping_id):
             "data": {"shipping_result": shipping_result},
             "message": "Receive status change failure sent for error handling."
         }
+        
+    payment_id = shipping_result["data"]["payment_id"]
+    payment = {
+        "payment_id": payment_id,
+        "payment_status": "RELEASEABLE"
+    }
+    print('\n-----Invoking payment microservice-----')
+    payment_result = invoke_http(payment_URL+"/payment/"+str(payment_id), method='PUT', json=payment)
+    print('payment_result:', payment_result)
+    
+    if payment_result["code"] not in range(200, 300):
+        # 7. Return error
+        return {
+            "code": 500,
+            "data": {"shipping_result": shipping_result},
+            "message": "Receive status change failure sent for error handling."
+        }
 
     # 7. Return changed payment, created shipping
     return {
         "code": 201,
         "data": {
-            "shipping_result": shipping_result
+            "shipping_result": shipping_result,
+            "payment_result": payment_result
         }
     }
     
