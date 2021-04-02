@@ -7,8 +7,8 @@ DROP DATABASE IF EXISTS `shippingDB`;
 CREATE DATABASE IF NOT EXISTS `shippingDB` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 use `shippingDB`;
 
-create table `shipment`
-(`ship_id` int not null primary key AUTO_INCREMENT,
+create table `shipping`
+(`shipping_id` int not null primary key AUTO_INCREMENT,
 `payment_id` int not null, 
 `shipping_status` varchar(10) not null default "PENDING",
 `receive_status` varchar(10) not null default "PENDING",
@@ -17,11 +17,11 @@ create table `shipment`
 );
 
 create table `shipping_details` 
-(`ship_id` int not null primary key,
+(`shipping_id` int not null primary key,
 `order_id` int not null,
 `seller_id` int not null,
 `buyer_id` int not null, 
-constraint `shipping_details_fk` foreign key(`ship_id`) references `shipment`(`ship_id`)
+constraint `shipping_details_fk` foreign key(`shipping_id`) references `shipping`(`shipping_id`)
 ); 
 
 -- create table `contact`

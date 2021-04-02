@@ -39,7 +39,7 @@ class Shipping(db.Model):
 
         dto['shipping_details'] = []
         for detail in self.shipping_details:
-            dto['shipping_details'].append(shipping.json())
+            dto['shipping_details'].append(detail.json())
             
         # dto['contact'] = []
         # for ct in self.contact:
@@ -311,9 +311,10 @@ def create_order():
     
     order_id = request.json.get('order_id', None) 
     payment_details = request.json.get('payment_details')
+    print(payment_details)
 
     shipping.shipping_details.append(Shipping_details(
-        order_id=order_id, buyer_id=payment_details['buyer_id'], seller_id=payment_details['seller_id']))
+        order_id=order_id, buyer_id=payment_details[0]['buyer_id'], seller_id=payment_details[0]['seller_id']))
     
     # contact = request.json.get('contact')
     # shipping.contact.append(Contact(
