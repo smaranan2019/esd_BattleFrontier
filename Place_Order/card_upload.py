@@ -18,7 +18,7 @@ CORS(app)
 class Card(db.Model):
     __tablename__ = 'card'
 
-    card_id = db.Column(db.Integer, primary_key=True)
+    card_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     pokemon_name = db.Column(db.String(255), nullable=False)
     pokemon_type = db.Column(db.String(10), nullable=False)
     image_path = db.Column(db.String(255), nullable=False)
@@ -91,30 +91,23 @@ def show_card_by_id(card_id):
         }
     ), 404
 
-@app.route('/addPokemonCard/<string:card_id>', methods=['POST'])
-def addPokemonCard(card_id):
-    try:
-        if (Card.query.filter_by(card_id=card_id).first()):
-            return jsonify(
-                {
-                    "code": 400,
-                    "data": {
-                        "card_id": card_id
-                    },
-                    "message": "Card already exists."
-                }
-            ), 400
-    except: pass
-
-    pokemon_name = request.get_json('pokemon_name', None)
-    pokemon_type = request.get_json('pokemon_type', None)
-    image_path = request.get_json('image_path', None)
-    description = request.get_json('description', None)
-    card = Card(pokemon_name=pokemon_name, pokemon_type=pokemon_type, image_path=image_path, description=description)
+@app.route('/addPokemonCard', methods=['POST'])
+def addPokemonCard():
     
-    seller_id = request.get_json('seller_id', None)
-    price = request.get_json('price', None)
-    card.card_details.append(Card_details(seller_id=seller_id, price=price))
+    # pokemon_name = request.get_json('pokemon_name', None)
+    # pokemon_type = request.get_json('pokemon_type', None)
+    # image_path = request.get_json('image_path', None)
+    # description = request.get_json('description', None)
+
+    data = request.get_json()
+
+    price = float(data["price"])
+
+    card = Card(pokemon_name=data["pokemon_name"], pokemon_type=data["pokemon_type"], image_path=data["image_path"], description=data["description"])
+    
+    # seller_id = request.get_json('seller_id', None)
+    # price = request.get_json('price', None)
+    card.card_details.append(Card_details(seller_id=data["seller_id"], price=price))
 
     try:
         db.session.add(card)
@@ -124,9 +117,6 @@ def addPokemonCard(card_id):
         return jsonify(
             {
                 "code": 500,
-                "data": {
-                    "card_id": card_id
-                },
                 "message": "An error occurred creating the card."
             }
         ), 500

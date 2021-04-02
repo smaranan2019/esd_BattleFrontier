@@ -18,46 +18,101 @@ CORS(app)
 
 shipping_URL = "http://localhost:5003/"
 order_URL = "http://localhost:5001/"
+order_orch_URL = "http://localhost:5100/"
+payment_URL = "http://localhost:5002/"
 
 @app.route('/update-shipping/<string:shipping_id>', methods=["PUT"])
 def update_shipping(shipping_id):
 
     data = request.get_json()
 
-    try:
-        shipping_updated = invoke_http(shipping_URL + "shipping/" + shipping_id, method="PUT", json=data)
-        
-        if shipping_updated["code"] not in range(200, 300):
+    if data["shipping_status"] == "REJECTED":
+        try:
+            shipping_rejected = reject_shipping(data)
+            if shipping_rejected["code"] not in range(200, 300):
+                return jsonify(
+                    {
+                        "code": 404,
+                        "data": {
+                            "shipping_id": shipping_id
+                        },
+                        "message": "Shipping not found."
+                    }
+                ), 404
+            
             return jsonify(
                 {
-                    "code": 404,
-                    "data": {
-                        "shipping_id": shipping_id
+                    "code": 200,
+                    "data":{
+                        shipping_rejected
                     },
-                    "message": "Shipping not found."
+                    "message": "Shipping " + data["shipping_id"] + " was rejected by seller" 
+                }
+            )
+        except Exception as e:
+            return jsonify(
+                {
+                    "code" : 500,
+                    "message": str(e)
                 }
             )
 
-        order_id = shipping_updated["shipping_details"]["order_id"]
-        order_details = invoke_http(order_URL + "order/" + order_id)
-        
-        return jsonify(
-                {
-                    "code": 200,
-                    "data": [
-                        shipping_updated,
-                        order_details
-                        ]
-                }
-            ), 200
+    elif data["shipping_status"] == "SENT":
+        try:
+            shipping_updated = invoke_http(shipping_URL + "shipping/" + shipping_id, method="PUT", json=data)
 
-    except Exception as e:
-        return jsonify(
-        {
-            "code": 500,
-            "message": ". " + str(e)
-        }
-    ), 500    
+            #Branch here to go to case 3
+
+            if shipping_updated["code"] not in range(200, 300):
+                return jsonify(
+                    {
+                        "code": 404,
+                        "data": {
+                            "shipping_id": shipping_id
+                        },
+                        "message": "Shipping not found."
+                    }
+                )
+
+            order_id = shipping_updated["shipping_details"]["order_id"]
+            order_details = invoke_http(order_URL + "order/" + order_id)
+            
+            send_shipping_update = invoke_http(order_orch_URL + "shipping-sent/" + shipping_id)
+
+            if send_shipping_update["code"] not in range(200, 300):
+                return jsonify(
+                    {
+                        "code": 404,
+                        "data": {
+                            "shipping_id": shipping_id
+                        },
+                        "message": "Shipping not found."
+                    }
+                )
+
+            return jsonify(
+                    {
+                        "code": 200,
+                        "data": [
+                            shipping_updated,
+                            order_details
+                            ]
+                    }
+                ), 200
+
+        except Exception as e:
+            return jsonify(
+            {
+                "code": 500,
+                "message": ". " + str(e)
+            }
+        ), 500    
+
+
+def reject_shipping(data):
+    
+    return 
+
 
 @app.route('/get-shippings-categorized/<string:seller_id>')
 def get_shipping_categorized(seller_id):
@@ -75,7 +130,7 @@ def get_shipping_categorized(seller_id):
                 {
                     "code": 404,
                     "data": {
-                        "seller_d": seller_id
+                        "seller_id": seller_id
                     },
                     "message": "You haven't had any sent shipping yet."
                 }
@@ -101,3 +156,61 @@ def get_shipping_categorized(seller_id):
             "message": ". " + str(e)
         }
     ), 500    
+
+@app.route('/receive-payment-status')
+def receive_payment_status():
+    payment_data = request.get_json()
+
+    try:
+        #TODO: AMQP
+        print("a")
+    except Exception as e:
+        pass
+    return "a" 
+
+@app.route('/receive-shipping-status')
+def receive_shipping_status():
+    shipping_status = request.get_json()
+    try:
+        #TODO: Invoke the AMQP
+        updated_shipping = update_shipping(shipping_status["shipping_id"])
+        if update_shipping["code"] not in range(200, 300):
+            return jsonify(
+                {
+                    "code": 404,
+                    "data": {
+                        "shipping_id": shipping_status["shipping_id"]
+                    },
+                    "message": "Shipping does not exist"
+                }
+            ), 404
+        
+        updated_payment = invoke_http(payment_URL + 'payment/' + shipping_status["payment_id"])
+        if updated_payment["code"] not in range(200, 300):
+            return jsonify(
+                {
+                    "code": 404,
+                    "data": {
+                        "payment_id": shipping_status["payment_id"]
+                    },
+                    "message": "Payment does not exist"
+                }
+            ), 404
+
+        return jsonify(
+            {
+                "code": 200,
+                "data": [
+                    updated_payment,
+                    updated_shipping
+                ],
+                "message": "Transaction succeeded"
+            }
+        )
+    except Exception as e:
+        return jsonify(
+            {
+                "code" : 500,
+                "message": str(e)
+            }
+        )

@@ -5,12 +5,18 @@ app = Flask(__name__)
 
 TOKEN = "1790750890:AAEffcouXbkLWuzRTr100MGtjvgnK84-EgE"
 # mainUrl = "https://api.telegram.org/bot1790750890:AAEffcouXbkLWuzRTr100MGtjvgnK84-EgE"
-chat_id = "961849285"
+# chat_id = "961849285"
 bot = telegram.Bot(token=TOKEN)
 
 @app.route("/sendNotification", methods=["POST"])
 def sendNotif():
     data = request.get_json()
+
+    if "chat_id" in data:
+        chat_id = data["chat_id"]
+    else:
+        chat_id = "961849285"
+    
     msg = {
         "Shipped": "Your order has been shipped",
         "Received": "Your order has been received"
@@ -20,35 +26,35 @@ def sendNotif():
             bot.sendMessage(chat_id=chat_id, text=msg["Shipped"])
         if (data["status"] == "received"):
             bot.sendMessage(chat_id=chat_id, text=msg["Shipped"])
-    except:
-        return "Error"
+    except Exception as e:
+        return str(e)
     return "No error"
 
-@app.route("/{}".format(TOKEN), methods=["POST"])
-def respond():
-    print("aaaaa")
-    update = telegram.Update.de_json(request.get_json(force=True), bot)
+# @app.route("/{}".format(TOKEN), methods=["POST"])
+# def respond():
+#     print("aaaaa")
+#     update = telegram.Update.de_json(request.get_json(force=True), bot)
 
-    print(update)
+#     print(update)
 
-    chat_id = update.message.chat.id
-    msg_id = update.message.message_id
+#     chat_id = update.message.chat.id
+#     msg_id = update.message.message_id
 
-    received_text = update.message.text.encode('utf-8').decode()
+#     received_text = update.message.text.encode('utf-8').decode()
 
-    print(received_text)
+#     print(received_text)
 
-    try:
-        if received_text == "/start":
-            msg = "Hi pls end my existence. My creator not only trash but also suicidal"
-            bot.sendMessage(chat_id=chat_id, text=msg)
-        else:
-            msg = "You have sent a message, but I dont' care. All care about is "
-            bot.sendMessage(chat_id=chat_id, text=msg)
-    except:
-        return "Something went wrong"
+#     try:
+#         if received_text == "/start":
+#             msg = "Hi pls end my existence. My creator not only trash but also suicidal"
+#             bot.sendMessage(chat_id=chat_id, text=msg)
+#         else:
+#             msg = "You have sent a message, but I dont' care. All care about is "
+#             bot.sendMessage(chat_id=chat_id, text=msg)
+#     except:
+#         return "Something went wrong"
 
-    return "Someone sent something"
+#     return "Someone sent something"
 
 # @app.route("/sendNotification", methods=['POST'])
 # def sendNotification():
@@ -71,7 +77,7 @@ def respond():
 
 @app.route("/")
 def index():
-    return "."
+    return "Service is running!"
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True, threaded=True)
