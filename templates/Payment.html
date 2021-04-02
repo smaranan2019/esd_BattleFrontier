@@ -66,8 +66,12 @@
     
     <!-- <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script> -->
 
+    <h1>Pending payment</h1>
     <div id="new-payment">
     </div>
+
+    <h1>Refunded payment</h1>
+    <div id="refund"></div>
 
     <div id='msg'></div>
 
@@ -80,7 +84,8 @@
                 .append("<label>"+message+"</label>");
       
         }
-        console.log('Hi');
+
+        // Function to link to buyerOrch to change payment status
 
         $(async() => {           
             // Change serviceURL to your own
@@ -96,53 +101,58 @@
                 const result = await response.json();
                  if (response.status === 200) {
                     // success case
-                    var payment = result.data.payment_result.data; 
-                    console.log(payment)
-                    var payment_add_on = "";
-                    var count = 0;
+                    
+                    if (result.code == 200){
+                        var payment = result.data.payment_result.data; 
+                        var payment_add_on = "";
+                        var count = 0;
 
-                    var payment_id = payment.payment_id;
-                    var image_path = payment.card_display.image_path;
-                    var pokemon_name = payment.card_display.pokemon_name;
-                    var pokemon_type = payment.card_display.pokemon_type;
-                    var description = payment.card_display.description;
-                    var card_details = payment.card_display.card_details[0];
-                    var payment_details = payment.payment_details[0];
+                        var payment_id = payment.payment_id;
+                        var image_path = payment.card_display.image_path;
+                        var pokemon_name = payment.card_display.pokemon_name;
+                        var pokemon_type = payment.card_display.pokemon_type;
+                        var description = payment.card_display.description;
+                        var card_details = payment.card_display.card_details[0];
+                        var payment_details = payment.payment_details[0];
 
-                    eachPayment = `<div class="col d-flex justify-content-center space_above">
-                                    <div class="card card_box">
-                                        <div class="card-body" >
-                                            <table>
-                                                <tr>
-                                                    <td> 
-                                                        <img class="card-img-top card_img" src="`+image_path+`" alt="Card image cap">
-                                                    </td>
+                        eachPayment = `<div class="col d-flex justify-content-center space_above">
+                                        <div class="card card_box">
+                                            <div class="card-body" >
+                                                <table>
+                                                    <tr>
+                                                        <td> 
+                                                            <img class="card-img-top card_img" src="`+image_path+`" alt="Card image cap">
+                                                        </td>
 
-                                                    <td style="width:2%">
-                                                    </td>
+                                                        <td style="width:2%">
+                                                        </td>
 
-                                                    <td>
-                                                        <h5 class="card-title">`+pokemon_name+`</h5>
-                                                        <h6 class="card-subtitle mb-2">Sold by: `+ card_details.seller_username +`</h6>
-                                                        <h6 class="card-subtitle mb-2">Amount: SGD$`+payment_details.amount+`</h6>
-                                                        <h6 class="card-subtitle mb-2">Description: `+description+`</h6>
-                                                    </td>
+                                                        <td>
+                                                            <h5 class="card-title">`+pokemon_name+`</h5>
+                                                            <h6 class="card-subtitle mb-2">Sold by: `+ card_details.seller_username +`</h6>
+                                                            <h6 class="card-subtitle mb-2">Amount: SGD$`+payment_details.amount+`</h6>
+                                                            <h6 class="card-subtitle mb-2">Description: `+description+`</h6>
+                                                        </td>
 
-                                                    <td>
-                                                        <div     id="paypal-button-container"></div>
-                                                    </td>
+                                                        <td>
+                                                            <div     id="paypal-button-container"></div>
+                                                        </td>
 
-                                                </tr>
-                                            </table>
+                                                    </tr>
+                                                </table>
 
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                `
-                    payment_add_on += eachPayment;
-        
-                        // add all the rows to the table
-                        $('#new-payment').append(payment_add_on);
+                                    `
+                        payment_add_on += eachPayment;
+            
+                            // add all the rows to the table
+                            $('#new-payment').append(payment_add_on);
+                    }
+                    else {
+                        $('#new-payment').append(`<h2>You have no pending payment at the moment!</h2>`);
+                    }
                     } else if (response.status == 404) {
                         // No payments
                         showError(result.message);
@@ -157,12 +167,132 @@
         ('There is a problem retrieving payment data, please try again later.<br />' + error);
                 } // error
         });
+
+
+        $(async() => {           
+            // Change serviceURL to your own
+            var buyer_id = 1
+            var serviceURL = "http://127.0.0.1:5400/display-cards-refund-buyer/" + String(buyer_id);
+     
+            try {
+                const response =
+                 await fetch(
+                   serviceURL, {method: 'GET'}
+                );
+                const result = await response.json();
+                 if (response.status === 200) {
+                    // success case
+                    if (result.code == 200){
+                        var payments = result.data.payment_results.data; 
+                        var payment_add_on = "";
+
+                        for (const payment of payments){
+
+                            var payment_id = payment.payment_id;
+                            var image_path = payment.card_display.image_path;
+                            var pokemon_name = payment.card_display.pokemon_name;
+                            var pokemon_type = payment.card_display.pokemon_type;
+                            var description = payment.card_display.description;
+                            var card_details = payment.card_display.card_details[0];
+                            var payment_details = payment.payment_details[0];
+
+                            eachPayment = `<div class="col d-flex justify-content-center space_above">
+                                            <div class="card card_box">
+                                                <div class="card-body" >
+                                                    <table>
+                                                        <tr>
+                                                            <td> 
+                                                                <img class="card-img-top card_img" src="`+image_path+`" alt="Card image cap">
+                                                            </td>
+
+                                                            <td style="width:2%">
+                                                            </td>
+
+                                                            <td>
+                                                                <h5 class="card-title">`+pokemon_name+`</h5>
+                                                                <h6 class="card-subtitle mb-2">Sold by: `+ card_details.seller_username +`</h6>
+                                                                <h6 class="card-subtitle mb-2">Amount: SGD$`+payment_details.amount+`</h6>
+                                                                <h6 class="card-subtitle mb-2">Description: `+description+`</h6>
+                                                            </td>
+
+                                                            <td>
+                                                                <img class="tick" src="../assets/tick.png">
+                                                                <h4 class="paid">Refunded!</h4>
+                                                            </td>
+
+                                                        </tr>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        `
+                            payment_add_on += eachPayment;
+                        }            
+                            // add all the rows to the table
+                            $('#refund').append(payment_add_on);
+                    }
+                    else {
+                        $('#refund').append(`<h2>You have no refunded payment at the moment!</h2>`);
+                    }
+                 } else if (response.status == 404) {
+                        // No payments
+                        showError(result.message);
+                    } else {
+                        // unexpected outcome, throw the error
+                        throw response.status;
+                    }
+                } catch (error) {
+                    // Errors when calling the service; such as network error, 
+                    // service offline, etc
+                    showError
+        ('There is a problem retrieving payment data, please try again later.<br />' + error);
+                } // error
+        });
         
+
+
     </script>
 
   
-  
+   <!-- Include the PayPal JavaScript SDK
+   <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=SGD"></script>
+
+    <script>
+       // Render the PayPal button into #paypal-button-container
+       document.querySelectorAll('.paypal-button').forEach(function(selector) { 
+              console.log(selector.dataset.price) // Show an attribute from the parent div
+              console.log(selector.id) // Show the div name from the parent div
+              paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: selector.dataset.price
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                });
+            }
+
+
+        }).render('#' + selector.id);  // Render the button back to the parent div
+       }); -->
+
+   </script>
 
 </body>
 </html>
+
+
+
 
