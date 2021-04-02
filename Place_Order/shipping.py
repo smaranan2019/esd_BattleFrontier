@@ -239,7 +239,7 @@ def find_received_by_buyer_id(buyer_id):
 def find_new_by_seller_id(seller_id):
     shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.seller_id==seller_id, Shipping.shipping_status=="PENDING", Shipping.receive_status=="PENDING")
     
-    if len(shippinglist):
+    if shippinglist.count():
         return jsonify(
             {
                 "code": 200,
@@ -260,9 +260,9 @@ def find_new_by_seller_id(seller_id):
     
 @app.route("/shipping-sent-seller/<string:seller_id>")
 def find_sent_by_seller_id(seller_id):
-    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.seller_id==seller_id, Shipping.shipping_status=="SENT", Shipping.receive_status=="PENDING")
+    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.seller_id==seller_id, Shipping.shipping_status=="SHIPPED", Shipping.receive_status=="PENDING")
     
-    if len(shippinglist):
+    if shippinglist.count():
         return jsonify(
             {
                 "code": 200,
@@ -270,7 +270,7 @@ def find_sent_by_seller_id(seller_id):
                     "shippings": [shipping.json() for shipping in shippinglist]
                 }
             }
-        )
+        ), 200
     return jsonify(
         {
             "code": 404,
@@ -283,7 +283,7 @@ def find_sent_by_seller_id(seller_id):
 
 @app.route("/shipping-received-seller/<string:seller_id>")
 def find_received_by_seller_id(seller_id):
-    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.seller_id==seller_id, Shipping.shipping_status=="SENT",Shipping.receive_status=="RECEIVED")
+    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.seller_id==seller_id, Shipping.shipping_status=="SHIPPED",Shipping.receive_status=="RECEIVED")
     
     if len(shippinglist):
         return jsonify(
@@ -293,7 +293,7 @@ def find_received_by_seller_id(seller_id):
                     "shippings": [shipping.json() for shipping in shippinglist]
                 }
             }
-        )
+        ), 200
     return jsonify(
         {
             "code": 404,
