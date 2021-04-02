@@ -30,6 +30,10 @@
     integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
     crossorigin="anonymous"></script>
 
+    <!-- paypal script -->
+    <script src="https://www.paypal.com/sdk/js?client-id=ARxtF6H9G4ED_9g2UiYQ37WAL3UXcoIMe19yWaYRiKWOYFUYZihDRlj2yc54zABJ4nMjHvNFeg49z-2J"></script>
+
+
 </head>
 <body>
 
@@ -74,7 +78,6 @@
     <div id="refund"></div>
 
     <div id='msg'></div>
-
 
     <script>
         // Helper function to display error message
@@ -135,7 +138,7 @@
                                                         </td>
 
                                                         <td>
-                                                            <div     id="paypal-button-container"></div>
+                                                            <div id="paypal-button-container"></div>
                                                         </td>
 
                                                     </tr>
@@ -160,6 +163,28 @@
                         // unexpected outcome, throw the error
                         throw response.status;
                     }
+
+                    paypal.Buttons({
+                        createOrder: function(data, actions) {
+                            // This function sets up the details of the transaction, including the amount and line item details.
+                            return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                value: '50'
+                                }
+                        }]
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        // This function captures the funds from the transaction.
+                        return actions.order.capture().then(function(details) {
+                        // This function shows a transaction success message to your buyer.
+                        alert('Transaction completed by ' + details.payer.name.given_name);
+                        });
+                    }
+                    }).render('#paypal-button-container');
+                    //This function displays Smart Payment Buttons on your web page.
+
                 } catch (error) {
                     // Errors when calling the service; such as network error, 
                     // service offline, etc
@@ -255,40 +280,7 @@
     </script>
 
   
-   <!-- Include the PayPal JavaScript SDK
-   <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=SGD"></script>
-
-    <script>
-       // Render the PayPal button into #paypal-button-container
-       document.querySelectorAll('.paypal-button').forEach(function(selector) { 
-              console.log(selector.dataset.price) // Show an attribute from the parent div
-              console.log(selector.id) // Show the div name from the parent div
-              paypal.Buttons({
-
-            // Set up the transaction
-            createOrder: function(data, actions) {
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: selector.dataset.price
-                        }
-                    }]
-                });
-            },
-
-            // Finalize the transaction
-            onApprove: function(data, actions) {
-                return actions.order.capture().then(function(details) {
-                    // Show a success message to the buyer
-                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
-                });
-            }
-
-
-        }).render('#' + selector.id);  // Render the button back to the parent div
-       }); -->
-
-   </script>
+   
 
 </body>
 </html>
