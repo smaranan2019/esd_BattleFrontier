@@ -178,12 +178,12 @@ def find_by_buyer_id(buyer_id):
 
 @app.route("/payment-new-buyer/<string:buyer_id>")
 def find_new_by_buyer_id(buyer_id):
-    paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.buyer_id==buyer_id,Payment.payment_status=="NEW")
-    if paymentlist.count():
+    payment = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.buyer_id==buyer_id,Payment.payment_status=="NEW").first()
+    if payment:
         return jsonify(
             {
                 "code": 200,
-                "data": [payment.json() for payment in paymentlist]
+                "data": payment.json()
             }
         )
     return jsonify(
