@@ -88,6 +88,10 @@
       
         }
 
+        function sayhi() {
+            alert("HELLOOOO");
+        }
+
         // Function to link to buyerOrch to change payment status
 
         $(async() => {           
@@ -127,7 +131,7 @@
                                                             <img class="card-img-top card_img" src="`+image_path+`" alt="Card image cap">
                                                         </td>
 
-                                                        <td style="width:2%">
+                                                        <td class="space">
                                                         </td>
 
                                                         <td>
@@ -135,6 +139,9 @@
                                                             <h6 class="card-subtitle mb-2">Sold by: `+ card_details.seller_username +`</h6>
                                                             <h6 class="card-subtitle mb-2">Amount: SGD$`+payment_details.amount+`</h6>
                                                             <h6 class="card-subtitle mb-2">Description: `+description+`</h6>
+                                                        </td>
+
+                                                        <td class="space">
                                                         </td>
 
                                                         <td>
@@ -180,6 +187,8 @@
                         return actions.order.capture().then(function(details) {
                         // This function shows a transaction success message to your buyer.
                         alert('Transaction completed by ' + details.payer.name.given_name);
+                        
+                        sayhi();
                         });
                     }
                     }).render('#paypal-button-container');
@@ -187,7 +196,7 @@
 
                 } catch (error) {
                     // Errors when calling the service; such as network error, 
-                    // service offline, etc
+                       // service offline, etc
                     showError
         ('There is a problem retrieving payment data, please try again later.<br />' + error);
                 } // error
