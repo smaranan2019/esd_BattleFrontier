@@ -41,9 +41,9 @@ class Shipping(db.Model):
         for detail in self.shipping_details:
             dto['shipping_details'].append(shipping.json())
             
-        dto['contact'] = []
-        for ct in self.contact:
-            dto['contact'].append(ct.json())
+        # dto['contact'] = []
+        # for ct in self.contact:
+        #     dto['contact'].append(ct.json())
         
         return dto
 
@@ -64,20 +64,20 @@ class Shipping_details(db.Model):
         return {'order_id': self.order_id, 'seller_id': self.seller_id, 'buyer_id': self.buyer_id, 'shipping_id': self.shipping_id}
     
 
-class Contact(db.Model):
-    __tablename__ = 'contact'
+# class Contact(db.Model):
+#     __tablename__ = 'contact'
 
-    shipping_id = db.Column(db.ForeignKey(
-        'shipping.shipping_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True, primary_key=True)
+#     shipping_id = db.Column(db.ForeignKey(
+#         'shipping.shipping_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True, primary_key=True)
 
-    seller_chat_id = db.Column(db.Integer, nullable=False)
-    buyer_chat_id = db.Column(db.Integer, nullable=False)
+#     seller_chat_id = db.Column(db.Integer, nullable=False)
+#     buyer_chat_id = db.Column(db.Integer, nullable=False)
 
-    shipping = db.relationship(
-        'Shipping', primaryjoin='Contact.shipping_id == Shipping.shipping_id', backref='contact')
+#     shipping = db.relationship(
+#         'Shipping', primaryjoin='Contact.shipping_id == Shipping.shipping_id', backref='contact')
 
-    def json(self):
-        return {'seller_chat_id': self.seller_chat_id, 'buyer_chat_id': self.buyer_chat_id, 'shipping_id': self.shipping_id}
+#     def json(self):
+#         return {'seller_chat_id': self.seller_chat_id, 'buyer_chat_id': self.buyer_chat_id, 'shipping_id': self.shipping_id}
 
 
 @app.route("/shipping")
@@ -315,9 +315,9 @@ def create_order():
     shipping.shipping_details.append(Shipping_details(
         order_id=order_id, buyer_id=payment_details['buyer_id'], seller_id=payment_details['seller_id']))
     
-    contact = request.json.get('contact')
-    shipping.contact.append(Contact(
-        seller_chat_id=contact['seller_chat_id'], buyer_chat_id=contact['buyer_chat_id']))
+    # contact = request.json.get('contact')
+    # shipping.contact.append(Contact(
+    #     seller_chat_id=contact['seller_chat_id'], buyer_chat_id=contact['buyer_chat_id']))
 
     try:
         db.session.add(shipping)

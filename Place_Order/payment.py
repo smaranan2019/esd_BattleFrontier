@@ -54,14 +54,14 @@ class Payment_details(db.Model):
     payment_id = db.Column(db.ForeignKey(
         'payment.payment_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True, primary_key=True)
     amount = db.Column(db.Float, nullable=False)
-    #seller_id = db.Column(db.Integer, nullable=False)
+    seller_id = db.Column(db.Integer, nullable=False)
     buyer_id = db.Column(db.Integer, nullable=False)
 
     payment = db.relationship(
         'Payment', primaryjoin='Payment_details.payment_id == Payment.payment_id', backref='payment_details')
 
     def json(self):
-        return {'amount': self.amount, 'buyer_id': self.buyer_id, 'payment_id': self.payment_id}
+        return {'amount': self.amount, 'seller_id': self.seller_id, 'buyer_id': self.buyer_id, 'payment_id': self.payment_id}
     
 
 # class Contact(db.Model):
@@ -246,10 +246,10 @@ def create_order():
     payment = Payment(order_id=order_id, payment_status='NEW', refund_status='NULL')
          
     buyer_id = request.json.get('buyer_id', None)
-    #seller_id = request.json.get('seller_id', None)
+    seller_id = request.json.get('seller_id', None)
 
     payment.payment_details.append(Payment_details(
-        buyer_id=buyer_id, amount=price))
+        buyer_id=buyer_id, seller_id=seller_id, amount=price))
     
     # contact = request.json.get('contact')
     # payment.contact.append(Contact(

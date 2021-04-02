@@ -113,91 +113,58 @@ def processPlaceOrder(order):
         }
     }
 
-@app.route("/see-payment/<string:buyer_id>", methods=['GET'])    
-def find_by_buyer_id(buyer_id):
-    print('\n-----Invoking order microservice-----')
-    payment_result = invoke_http(payment_URL + '/payment-new/' + buyer_id, method='GET')
+
+@app.route("/change-payment-status/<string:payment_id>", methods=["PUT"])
+def change_payment_status(payment_id):
+    # Simple check of input format and data of the request are JSON
+    if request.is_json:
+        try:
+            payment = request.get_json()
+            print("\nReceived an payment change in JSON:", payment)
+            result = processChangePaymentStatus(payment,payment_id)
+            return jsonify(result), result["code"]
+
+        except Exception as e:
+            # Unexpected error in code
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+            ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
+            print(ex_str)
+
+            return jsonify({
+                "code": 500,
+                "message": "buyerOrch.py internal error: " + ex_str
+            }), 500
+
+def processChangePaymentStatus(payment,payment_id):
+    print('\n-----Invoking payment microservice-----')
+    payment_result = invoke_http(payment_URL+"/payment/"+payment_id, method='PUT', json=payment)
     print('payment_result:', payment_result)
-    
+
+    # # 4. Record new payment
+
+    # Check the payment result; if a failure, send it to the error microservice.
     code = payment_result["code"]
     if code not in range(200, 300):
-
         # 7. Return error
-        return jsonify({
-            "code": 400,
-            "data": {
-                "payment_result": payment_result,
-            },
-            "message": "You have no order with pending payment."
-        })
-    
-    payments = payment_result["data"]
-    order_result = []
-    for payment in payments:
-        order_id = payment["order_id"]
-        order_result_temp = invoke_http(order_URL+"/order/"+order_id,method="GET")
-        order_result.append(order_result_temp)
-    
-    # 7. Return all orders
-    return jsonify({
-        "code": 200,
+        return {
+            "code": 500,
+            "data": {"payment_result": payment_result},
+            "message": "Payment status change failure sent for error handling."
+        }
+        
+    print('\n-----Invoking shipping microservice-----')
+    shipping_result = invoke_http(shipping_URL+"/shipping", method='POST', json=payment_result["data"])
+    print('shipping_result:', shipping_result)
+
+    # 7. Return changed payment, created shipping
+    return {
+        "code": 201,
         "data": {
             "payment_result": payment_result,
-            "order_result": order_result
+            "shipping_result": shipping_result
         }
-    })
-
-# @app.route("/change-payment-status/<string:payment_id>", methods=["PUT"])
-# def change_payment_status(payment_id):
-#     # Simple check of input format and data of the request are JSON
-#     if request.is_json:
-#         try:
-#             payment = request.get_json()
-#             print("\nReceived an payment change in JSON:", payment)
-#             result = processChangePaymentStatus(payment,payment_id)
-#             return jsonify(result), result["code"]
-
-#         except Exception as e:
-#             # Unexpected error in code
-#             exc_type, exc_obj, exc_tb = sys.exc_info()
-#             fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-#             ex_str = str(e) + " at " + str(exc_type) + ": " + fname + ": line " + str(exc_tb.tb_lineno)
-#             print(ex_str)
-
-#             return jsonify({
-#                 "code": 500,
-#                 "message": "buyerOrch.py internal error: " + ex_str
-#             }), 500
-
-# def processChangePaymentStatus(payment,payment_id):
-#     print('\n-----Invoking payment microservice-----')
-#     payment_result = invoke_http(payment_URL+"/payment/"+payment_id, method='PUT', json=payment)
-#     print('payment_result:', payment_result)
-
-#     # # 4. Record new payment
-
-#     # Check the payment result; if a failure, send it to the error microservice.
-#     code = payment_result["code"]
-#     if code not in range(200, 300):
-#         # 7. Return error
-#         return {
-#             "code": 500,
-#             "data": {"payment_result": payment_result},
-#             "message": "Payment status change failure sent for error handling."
-#         }
-        
-#     print('\n-----Invoking shipping microservice-----')
-#     shipping_result = invoke_http(shipping_URL+"/shipping", method='POST', json=payment_result["data"])
-#     print('shipping_result:', shipping_result)
-
-#     # 7. Return changed payment, created shipping
-#     return {
-#         "code": 201,
-#         "data": {
-#             "payment_result": payment_result,
-#             "shipping_result": shipping_result
-#         }
-#     }
+    }
     
 @app.route("/shipping-new/<string:buyer_id>", methods=['GET'])    
 def find_new_by_buyer_id(buyer_id):

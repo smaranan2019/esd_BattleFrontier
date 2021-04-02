@@ -21,7 +21,7 @@ class Order(db.Model):
 
     order_id = db.Column(db.Integer, primary_key=True)
     buyer_id = db.Column(db.Integer, nullable=False)
-    #seller_id = db.Column(db.Integer, nullable=False)
+    seller_id = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Numeric(4,2), nullable=False)
     #status = db.Column(db.String(10), nullable=False)
     created = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -32,7 +32,7 @@ class Order(db.Model):
         dto = {
             'order_id': self.order_id,
             'buyer_id': self.buyer_id,
-            #'seller_id': self.seller_id,
+            'seller_id': self.seller_id,
             'price': self.price,
             #'status': self.status,
             'created': self.created,
@@ -168,7 +168,7 @@ def create_order():
     buyer_id = request.json.get('buyer_id',None)
     item = request.json.get('item')
     
-    order = Order(buyer_id=buyer_id, price=item['card']['price']*item['quantity']) #, status='NEW')   
+    order = Order(buyer_id=buyer_id, price=item['card']['price']*item['quantity'],seller_id=item['card']['seller_id']) #, status='NEW')   
     order.item.append(Item(
         card_id=item['card']['card_id'], quantity=item['quantity']))
     
