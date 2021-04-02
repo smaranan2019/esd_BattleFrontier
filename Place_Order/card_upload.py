@@ -74,6 +74,22 @@ def show_all_cards():
         }
     ), 404
 
+@app.route('/card/<string:card_id>')
+def show_card_by_id(card_id):
+    card = Card.query.filter_by(card_id=card_id).first()
+    if card:
+        return jsonify(
+            {
+                "code": 200,
+                "data": card.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "Card not found."
+        }
+    ), 404
 
 @app.route('/addPokemonCard/<string:card_id>', methods=['POST'])
 def addPokemonCard(card_id):
@@ -122,23 +138,23 @@ def addPokemonCard(card_id):
         }
     ), 201
 
-@app.route("/findPokemonCard")
-def findPokemon():
-    data = request.get_json()
-    # DataModel:
-    # {
-    #     "name": name,
-    #     "level": level,
-    #     "price": price
-    # }
-    print(data)
-    card = Card.query.filter_by(name=data["name"], level=data["level"], price=data["price"])
-    if (card):
-        # print(type(card))
-        print(card)
-        return "Card found!"
-    else:
-        return "Card not found!"
+# @app.route("/findPokemonCard")
+# def findPokemon():
+#     data = request.get_json()
+#     # DataModel:
+#     # {
+#     #     "name": name,
+#     #     "level": level,
+#     #     "price": price
+#     # }
+#     print(data)
+#     card = Card.query.filter_by(name=data["name"], level=data["level"], price=data["price"])
+#     if (card):
+#         # print(type(card))
+#         print(card)
+#         return "Card found!"
+#     else:
+#         return "Card not found!"
 
 if __name__ == "__main__":
     print("This is flask for " + os.path.basename(__file__) + ": manage cards ...")

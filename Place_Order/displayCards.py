@@ -11,12 +11,12 @@ app = Flask(__name__)
 CORS(app)
 
 account_URL = "http://127.0.0.1:5000/find-user-id/"
-card_URL = "http://localhost:5005/cards"
+card_URL = "http://localhost:5005/"
 
 @app.route("/display-cards", methods=['GET'])
 def display_cards():
     print('\n-----Invoking cards microservice-----')
-    cards_result = invoke_http(card_URL, method='GET')
+    cards_result = invoke_http(card_URL+'cards', method='GET')
     #print('cards_result:', cards_result)
     
     code = cards_result["code"]
@@ -48,6 +48,43 @@ def display_cards():
         "code": 200,
         "data": {
             "cards_result": cards_result
+        }
+    })
+    
+@app.route("/display-card/<string:card_id>", methods=['GET'])
+def display_card_by_id(card_id):
+    print('\n-----Invoking cards microservice-----')
+    card_result = invoke_http(card_URL+'card/'+card_id, method='GET')
+    #print('card_result:', card_result)
+    
+    code = card_result["code"]
+    if code not in range(200, 300):
+
+        # 7. Return error
+        return jsonify({
+            "code": 400,
+            "data": {
+                "card_result": card_result,
+            },
+            "message": "There is no card with the specified id."
+        })
+    
+    card = card_result["data"]
+
+    seller_id = card["card_details"][0]["seller_id"]
+    seller = invoke_http(account_URL + str(seller_id), method="GET")
+    
+    code = seller["code"]
+    if code not in range(200, 300):
+        card["card_details"][0]["seller_username"] = "None"
+    else:
+        card["card_details"][0]["seller_username"] = seller["data"]["username"]
+    
+    # 7. Return all orders
+    return jsonify({
+        "code": 200,
+        "data": {
+            "card_result": card_result
         }
     })
     
