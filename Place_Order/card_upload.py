@@ -98,11 +98,7 @@ def addPokemonCard():
     # pokemon_type = request.get_json('pokemon_type', None)
     # image_path = request.get_json('image_path', None)
     # description = request.get_json('description', None)
-
-    print("####################################################")
-    print("kill me")
-    print('####################################################')
-    
+        
     data = request.get_json()
 
     # price = float(data["price"])
