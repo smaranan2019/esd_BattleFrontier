@@ -88,8 +88,52 @@
       
         }
 
-        function sayhi() {
-            alert("HELLOOOO");
+        function success(payment_id) {
+            $(async() => {           
+                var serviceURL = "http://127.0.0.1:5100/change-payment-status/" + String(payment_id);
+                console.log(serviceURL);
+        
+                try {
+                    const response =
+                    await fetch(
+                    serviceURL, {
+                                method: 'PUT',
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ 
+                                    payment_id: payment_id, 
+                                    payment_status: "PAID"
+                                })
+                            }
+                        
+                    );
+                    // console.log('U there?');
+                    const result = await response.json();
+                    if (response.status === 201) {
+                        // success case
+                        var data = result.data; //get data of new account
+                        console.log(data);
+                        // showMsg('Account created successfully :>');
+
+                        //redirect to buy_sell.html
+                        //<meta http-equiv="Refresh" content="0; url='buy_sell.html'" />
+                        window.location.reload();
+
+
+                        } else if (response.status == 500) {
+                            // Cannot create account
+                        
+                            showError(result.message);
+                        } else {
+                            // unexpected outcome, throw the error
+                            throw response.status;
+                        }
+                    } catch (error) {
+                        // Errors when calling the service; such as network error, 
+                        // service offline, etc
+                        showError
+                        ('There is a problem paying, please try again later.<br />' + error);
+                    } // error
+            });
         }
 
         // Function to link to buyerOrch to change payment status
@@ -159,6 +203,29 @@
             
                             // add all the rows to the table
                             $('#new-payment').append(payment_add_on);
+
+                        paypal.Buttons({
+                            createOrder: function(data, actions) {
+                                // This function sets up the details of the transaction, including the amount and line item details.
+                                return actions.order.create({
+                                purchase_units: [{
+                                    amount: {
+                                    value: payment_details.amount
+                                    }
+                            }]
+                            });
+                            },
+                            onApprove: function(data, actions) {
+                                // This function captures the funds from the transaction.
+                                return actions.order.capture().then(function(details) {
+                                // This function shows a transaction success message to your buyer.
+                                alert('Transaction completed by ' + details.payer.name.given_name);
+                                
+                                success(payment_id);
+                                });
+                            }
+                            }).render('#paypal-button-container');
+                            //This function displays Smart Payment Buttons on your web page.
                     }
                     else {
                         $('#new-payment').append(`<h2>You have no pending payment at the moment!</h2>`);
@@ -170,29 +237,6 @@
                         // unexpected outcome, throw the error
                         throw response.status;
                     }
-
-                    paypal.Buttons({
-                        createOrder: function(data, actions) {
-                            // This function sets up the details of the transaction, including the amount and line item details.
-                            return actions.order.create({
-                            purchase_units: [{
-                                amount: {
-                                value: '50'
-                                }
-                        }]
-                        });
-                    },
-                    onApprove: function(data, actions) {
-                        // This function captures the funds from the transaction.
-                        return actions.order.capture().then(function(details) {
-                        // This function shows a transaction success message to your buyer.
-                        alert('Transaction completed by ' + details.payer.name.given_name);
-                        
-                        sayhi();
-                        });
-                    }
-                    }).render('#paypal-button-container');
-                    //This function displays Smart Payment Buttons on your web page.
 
                 } catch (error) {
                     // Errors when calling the service; such as network error, 
@@ -282,18 +326,7 @@
                     showError
         ('There is a problem retrieving payment data, please try again later.<br />' + error);
                 } // error
-        });
-        
-
-
+        });    
     </script>
-
-  
-   
-
 </body>
 </html>
-
-
-
-
