@@ -31,7 +31,7 @@ def display_cards_payment_buyer(buyer_id):
                 "payment_result": payment_result
             },
             "message": "There is no payments in our store at the moment."
-        }), 400
+        })
     
     payment = payment_result["data"]
 
@@ -47,7 +47,7 @@ def display_cards_payment_buyer(buyer_id):
                 "payment_result": payment_result
             },
             "message": "There is no payments in our store at the moment."
-        }), 400
+        })
     else:
         payment["card_id"] = order["data"]["item"][0]["card_id"]
         
@@ -62,7 +62,7 @@ def display_cards_payment_buyer(buyer_id):
                 "payment_result": payment_result
             },
             "message": "There is no payments in our store at the moment."
-        }), 400
+        })
     else:
         payment["card_display"] = card_display["data"]["card_result"]["data"]
     
