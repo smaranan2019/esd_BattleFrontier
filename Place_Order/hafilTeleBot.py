@@ -8,24 +8,24 @@ TOKEN = "1790750890:AAEffcouXbkLWuzRTr100MGtjvgnK84-EgE"
 # chat_id = "961849285"
 bot = telegram.Bot(token=TOKEN)
 
-@app.route("/sendNotification", methods=["POST"])
+@app.route("/send-notification", methods=["POST"])
 def sendNotif():
     data = request.get_json()
 
-    if "chat_id" in data:
-        chat_id = data["chat_id"]
-    else:
-        chat_id = "961849285"
+    # if "chat_id" in data:
+    #     chat_id = data["chat_id"]
+    # else:
+    chat_id = "961849285"
     
     msg = {
         "Shipped": "Your order has been shipped",
         "Received": "Your order has been received"
     }
+
+    print(data)
+
     try:
-        if (data["status"] == "shipped"):
-            bot.sendMessage(chat_id=chat_id, text=msg["Shipped"])
-        if (data["status"] == "received"):
-            bot.sendMessage(chat_id=chat_id, text=msg["Shipped"])
+        bot.sendMessage(chat_id=chat_id, text="Shipped!")
     except Exception as e:
         return str(e)
     return "No error"
@@ -80,4 +80,4 @@ def index():
     return "Service is running!"
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True, threaded=True)
+    app.run(port=5300, debug=True, threaded=True)

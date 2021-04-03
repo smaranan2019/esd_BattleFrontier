@@ -359,6 +359,9 @@ def update_shipping(shipping_id):
 
         # update status
         data = request.get_json()
+
+        print(data)
+
         if data['shipping_status']:
             shipping.shipping_status = data['shipping_status']
             db.session.commit()

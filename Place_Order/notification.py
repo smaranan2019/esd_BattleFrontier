@@ -5,7 +5,9 @@
 import json
 import os
 
-import amqp_setup
+import ampq_setup as amqp_setup
+from invokes import invoke_http
+
 
 monitorBindingKey='#'
 
@@ -27,6 +29,8 @@ def callback(channel, method, properties, body): # required signature for the ca
 def processNotifLog(order):
     print("Recording a notification log:")
     print(order)
+    notification_sent = invoke_http('http://127.0.0.1:5300/send-notification', method='POST', data=order)
+    print(notification_sent)
 
 
 if __name__ == "__main__":  # execute this program only if it is run as a script (not by 'import')

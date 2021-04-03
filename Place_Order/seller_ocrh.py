@@ -7,7 +7,7 @@ from os import environ
 import requests
 from invokes import invoke_http
 
-import ampq_setup
+import ampq_setup as amqp_setup 
 import pika
 import json
 
@@ -25,6 +25,8 @@ payment_URL = "http://localhost:5002/"
 def update_shipping(shipping_id):
 
     data = request.get_json()
+
+    # print(data)
 
     if data["shipping_status"] == "REJECTED":
         try:
@@ -59,7 +61,9 @@ def update_shipping(shipping_id):
 
     elif data["shipping_status"] == "SHIPPED":
         try:
-            shipping_updated = invoke_http(shipping_URL + "shipping/" + shipping_id, method="PUT", json=data)
+            
+            shipping_updated = invoke_http(shipping_URL + "shipping-status/" + shipping_id, method="PUT", json=data)
+
 
             if shipping_updated["code"] not in range(200, 300):
                 return jsonify(
@@ -72,10 +76,22 @@ def update_shipping(shipping_id):
                     }
                 )
             
-            print(shipping_updated)
 
             order_id = shipping_updated["data"]["shipping_details"][0]["order_id"]
             order_details = invoke_http(order_URL + "order/" + str(order_id))
+
+            message = {
+                "code": 200,
+                "message": "Order has been shipped!",
+                "status": "shipped"
+            }
+
+            message = json.dumps(message)
+
+            amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="#", 
+            body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
+
+
 
             # send_shipping_update = invoke_http(order_orch_URL + "shipping-sent/" + shipping_id)
 
