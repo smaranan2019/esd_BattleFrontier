@@ -47,24 +47,6 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-
-                <!-- list of cards -->
-              <li class="nav-item">
-                <a class="nav-link" href="Cards.html">Pokedex<span class="sr-only">(current)</span></a>
-              </li>
-
-              <!-- purchases -->
-              <li class="nav-item active">
-                <a class="nav-link" href="buy_payment.html">Trainer's Coins</a>
-              </li>
-
-              <!-- shipping -->
-              <li class="nav-item">
-                <a class="nav-link" href="buy_sell.html">S.S. Ann</a>
-              </li>
-              
-            </ul>
           </div>
     </nav>
     
@@ -80,12 +62,35 @@
     <div id='msg'></div>
 
     <script>
+        var queryString = decodeURIComponent(window.location.search);
+        queryString = queryString.substring(1);
+        var temp = queryString.split("=");
+        var buyer_id = temp[1];
+
+        $('#navbarNav').append(`<ul class="navbar-nav">
+                                    <!-- list of cards -->
+                                    <li class="nav-item active">
+                                    <a class="nav-link" href="Cards.html?buyer_id=`+buyer_id+`">Pokedex<span class="sr-only">(current)</span></a>
+                                    </li>
+
+                                    <!-- purchases -->
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="buy_payment.html?buyer_id=`+buyer_id+`">Trainer's Coins</a>
+                                    </li>
+
+                                    <!-- shipping -->
+                                    <li class="nav-item">
+                                    <a class="nav-link" href="buy_ship.html?buyer_id=`+buyer_id+`">S.S. Ann</a>
+                                    </li>
+
+                                    </ul>
+                                `);
+
         // Helper function to display error message
         function showError(message) {
             // Display an error under the main container
             $('#msg')
                 .append("<label>"+message+"</label>");
-      
         }
 
         function success(payment_id) {
@@ -140,7 +145,6 @@
 
         $(async() => {           
             // Change serviceURL to your own
-            var buyer_id = 1
             var serviceURL = "http://127.0.0.1:5400/display-cards-payment-buyer/" + String(buyer_id);
             console.log(serviceURL);
      
@@ -242,14 +246,13 @@
                     // Errors when calling the service; such as network error, 
                        // service offline, etc
                     showError
-        ('There is a problem retrieving payment data, please try again later.<br />' + error);
+                    ('There is a problem retrieving payment data, please try again later.<br />' + error);
                 } // error
         });
 
 
         $(async() => {           
             // Change serviceURL to your own
-            var buyer_id = 1
             var serviceURL = "http://127.0.0.1:5400/display-cards-refund-buyer/" + String(buyer_id);
      
             try {
