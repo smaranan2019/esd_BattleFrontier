@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <title>Pokemon Center</title>
+
+    <link rel="stylesheet" href="css/BF UI.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=AZBD_ZMQVQp218UUXfSiJRMe5PSQ7h4tYCoUQK1eyrZa-LzMNSf8uP3cpWVFAXTGPE9gWgKXRTQnXF0K"></script>
+    
+
+</head>
+
+
+<body>
+  
+    <div style="text-align: center;">
+      <img src="../assets/BF_Logo.png" height="100" >
+      <h1> Welcome Battle Frontier Admin</h1>
+    </div>
+    
+
+
+    <!-- To pay seller  -->
+    <div>
+  
+        <h2 style="margin-left:13.5%; margin-bottom: 2%;">Successful Transaction</h2>
+
+        <!-- card to insert here -->
+        <div>
+            <div class="col d-flex justify-content-center space_above">
+                <div class="card card_box">
+                    <div class="card-body" >
+                        <table>
+                            <tr>
+                                <td> 
+                                    <img class="card-img-top card_img" src="https://assets.pokemon.com/assets/cms2/img/cards/web/SM9/SM9_EN_14.png" alt="Card image cap">
+                                </td>
+        
+                                <td class="space"></td>
+                                
+                                <td class="card_details">
+                                    <h5 class="card-title">Charizard</h5>
+                                    <h6 class="card-subtitle mb-2">Sold by: BOB</h6>
+                                    <h6 class="card-subtitle mb-2">Amount: SGD$ 50 </h6>
+                                    <h6 class="card-subtitle mb-2">Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt odit animi iusto voluptatibus dolores ipsa et! Alias earum aliquid enim eius ut.</h6>
+        
+                                </td>
+        
+                                <td class="space"></td>
+        
+                                <td>
+                                    <button id="`+shipping_id+`" type="button" class="btn btn-success" data-toggle="modal" data-target="#paynow">Pay Seller!</button>
+                                </td>
+        
+                            </tr>
+                        </table>
+        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <p></p>
+    </div>
+    
+    <div>
+        <div class="col d-flex justify-content-center space_above">
+            <div class="card card_box">
+                <div class="card-body" >
+                    <table>
+                        <tr>
+                            <td> 
+                                <img class="card-img-top card_img" src="https://assets.pokemon.com/assets/cms2/img/cards/web/SM9/SM9_EN_14.png" alt="Card image cap">
+                            </td>
+    
+                            <td class="space"></td>
+                            
+                            <td class="card_details">
+                                <h5 class="card-title">Charizard</h5>
+                                <h6 class="card-subtitle mb-2">Sold by: BOB</h6>
+                                <h6 class="card-subtitle mb-2">Amount: SGD$ 50 </h6>
+                                <h6 class="card-subtitle mb-2">Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt odit animi iusto voluptatibus dolores ipsa et! Alias earum aliquid enim eius ut.</h6>
+    
+                            </td>
+    
+                            <td class="space"></td>
+    
+                            <td>
+                                <button id="`+shipping_id+`" type="button" class="btn btn-success" data-toggle="modal" data-target="#paynow">Pay Seller!</button>
+                            </td>
+    
+                        </tr>
+                    </table>
+    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+
+    <!-- Modal -->
+    <div class="modal fade" id="paynow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title"">Tpransfer the money to the seller!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div id="paypal-button-container"></div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    <div>
+  
+      <h2 style="margin-left:13.5%; margin-bottom: 2%; margin-top: 2%;">Refunndd seller has rejekted </h2>
+
+      <!-- card to insert here -->
+      <div>
+          <div class="col d-flex justify-content-center space_above">
+              <div class="card card_box">
+                  <div class="card-body" >
+                      <table>
+                          <tr>
+                              <td> 
+                                  <img class="card-img-top card_img" src="https://assets.pokemon.com/assets/cms2/img/cards/web/SM9/SM9_EN_14.png" alt="Card image cap">
+                              </td>
+      
+                              <td class="space"></td>
+                              
+                              <td class="card_details">
+                                  <h5 class="card-title">Charizard</h5>
+                                  <h6 class="card-subtitle mb-2">Sold by: BOB</h6>
+                                  <h6 class="card-subtitle mb-2">Amount: SGD$ 50 </h6>
+                                  <h6 class="card-subtitle mb-2">Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt odit animi iusto voluptatibus dolores ipsa et! Alias earum aliquid enim eius ut.</h6>
+      
+                              </td>
+      
+                              <td class="space"></td>
+      
+                              <td>
+                                  <a href="https://www.sandbox.paypal.com/sg/signin"><button id="`+shipping_id+`" type="button" class="btn btn-warning">Refund now!</button></a>
+                              </td>
+      
+                          </tr>
+                      </table>
+      
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+  
+
+
+    
+  <script>
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        // This function sets up the details of the transaction, including the amount and line item details.
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: '50'
+            }
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        // This function captures the funds from the transaction.
+        return actions.order.capture().then(function(details) {
+          // This function shows a transaction success message to your buyer.
+          alert('Transaction completed by ' + details.payer.name.given_name);
+          alert('completed!')
+        });
+      }
+    }).render('#paypal-button-container');
+    //This function displays Smart Payment Buttons on your web page.
+  </script>
+
+
+</body>
+</html>
