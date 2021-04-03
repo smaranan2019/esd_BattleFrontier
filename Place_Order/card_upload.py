@@ -99,16 +99,20 @@ def addPokemonCard():
     # image_path = request.get_json('image_path', None)
     # description = request.get_json('description', None)
 
+    print("####################################################")
+    print("kill me")
+    print('####################################################')
+    
     data = request.get_json()
 
-    price = float(data["price"])
-
+    # price = float(data["price"])
+    print(data)
     card = Card(pokemon_name=data["pokemon_name"], pokemon_type=data["pokemon_type"], image_path=data["image_path"], description=data["description"])
     
     # seller_id = request.get_json('seller_id', None)
     # price = request.get_json('price', None)
-    card.card_details.append(Card_details(seller_id=data["seller_id"], price=price))
-
+    card.card_details.append(Card_details(seller_id=data["seller_id"], price=data['price']))
+    
     try:
         db.session.add(card)
         db.session.commit()
