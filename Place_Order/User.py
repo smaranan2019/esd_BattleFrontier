@@ -95,26 +95,9 @@ def checkUser():
         }
     ), 404
         
-# @app.route("/find-user-id/<string:User_ID>")
-# def find_user_by_id(User_ID):
-#     user = User.query.filter_by(User_ID=User_ID).first()
-#     if user:
-#         return jsonify(
-#             {
-#                 "code": 200,
-#                 "data": user.json()
-#             }
-#         )
-#     return jsonify(
-#         {
-#             "code": 404,
-#             "message": "User not found."
-#         }
-#     ), 404
-    
-@app.route("/find-user/<string:email>")
-def findUser(email):
-    user = User.query.filter_by(Paypal_Email=email).first()
+@app.route("/find-user-id/<string:User_ID>")
+def find_user_by_id(User_ID):
+    user = User.query.filter_by(User_ID=User_ID).first()
     if user:
         return jsonify(
             {
@@ -128,6 +111,23 @@ def findUser(email):
             "message": "User not found."
         }
     ), 404
+    
+# @app.route("/find-user/<string:email>")
+# def findUser(email):
+#     user = User.query.filter_by(Paypal_Email=email).first()
+#     if user:
+#         return jsonify(
+#             {
+#                 "code": 200,
+#                 "data": user.json()
+#             }
+#         )
+#     return jsonify(
+#         {
+#             "code": 404,
+#             "message": "User not found."
+#         }
+#     ), 404
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
