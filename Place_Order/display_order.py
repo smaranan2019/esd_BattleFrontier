@@ -290,6 +290,362 @@ def display_cards_complete_buyer(buyer_id):
             "shippings_result": shippings_result
         }
     })
+
+@app.route("/display-cards-new-seller/<string:seller_id>", methods=['GET'])
+def display_cards_new_seller(seller_id):
+    print('\n-----Invoking shipping microservice-----')
+    shippings_result = invoke_http(shipping_URL+'shipping-new-seller/'+seller_id, method='GET')
+    print('shippings_result:', shippings_result)
+    
+    code = shippings_result["code"]
+    if code not in range(200, 300):
+
+        # 7. Return error
+        return jsonify({
+            "code": 400,
+            "data": {
+                "shippings_result": shippings_result
+            },
+            "message": "There is no order that need shipping at the moment :("
+        }), 400
+    
+    shippings = shippings_result["data"]["shippings"]
+    
+    for shipping in shippings:
+        
+        payment_id = shipping["payment_id"]
+        payment = invoke_http(payment_URL+"payment/"+str(payment_id), method="GET")
+        
+        code = payment["code"]
+        
+        if code not in range(200, 300):
+            # 7. Return error
+            return jsonify({
+                "code": 400,
+                "data": {
+                    "shippings_result": shippings_result
+                },
+                "message": "There is no order that need shipping at the moment :("
+            }), 400
+        else:
+            shipping["payment_details"] = payment["data"]["payment_details"]
+        
+        order_id = shipping["shipping_details"][0]["order_id"]
+        order = invoke_http(order_URL + str(order_id), method="GET")
+        
+        code = order["code"]
+        if code not in range(200, 300):
+            # 7. Return error
+            return jsonify({
+                "code": 400,
+                "data": {
+                    "shippings_result": shippings_result
+                },
+                "message": "There is no order that need shipping at the moment :("
+            }), 400
+        else:
+            shipping["card_id"] = order["data"]["item"][0]["card_id"]
+            
+        card_id = shipping["card_id"]
+        card_display = invoke_http(display_card_URL+str(card_id), method="GET")
+        
+        if card_display["code"] not in range(200, 300):
+            # 7. Return error
+            return jsonify({
+                "code": 400,
+                "data": {
+                    "shippings_result": shippings_result
+                },
+                "message": "There is no order that need shipping at the moment :("
+            }), 400
+        else:
+            shipping["card_display"] = card_display["data"]["card_result"]["data"]
+    
+    # 7. Return all orders
+    return jsonify({
+        "code": 200,
+        "data": {
+            "shippings_result": shippings_result
+        }
+    })
+    
+@app.route("/display-cards-shipping-seller/<string:seller_id>", methods=['GET'])
+def display_cards_shipping_seller(seller_id):
+    print('\n-----Invoking shipping microservice-----')
+    shippings_result = invoke_http(shipping_URL+'shipping-sent-seller/'+seller_id, method='GET')
+    print('shippings_result:', shippings_result)
+    
+    code = shippings_result["code"]
+    if code not in range(200, 300):
+
+        # 7. Return error
+        return jsonify({
+            "code": 400,
+            "data": {
+                "shippings_result": shippings_result
+            },
+            "message": "There is no order in transit at the moment."
+        }), 400
+    
+    shippings = shippings_result["data"]["shippings"]
+    
+    for shipping in shippings:
+        
+        payment_id = shipping["payment_id"]
+        payment = invoke_http(payment_URL+"payment/"+str(payment_id), method="GET")
+        
+        code = payment["code"]
+        
+        if code not in range(200, 300):
+            # 7. Return error
+            return jsonify({
+                "code": 400,
+                "data": {
+                    "shippings_result": shippings_result
+                },
+                "message": "There is no order in transit at the moment."
+            }), 400
+        else:
+            shipping["payment_details"] = payment["data"]["payment_details"]
+        
+        order_id = shipping["shipping_details"][0]["order_id"]
+        order = invoke_http(order_URL + str(order_id), method="GET")
+        
+        code = order["code"]
+        if code not in range(200, 300):
+            # 7. Return error
+            return jsonify({
+                "code": 400,
+                "data": {
+                    "shippings_result": shippings_result
+                },
+                "message": "There is no order in transit at the moment."
+            }), 400
+        else:
+            shipping["card_id"] = order["data"]["item"][0]["card_id"]
+            
+        card_id = shipping["card_id"]
+        card_display = invoke_http(display_card_URL+str(card_id), method="GET")
+        
+        if card_display["code"] not in range(200, 300):
+            # 7. Return error
+            return jsonify({
+                "code": 400,
+                "data": {
+                    "shippings_result": shippings_result
+                },
+                "message": "There is no order in transit at the moment."
+            }), 400
+        else:
+            shipping["card_display"] = card_display["data"]["card_result"]["data"]
+    
+    # 7. Return all orders
+    return jsonify({
+        "code": 200,
+        "data": {
+            "shippings_result": shippings_result
+        }
+    })
+    
+@app.route("/display-cards-complete-seller/<string:seller_id>", methods=['GET'])
+def display_cards_complete_seller(seller_id):
+    print('\n-----Invoking shipping microservice-----')
+    shippings_result = invoke_http(shipping_URL+'shipping-complete-seller/'+seller_id, method='GET')
+    print('shippings_result:', shippings_result)
+    
+    code = shippings_result["code"]
+    if code not in range(200, 300):
+
+        # 7. Return error
+        return jsonify({
+            "code": 400,
+            "data": {
+                "shippings_result": shippings_result
+            },
+            "message": "You have no completed order."
+        }), 400
+    
+    shippings = shippings_result["data"]["shippings"]
+    
+    for shipping in shippings:
+        
+        payment_id = shipping["payment_id"]
+        payment = invoke_http(payment_URL+"payment/"+str(payment_id), method="GET")
+        
+        code = payment["code"]
+        
+        if code not in range(200, 300):
+            # 7. Return error
+            return jsonify({
+                "code": 400,
+                "data": {
+                    "shippings_result": shippings_result
+                },
+                "message": "You have no completed order."
+            }), 400
+        else:
+            shipping["payment_details"] = payment["data"]["payment_details"]
+        
+        order_id = shipping["shipping_details"][0]["order_id"]
+        order = invoke_http(order_URL + str(order_id), method="GET")
+        
+        code = order["code"]
+        if code not in range(200, 300):
+            # 7. Return error
+            return jsonify({
+                "code": 400,
+                "data": {
+                    "shippings_result": shippings_result
+                },
+                "message": "You have no completed order."
+            }), 400
+        else:
+            shipping["card_id"] = order["data"]["item"][0]["card_id"]
+            
+        card_id = shipping["card_id"]
+        card_display = invoke_http(display_card_URL+str(card_id), method="GET")
+        
+        if card_display["code"] not in range(200, 300):
+            # 7. Return error
+            return jsonify({
+                "code": 400,
+                "data": {
+                    "shippings_result": shippings_result
+                },
+                "message": "You have no completed order."
+            }), 400
+        else:
+            shipping["card_display"] = card_display["data"]["card_result"]["data"]
+    
+    # 7. Return all orders
+    return jsonify({
+        "code": 200,
+        "data": {
+            "shippings_result": shippings_result
+        }
+    })
+
+@app.route("/display-cards-releasable", methods=['GET'])
+def display_cards_releasable():
+    print('\n-----Invoking payment microservice-----')
+    payments_result = invoke_http(payment_URL+'payment-release', method='GET')
+    print('payments_result:', payments_result)
+    
+    code = payments_result["code"]
+    if code not in range(200, 300):
+
+        # 7. Return error
+        return jsonify({
+            "code": 400,
+            "data": {
+                "payments_result": payments_result
+            },
+            "message": "There is no payments in our store at the moment."
+        })
+    
+    payments = payments_result["data"]
+    
+    for payment in payments:
+
+        order_id = payment["order_id"]
+        order = invoke_http(order_URL + str(order_id), method="GET")
+        
+        code = order["code"]
+        if code not in range(200, 300):
+            # 7. Return error
+            return jsonify({
+                "code": 400,
+                "data": {
+                    "payments_result": payments_result
+                },
+                "message": "There is no payments in our store at the moment."
+            }), 400
+        else:
+            payment["card_id"] = order["data"]["item"][0]["card_id"]
+            
+        card_id = payment["card_id"]
+        card_display = invoke_http(display_card_URL+str(card_id), method="GET")
+        
+        if card_display["code"] not in range(200, 300):
+            # 7. Return error
+            return jsonify({
+                "code": 400,
+                "data": {
+                    "payment_results": payments_result
+                },
+                "message": "There is no payments in our store at the moment."
+            }), 400
+        else:
+            payment["card_display"] = card_display["data"]["card_result"]["data"]
+    
+    # 7. Return all orders
+    return jsonify({
+        "code": 200,
+        "data": {
+            "payment_results": payments_result
+        }
+    })   
+
+@app.route("/display-cards-refundable", methods=['GET'])
+def display_cards_refundable():
+    print('\n-----Invoking payment microservice-----')
+    payments_result = invoke_http(payment_URL+'payment-refundable', method='GET')
+    print('payments_result:', payments_result)
+    
+    code = payments_result["code"]
+    if code not in range(200, 300):
+
+        # 7. Return error
+        return jsonify({
+            "code": 400,
+            "data": {
+                "payments_result": payments_result
+            },
+            "message": "There is no payments in our store at the moment."
+        })
+    
+    payments = payments_result["data"]
+    
+    for payment in payments:
+
+        order_id = payment["order_id"]
+        order = invoke_http(order_URL + str(order_id), method="GET")
+        
+        code = order["code"]
+        if code not in range(200, 300):
+            # 7. Return error
+            return jsonify({
+                "code": 400,
+                "data": {
+                    "payments_result": payments_result
+                },
+                "message": "There is no payments in our store at the moment."
+            }), 400
+        else:
+            payment["card_id"] = order["data"]["item"][0]["card_id"]
+            
+        card_id = payment["card_id"]
+        card_display = invoke_http(display_card_URL+str(card_id), method="GET")
+        
+        if card_display["code"] not in range(200, 300):
+            # 7. Return error
+            return jsonify({
+                "code": 400,
+                "data": {
+                    "payment_results": payments_result
+                },
+                "message": "There is no payments in our store at the moment."
+            }), 400
+        else:
+            payment["card_display"] = card_display["data"]["card_result"]["data"]
+    
+    # 7. Return all orders
+    return jsonify({
+        "code": 200,
+        "data": {
+            "payment_results": payments_result
+        }
+    })   
     
 # @app.route("/display-card/<string:card_id>", methods=['GET'])
 # def display_card_by_id(card_id):

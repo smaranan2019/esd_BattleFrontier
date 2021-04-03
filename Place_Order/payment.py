@@ -117,7 +117,7 @@ def find_all_need_release():
         }
     ), 404
     
-@app.route("/payment-refund")
+@app.route("/payment-refundable")
 def find_all_need_refund():
     paymentlist = Payment.query.filter(Payment.payment_status=="REFUNDABLE")
     
@@ -216,47 +216,47 @@ def find_refund_by_buyer_id(buyer_id):
         }
     ), 404
     
-@app.route("/payment-seller/<string:seller_id>")
-def find_by_seller_id(seller_id):
-    paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.seller_id==seller_id)
+# @app.route("/payment-seller/<string:seller_id>")
+# def find_by_seller_id(seller_id):
+#     paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.seller_id==seller_id)
     
-    if paymentlist.count():
-        return jsonify(
-            {
-                "code": 200,
-                "data": [payment.json() for payment in paymentlist]
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "data": {
-                "seller_id": seller_id
-            },
-            "message": "You haven't had any payment yet."
-        }
-    ), 404
+#     if paymentlist.count():
+#         return jsonify(
+#             {
+#                 "code": 200,
+#                 "data": [payment.json() for payment in paymentlist]
+#             }
+#         )
+#     return jsonify(
+#         {
+#             "code": 404,
+#             "data": {
+#                 "seller_id": seller_id
+#             },
+#             "message": "You haven't had any payment yet."
+#         }
+#     ), 404
     
-@app.route("/payment-new-seller/<string:seller_id>")
-def find_new_by_seller_id(seller_id):
-    paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.seller_id==seller_id, Payment.payment_status=="NEW")
+# @app.route("/payment-new-seller/<string:seller_id>")
+# def find_new_by_seller_id(seller_id):
+#     paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.seller_id==seller_id, Payment.payment_status=="NEW")
     
-    if paymentlist.count():
-        return jsonify(
-            {
-                "code": 200,
-                "data": [payment.json() for payment in paymentlist]
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "data": {
-                "seller_id": seller_id
-            },
-            "message": "You haven't had any payment yet."
-        }
-    ), 404
+#     if paymentlist.count():
+#         return jsonify(
+#             {
+#                 "code": 200,
+#                 "data": [payment.json() for payment in paymentlist]
+#             }
+#         )
+#     return jsonify(
+#         {
+#             "code": 404,
+#             "data": {
+#                 "seller_id": seller_id
+#             },
+#             "message": "You haven't had any payment yet."
+#         }
+#     ), 404
 
 
 @app.route("/payment", methods=['POST'])

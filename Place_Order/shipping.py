@@ -281,11 +281,11 @@ def find_sent_by_seller_id(seller_id):
         }
     ), 404
 
-@app.route("/shipping-received-seller/<string:seller_id>")
+@app.route("/shipping-complete-seller/<string:seller_id>")
 def find_received_by_seller_id(seller_id):
-    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.seller_id==seller_id, Shipping.shipping_status=="SHIPPED",Shipping.receive_status=="RECEIVED")
+    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.seller_id==seller_id, Shipping.shipping_status=="SHIPPED",Shipping.receive_status=="COMPLETED")
     
-    if len(shippinglist):
+    if shippinglist.count():
         return jsonify(
             {
                 "code": 200,
@@ -359,9 +359,6 @@ def update_shipping(shipping_id):
 
         # update status
         data = request.get_json()
-
-        print(data)
-
         if data['shipping_status']:
             shipping.shipping_status = data['shipping_status']
             db.session.commit()
