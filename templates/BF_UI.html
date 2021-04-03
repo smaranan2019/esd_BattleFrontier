@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <title>Pokemon Center</title>
+
+    <link rel="stylesheet" href="css/BF UI.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script src="https://www.paypal.com/sdk/js?client-id=AZBD_ZMQVQp218UUXfSiJRMe5PSQ7h4tYCoUQK1eyrZa-LzMNSf8uP3cpWVFAXTGPE9gWgKXRTQnXF0K"></script>
+    
+
+</head>
+
+
+<body>
+  
+    <div style="text-align: center;">
+      <img src="../assets/BF_Logo.png" height="100" >
+      <h1> Welcome Battle Frontier Admin</h1>
+    </div>
+    
+
+
+    <!-- To pay seller  -->
+    <div>  
+        <h2 style="margin-left:13.5%; margin-bottom: 2%;">Successful Transaction</h2>
+        <!-- card to insert here -->
+        <div id="releasable">
+        </div>
+    </div>
+
+    <div>
+        <p></p>
+    </div>
+
+    <div>  
+      <h2 style="margin-left:13.5%; margin-bottom: 2%; margin-top: 2%;">Refund seller has rejected </h2>
+      <!-- card to insert here -->
+      <div id="refundable">
+      </div>
+  </div>
+
+  <div id='msg'></div>
+
+    
+  <script>
+
+    // Helper function to display error message
+    function showError(message) {
+        // Display an error under the main container
+        $('#msg')
+            .append("<label>"+message+"</label>");
+    
+    }
+
+    function release(payment_id){
+        var queryString = "?payment_id=" + payment_id;
+        window.location.replace(
+            'BF_release.html'+queryString,
+            '_blank' // <- This is what makes it open in a new window.
+            );
+    }
+
+    function refunded(payment_id){
+        $(async() => {           
+            var serviceURL = "http://127.0.0.1:5600/change-payment-refund-status/" + String(payment_id);
+            console.log(serviceURL);
+    
+            try {
+                const response =
+                await fetch(
+                serviceURL, {
+                            method: 'PUT',
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ 
+                                payment_id: payment_id, 
+                                payment_status: "REFUNDED"
+                            })
+                        }
+                    
+                );
+                // console.log('U there?');
+                const result = await response.json();
+                if (response.status === 201) {
+                    // success case
+                    var data = result.data; //get data of new account
+                    console.log(data);
+                    // showMsg('Account created successfully :>');
+
+                    //redirect to buy_sell.html
+                    //<meta http-equiv="Refresh" content="0; url='buy_sell.html'" />
+                    window.location.reload();
+
+
+                    } else if (response.status == 500) {
+                        // Cannot create account
+                    
+                        showError(result.message);
+                    } else {
+                        // unexpected outcome, throw the error
+                        throw response.status;
+                    }
+                } catch (error) {
+                    // Errors when calling the service; such as network error, 
+                    // service offline, etc
+                    showError
+                    ('There is a problem paying, please try again later.<br />' + error);
+                } // error
+        });
+    }
+
+    $(async() => {           
+        // Change serviceURL to your own
+        var serviceURL_1 = "http://127.0.0.1:5400/display-cards-releasable";
+    
+        try {
+            const response =
+                await fetch(
+                serviceURL_1, {method: 'GET'}
+            );
+            const result = await response.json();
+                if (response.status === 200) {
+                // success case
+                if (result.code == 200){
+                    var payments_1 = result.data.payment_results.data; 
+                    var payment_add_on_1 = "";
+
+                    for (const payment of payments_1){
+
+                        var payment_id_1 = payment.payment_id;
+                        var modified_1 = payment.modified;
+                        var image_path_1 = payment.card_display.image_path;
+                        var pokemon_name_1 = payment.card_display.pokemon_name;
+                        var pokemon_type_1 = payment.card_display.pokemon_type;
+                        var description_1 = payment.card_display.description;
+                        var card_details_1 = payment.card_display.card_details[0];
+                        var payment_details_1 = payment.payment_details[0];
+
+                        eachPayment_1 = `<div class="col d-flex justify-content-center space_above">
+                                        <div class="card card_box">
+                                            <div class="card-body" >
+                                                <table>
+                                                    <tr>
+                                                        <td> 
+                                                            <img class="card-img-top card_img" src="`+image_path_1+`" alt="Card image cap">
+                                                        </td>
+                                
+                                                        <td class="space"></td>
+                                                        
+                                                        <td class="card_details">
+                                                            <h5 class="card-title">`+pokemon_name_1+`</h5>
+                                                            <h6 class="card-subtitle mb-2">Sold by: `+card_details_1.seller_username+`</h6>
+                                                            <h6 class="card-subtitle mb-2">Amount: SGD$ `+payment_details_1.amount+` </h6>
+                                                            <h6 class="card-subtitle mb-2">Description: `+description_1+`</h6>
+                                
+                                                        </td>
+                                
+                                                        <td class="space"></td>
+                                
+                                                        <td>
+                                                            <button id="`+payment_id_1+`" type="button" class="btn btn-success" onClick="release(this.id)">Pay Seller!</button>
+                                                        </td>
+                                
+                                                    </tr>
+                                                </table>
+                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p></p>
+                                    </div>
+                                    `
+                        payment_add_on_1 += eachPayment_1;
+                    }            
+                        // add all the rows to the table
+                        $('#releasable').append(payment_add_on_1);
+                }
+                else {
+                    //document.getElementById("refundable").innerHTML = "";
+                    $('#releasable').append(`<h2>You have no orders that need releasing at the moment!</h2>`);
+                }
+                } else if (response.status == 404) {
+                    // No payments
+                    showError(result.message);
+                } else {
+                    // unexpected outcome, throw the error
+                    throw response.status;
+                }
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+                showError
+                ('There is a problem retrieving payment data, please try again later.<br />' + error);
+            } // error
+    });    
+
+    $(async() => {           
+        // Change serviceURL to your own
+        var serviceURL_2 = "http://127.0.0.1:5400/display-cards-refundable";
+    
+        try {
+            const response =
+                await fetch(
+                serviceURL_2, {method: 'GET'}
+            );
+            const result = await response.json();
+                if (response.status === 200) {
+                // success case
+                if (result.code == 200){
+                    var payments_2 = result.data.payment_results.data; 
+                    var payment_add_on_2 = "";
+
+                    for (const payment of payments_2){
+
+                        var payment_id_2 = payment.payment_id;
+                        var modified_2 = payment.modified;
+                        var image_path_2 = payment.card_display.image_path;
+                        var pokemon_name_2 = payment.card_display.pokemon_name;
+                        var pokemon_type_2 = payment.card_display.pokemon_type;
+                        var description_2 = payment.card_display.description;
+                        var card_details_2 = payment.card_display.card_details[0];
+                        var payment_details_2 = payment.payment_details[0];
+
+                        eachPayment_2 = `<div class="col d-flex justify-content-center space_above">
+                                        <div class="card card_box">
+                                            <div class="card-body" >
+                                                <table>
+                                                    <tr>
+                                                        <td> 
+                                                            <img class="card-img-top card_img" src="`+image_path_2+`" alt="Card image cap">
+                                                        </td>
+                                
+                                                        <td class="space"></td>
+                                                        
+                                                        <td class="card_details">
+                                                            <h5 class="card-title">`+pokemon_name_2+`</h5>
+                                                            <h6 class="card-subtitle mb-2">Sold by: `+card_details_2.seller_username+`</h6>
+                                                            <h6 class="card-subtitle mb-2">Paid Timing: `+modified_2+`</h6>
+                                                            <h6 class="card-subtitle mb-2">Amount: SGD$ `+payment_details_2.amount+` </h6>
+                                                            <h6 class="card-subtitle mb-2">Description: `+description_2+`</h6>
+                                
+                                                        </td>
+                                
+                                                        <td class="space"></td>
+                                
+                                                        <td>
+                                                            <a href="https://www.sandbox.paypal.com/sg/signin"  target="_blank"><button id="`+payment_id_2+`" type="button" class="btn btn-warning">Refund now!</button></a>
+                                                            <br><br>
+                                                            <button id="`+payment_id_2+`" type="button" class="btn btn-success" onClick="refunded(this.id)">Refund completed</button>
+                                                        </td>
+                                
+                                                    </tr>
+                                                </table>
+                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    `
+                        payment_add_on_2 += eachPayment_2;
+                    }            
+                        // add all the rows to the table
+                        $('#refundable').append(payment_add_on_2);
+                }
+                else {
+                    $('#refundable').append(`<h2>You have no orders that need refund at the moment!</h2>`);
+                }
+                } else if (response.status == 404) {
+                    // No payments
+                    showError(result.message);
+                } else {
+                    // unexpected outcome, throw the error
+                    throw response.status;
+                }
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+                showError
+                ('There is a problem retrieving payment data, please try again later.<br />' + error);
+            } // error
+    });   
+
+  </script>
+</body>
+</html>

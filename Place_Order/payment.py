@@ -134,6 +134,24 @@ def find_all_need_refund():
             "message": "There is no payment to refund."
         }
     ), 404
+    
+@app.route("/payment-release/<string:payment_id>")
+def find_all_need_release_by_payment_id(payment_id):
+    payment = Payment.query.filter(Payment.payment_status=="RELEASABLE", Payment.payment_id==payment_id).first()
+    
+    if payment:
+        return jsonify(
+            {
+                "code": 200,
+                "data": payment.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There is no payment with the payment_id to refund."
+        }
+    ), 404
 
 @app.route("/payment/<string:payment_id>")
 def find_by_payment_id(payment_id):
