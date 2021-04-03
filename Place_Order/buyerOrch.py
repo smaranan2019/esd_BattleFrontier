@@ -215,7 +215,7 @@ def processChangeReceiveStatus(shipping,shipping_id):
     payment_id = shipping_result["data"]["payment_id"]
     payment = {
         "payment_id": payment_id,
-        "payment_status": "RELEASEABLE"
+        "payment_status": "RELEASABLE"
     }
     print('\n-----Invoking payment microservice-----')
     payment_result = invoke_http(payment_URL+"/payment/"+str(payment_id), method='PUT', json=payment)

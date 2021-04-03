@@ -1,31 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" 
-    crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Latest compiled and minified JavaScript -->
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script 
-    src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    
-    <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-    crossorigin="anonymous"></script>
-    
-    <script 
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-    crossorigin="anonymous"></script>
-   
-    <link rel="stylesheet" href="./css/card_upload.css">
-    <title>Document</title>
+  <title>Document</title>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+  integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" 
+  crossorigin="anonymous">
+  <link rel="stylesheet" href="css/card_upload.css">
+
+      <!-- Latest compiled and minified JavaScript -->
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script 
+  src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  
+  <script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+  integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+  crossorigin="anonymous"></script>
+  
+  <script 
+  src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+  integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+  crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -48,7 +50,7 @@
 
             <!-- shipping -->
             <li class="nav-item active">
-              <a class="nav-link" href="sell_order.html">Pokemon Center</a>
+              <a class="nav-link" href="seller_order.html">Pokemon Center</a>
             </li>
             
           </ul>
@@ -56,9 +58,7 @@
   </nav>
 
 <body>
-
-
-   <form class="box">
+   <div class="box">
       <div class="intro">
          <h1 class="welcome_msg1"> Welcome Trainer </h1>
          <h3 class="welcome_msg2"> Deposit Pokemon Here! </h3>
@@ -66,41 +66,44 @@
          <img src="../assets/download.png" class="download_img">
       </div>
 
-      <div class="form-group ">
-        <label for="poke_name">Name of Pokemon</label>
-        <input type="text" class="form-control" id="poke_name" placeholder="Jiggly Puff">
-      </div>
+      <div class="form_aligment"></div>
 
-      <div class="form-group">
-        <label for="poke_type">Type of Pokemon</label>
-        <select class="form-control" id="poke_name">
-          <option>Water</option>
-          <option>Fire</option>
-          <option>Normal</option>
-          <option>Grass</option>
-          <option>Electric</option>
-          <option>Ice</option>
-          <option>Flying</option>
-        </select>
-      </div>
+        <div class="form-group ">
+          <label for="poke_name">Name of Pokemon</label>
+          <input type="text" class="form-control" id="poke_name" placeholder="Jiggly Puff">
+        </div>
 
-      <div class="form-group ">
-        <label for="poke_img">Link of Pokemon Image</label>
-        <input type="text" class="form-control" id="poke_img" placeholder="www.thisiswhereifoundmyimage.com">
-      </div>
+        <div class="form-group">
+          <label for="poke_type">Type of Pokemon</label>
+          <select class="form-control" id="poke_type">
+            <option>Water</option>
+            <option>Fire</option>
+            <option>Normal</option>
+            <option>Grass</option>
+            <option>Electric</option>
+            <option>Ice</option>
+            <option>Flying</option>
+          </select>
+        </div>
 
-      <div class="form-group">
-        <label for="poke_desc">Pokemon Description</label>
-        <textarea class="form-control" id="poke_desc" rows="3"></textarea>
-      </div>
+        <div class="form-group ">
+          <label for="poke_img">Link of Pokemon Image</label>
+          <input type="text" class="form-control" id="poke_img" placeholder="www.thisiswhereifoundmyimage.com">
+        </div>
 
-      <div class="form-group ">
-        <label for="poke_price">Price of Card:</label>
-        <input type="float" class="form-control" id="poke_price" placeholder="50">
-      </div>
-      
+        <div class="form-group">
+          <label for="poke_desc">Pokemon Description</label>
+          <textarea class="form-control" id="poke_desc" rows="3"></textarea>
+        </div>
+
+        <div class="form-group ">
+          <label for="poke_price">Price of Card:</label>
+          <input type="float" class="form-control" id="poke_price" placeholder="50">
+        </div>
+
+
       <button type="submit" id="submit" class="btn btn-primary mb-2 release_btn">Release pokemon!</button>  
-    </form>
+      </div>
 
     <div id = 'msg'></div>
 
@@ -110,61 +113,63 @@
         $('#msg').append("<label>"+message+"</label>");
       }
 
+      console.log("Hihihiih");
+
       $("#submit").click(function(){
-      $("#msg").empty()
-      // anonymous async function 
-      // - using await requires the function that calls it to be async
-      $(async() => {   
-        console.log('helllo world');
-        var pokemon_name = $("#pokemon_name").val();
-        var pokemon_type = $("#pokemon_type").val();
-        var image_path =  $("#image_path").val();
-        var description = $("#description").val();
-        var price = $("#price").val();
-        var seller_id = $("#seller_id").val();
 
-        var serviceURL = "http://127.0.0.1:5005/addPokemonCard";
-  
-          try {
-              const response =
-              await fetch(
-              serviceURL, {
-                          method: 'POST',
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.parse({ 
-                            pokemon_name : pokemon_name,
-                            pokemon_type: pokemon_type,
-                            image_path: image_path,
-                            description: description, 
-                            price: price, 
-                            seller_id: seller_id,
-                          })
-              });
-              const result = await response.json();
-              if (response.status == 201) {
-                  // success case
-                  var data = result.data; //get data of new account
-                  console.log(data);
-                  showMsg('Card uploaded successfully :>');
+        console.log("Im here");
+        $("#msg").empty()
+        // anonymous async function 
+        // - using await requires the function that calls it to be async
+        $(async() => {   
+          console.log('helllo world');
+          var pokemon_name = $("#poke_name").val();
+          var pokemon_type = $("#poke_type").val();
+          var image_path =  $("#poke_img").val();
+          var description = $("#poke_desc").val();
+          var price = $("#poke_price").val();
+          var seller_id = 2;
 
-                  //redirect to buy_sell.html
-                  //<meta http-equiv="Refresh" content="0; url='buy_sell.html'" />
-                  // window.location.replace("sell_order.html");
+          var serviceURL = "http://127.0.0.1:5005/addPokemonCard";
+    
+            try {
+                const response =
+                await fetch(
+                serviceURL, {
+                            method: 'POST',
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ 
+                              pokemon_name : pokemon_name,
+                              pokemon_type: pokemon_type,
+                              image_path: image_path,
+                              description: description, 
+                              price: price, 
+                              seller_id: seller_id
+                            })
+                });
+                const result = await response.json();
+                if (response.status == 201) {
+                    // success case
+                    var data = result.data; //get data of new account
+                    console.log(data);
+                    showMsg('Card uploaded successfully :>');
 
-                  } else if (response.status == 404) {
-                      // Cannot create account
-                      showMsg(result.message);
-                  } else {
-                      // unexpected outcome, throw the error
-                      throw response.status;
-                  }
-              } catch (error) {
-                  // Errors when calling the service; such as network error, 
-                  // service offline, etc
-                showMsg
-                ('There is a problem uploading the card, please try again later.<br />' + error);
-              } // error
-      });
+                    window.location.replace("Uploaded.html");
+
+                    } else if (response.status == 404) {
+                        // Cannot create account
+                        showMsg(result.message);
+                    } else {
+                        // unexpected outcome, throw the error
+                        throw response.status;
+                    }
+                } catch (error) {
+                    // Errors when calling the service; such as network error, 
+                    // service offline, etc
+                  showMsg
+                  ('There is a problem uploading the card, please try again later.<br />' + error);
+                } // error
+        });
   }); 
     </script>
 </body>

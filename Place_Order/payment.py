@@ -22,7 +22,7 @@ class Payment(db.Model):
     payment_id = db.Column(db.Integer, primary_key=True)
     order_id = db.Column(db.Integer, nullable=False)
     payment_status = db.Column(db.String(25), nullable=False, default="NEW")
-    refund_status = db.Column(db.String(25), nullable=False, default="NULL")
+    #refund_status = db.Column(db.String(25), nullable=False, default="NULL")
     created = db.Column(db.DateTime, nullable=False, default=datetime.now)
     modified = db.Column(db.DateTime, nullable=False,
                          default=datetime.now, onupdate=datetime.now)
@@ -32,7 +32,7 @@ class Payment(db.Model):
             'payment_id': self.payment_id,
             'order_id': self.order_id,
             'payment_status': self.payment_status,
-            'refund_status': self.refund_status,
+            #'refund_status': self.refund_status,
             'created': self.created,
             'modified': self.modified
         }
@@ -281,7 +281,7 @@ def find_refund_by_buyer_id(buyer_id):
 def create_order():
     order_id  = request.json.get('order_id', None)   
     price = request.json.get('price', None)
-    payment = Payment(order_id=order_id, payment_status='NEW', refund_status='NULL')
+    payment = Payment(order_id=order_id, payment_status='NEW')#, refund_status='NULL')
          
     buyer_id = request.json.get('buyer_id', None)
     seller_id = request.json.get('seller_id', None)
@@ -343,16 +343,15 @@ def update_payment(payment_id):
                 }
             ), 201
             
-        elif data['refund_status']:
-            payment.refund_status = data['refund_status']
-            #
-            db.session.commit()
-            return jsonify(
-                {
-                    "code": 201,
-                    "data": payment.json()
-                }
-            ), 201
+        # elif data['refund_status']:
+        #     payment.refund_status = data['refund_status']
+        #     db.session.commit()
+        #     return jsonify(
+        #         {
+        #             "code": 201,
+        #             "data": payment.json()
+        #         }
+        #     ), 201
             
     except Exception as e:
         return jsonify(
