@@ -7,7 +7,7 @@ from os import environ
 import requests
 from invokes import invoke_http
 
-import amqp_setup
+import ampq_setup
 import pika
 import json
 
@@ -61,8 +61,6 @@ def update_shipping(shipping_id):
         try:
             shipping_updated = invoke_http(shipping_URL + "shipping/" + shipping_id, method="PUT", json=data)
 
-            #Branch here to go to case 3
-
             if shipping_updated["code"] not in range(200, 300):
                 return jsonify(
                     {
@@ -73,22 +71,24 @@ def update_shipping(shipping_id):
                         "message": "Shipping not found."
                     }
                 )
-
-            order_id = shipping_updated["shipping_details"]["order_id"]
-            order_details = invoke_http(order_URL + "order/" + order_id)
             
-            send_shipping_update = invoke_http(order_orch_URL + "shipping-sent/" + shipping_id)
+            print(shipping_updated)
 
-            if send_shipping_update["code"] not in range(200, 300):
-                return jsonify(
-                    {
-                        "code": 404,
-                        "data": {
-                            "shipping_id": shipping_id
-                        },
-                        "message": "Shipping not found."
-                    }
-                )
+            order_id = shipping_updated["data"]["shipping_details"][0]["order_id"]
+            order_details = invoke_http(order_URL + "order/" + str(order_id))
+
+            # send_shipping_update = invoke_http(order_orch_URL + "shipping-sent/" + shipping_id)
+
+            # if send_shipping_update["code"] not in range(200, 300):
+            #     return jsonify(
+            #         {
+            #             "code": 404,
+            #             "data": {
+            #                 "shipping_id": shipping_id
+            #             },
+            #             "message": "Shipping not found."
+            #         }
+            #     )
 
             return jsonify(
                     {
@@ -214,3 +214,6 @@ def receive_shipping_status():
                 "message": str(e)
             }
         )
+
+if __name__== "__main__":
+    app.run(host='0.0.0.0', port=5200, debug=True)
