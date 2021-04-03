@@ -5,3 +5,24 @@
 .space {
     width:5%;
 }
+
+
+h2 {
+    margin-left:13.5%; 
+    margin-bottom: 1%;
+    margin-top: 2%;
+}
+
+.btn_ship {
+    width: 10rem;
+    margin-top:5%;
+}
+
+.space_above {
+    margin-top: 1%;
+}
+
+.tick {
+    /* width: 5%; */
+    /* width:200%; */
+}
