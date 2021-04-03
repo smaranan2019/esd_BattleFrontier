@@ -6,6 +6,7 @@ import json
 import os
 
 import ampq_setup as amqp_setup
+import requests
 from invokes import invoke_http
 
 
@@ -29,7 +30,8 @@ def callback(channel, method, properties, body): # required signature for the ca
 def processNotifLog(order):
     print("Recording a notification log:")
     print(order)
-    notification_sent = invoke_http('http://127.0.0.1:5300/send-notification', method='POST', data=order)
+
+    notification_sent = invoke_http('http://127.0.0.1:5300/send-notification', method='POST', json=order)
     print(notification_sent)
 
 

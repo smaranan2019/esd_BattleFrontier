@@ -22,13 +22,25 @@ def sendNotif():
         "Received": "Your order has been received"
     }
 
+    print("#############################################################")
     print(data)
+    print("#############################################################")
 
     try:
         bot.sendMessage(chat_id=chat_id, text="Shipped!")
     except Exception as e:
-        return str(e)
-    return "No error"
+        return jsonify(
+            {
+                "code" : 500,
+                "message" : str(e)
+            }
+        )
+    return jsonify(
+        {
+            "code": 200,
+            "message": "Notification has been sent"
+        }
+    )
 
 # @app.route("/{}".format(TOKEN), methods=["POST"])
 # def respond():
