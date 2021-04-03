@@ -9,14 +9,25 @@
 
     <link rel="stylesheet" href="css/seller_order.css">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" 
+    crossorigin="anonymous">
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-    <script src="https://www.paypal.com/sdk/js?client-id=AZBD_ZMQVQp218UUXfSiJRMe5PSQ7h4tYCoUQK1eyrZa-LzMNSf8uP3cpWVFAXTGPE9gWgKXRTQnXF0K"></script>
+        <!-- Latest compiled and minified JavaScript -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script 
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    crossorigin="anonymous"></script>
+    
+    <script 
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+    crossorigin="anonymous"></script>
 
 </head>
 
@@ -212,8 +223,77 @@
       </div>
     </div>
 
+    <div id='msg'></div>
+
+    <script>
+  
+        // Helper function to display error message
+        function showError(message) {
+            // Display an error under the main container
+            $('#msg')
+                .append("<label>"+message+"</label>");
+      
+        }
+        console.log('Hi');
+
+        function chooseCard(card_id) {
+            var temp = String(document.getElementById(card_id).value);
+            var temp_list = temp.split("-");
+            var price_chosen_card = temp_list[0];
+            var seller_id = temp_list[1];
+
+            $(async() => {           
+                var serviceURL = "http://127.0.0.1:5100/place-order";
+                var buyer_id = 1;
+                var quantity = 1
+                console.log(serviceURL);
+        
+                try {
+                    const response =
+                    await fetch(
+                    serviceURL, {
+                                method: 'POST',
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ 
+                                    buyer_id: buyer_id, 
+                                    item: {card:{card_id:card_id,
+                                                price:price_chosen_card,
+                                                seller_id: seller_id},
+                                            quantity:quantity}})
+                                }
+                    );
+                    // console.log('U there?');
+                    const result = await response.json();
+                    if (response.status === 201) {
+                        // success case
+                        var data = result.data; //get data of new account
+                        console.log(data);
+                        // showMsg('Account created successfully :>');
+
+                        //redirect to buy_sell.html
+                        //<meta http-equiv="Refresh" content="0; url='buy_sell.html'" />
+                        window.location.replace("buy_payment.html");
 
 
+                        } else if (response.status == 500) {
+                            // Cannot create account
+                        
+                            showError(result.message);
+                        } else {
+                            // unexpected outcome, throw the error
+                            throw response.status;
+                        }
+                    } catch (error) {
+                        // Errors when calling the service; such as network error, 
+                        // service offline, etc
+                        showError
+                        ('There is a problem logging in, please try again later.<br />' + error);
+                    } // error
+            });
+            
+        }
+ 
+      </script>      
 
 </body>
 </html>
