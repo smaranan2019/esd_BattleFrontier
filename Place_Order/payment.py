@@ -334,6 +334,7 @@ def update_payment(payment_id):
         data = request.get_json()
         if data['payment_status']:
             payment.payment_status = data['payment_status']
+            #NEW, REFUNDABLE, PAID, RELEASABLE, REFUNDED, COMPLETED
             db.session.commit()
             return jsonify(
                 {
@@ -344,6 +345,7 @@ def update_payment(payment_id):
             
         elif data['refund_status']:
             payment.refund_status = data['refund_status']
+            #
             db.session.commit()
             return jsonify(
                 {

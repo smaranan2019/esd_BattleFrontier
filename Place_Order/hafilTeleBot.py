@@ -3,8 +3,8 @@ import telegram
 
 app = Flask(__name__)
 
-TOKEN = "1790750890:AAEffcouXbkLWuzRTr100MGtjvgnK84-EgE"
-# mainUrl = "https://api.telegram.org/bot1790750890:AAEffcouXbkLWuzRTr100MGtjvgnK84-EgE"
+TOKEN = "1641597329:AAFVhB4MAHU39OUZs_JhyY0SexezTHwDvIg"
+# mainUrl = "https://api.telegram.org/bot1641597329:AAFVhB4MAHU39OUZs_JhyY0SexezTHwDvIg"
 # chat_id = "961849285"
 bot = telegram.Bot(token=TOKEN)
 
@@ -15,7 +15,8 @@ def sendNotif():
     # if "chat_id" in data:
     #     chat_id = data["chat_id"]
     # else:
-    chat_id = "961849285"
+    # chat_id = "961849285"
+    chat_id = "37579573"
     
     msg = {
         "Shipped": "Your order has been shipped",
