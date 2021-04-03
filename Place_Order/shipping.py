@@ -120,6 +120,26 @@ def find_by_shipping_id(shipping_id):
         }
     ), 404
     
+@app.route("/shipping-payment-id/<string:payment_id>")
+def find_by_payment_id(payment_id):
+    shipping = Shipping.query.filter_by(payment_id=payment_id).first()
+    if shipping:
+        return jsonify(
+            {
+                "code": 200,
+                "data": shipping.json()
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "payment_id": payment_id
+            },
+            "message": "Shipping not found."
+        }
+    ), 404
+    
 # @app.route("/shipping/<string:buyer_id>")
 # def find_by_buyer_id(buyer_id):
 #     shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.buyer_id==buyer_id)

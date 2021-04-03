@@ -101,7 +101,7 @@ def get_all():
 
 @app.route("/payment-release")
 def find_all_need_release():
-    paymentlist = Payment.query.filter(Payment.payment_status=="RELEASEABLE")
+    paymentlist = Payment.query.filter(Payment.payment_status=="RELEASABLE")
     
     if paymentlist.count():
         return jsonify(
