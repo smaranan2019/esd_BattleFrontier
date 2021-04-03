@@ -149,7 +149,7 @@ def find_all_need_release_by_payment_id(payment_id):
     return jsonify(
         {
             "code": 404,
-            "message": "There is no payment with the payment_id to refund."
+            "message": "There is no payment with the payment_id to release."
         }
     ), 404
 
@@ -334,6 +334,7 @@ def update_payment(payment_id):
         data = request.get_json()
         if data['payment_status']:
             payment.payment_status = data['payment_status']
+            #NEW, REFUNDABLE, PAID, RELEASABLE, REFUNDED, COMPLETED
             db.session.commit()
             return jsonify(
                 {
