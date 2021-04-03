@@ -12,5 +12,5 @@ password varchar(255) not null
 );
 
 insert into account (Username, telehandle, Paypal_Email, password) values
-('AshKetchum', '@pikapika', 'ilovepokemon@yahoo.com', "pikachu"),
+('AshKetchum', '@pikapika', 'gotta_ketchum_all@personal.example.com', "pikachu"),
 ('ProfessorWillow', '@pokeballer', 'CardSeller@yahoo.com', "bulbasaur");

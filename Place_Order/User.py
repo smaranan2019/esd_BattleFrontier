@@ -95,22 +95,22 @@ def checkUser():
         }
     ), 404
         
-@app.route("/find-user-id/<string:User_ID>")
-def find_user_by_id(User_ID):
-    user = User.query.filter_by(User_ID=User_ID).first()
-    if user:
-        return jsonify(
-            {
-                "code": 200,
-                "data": user.json()
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "message": "User not found."
-        }
-    ), 404
+# @app.route("/find-user-id/<string:User_ID>")
+# def find_user_by_id(User_ID):
+#     user = User.query.filter_by(User_ID=User_ID).first()
+#     if user:
+#         return jsonify(
+#             {
+#                 "code": 200,
+#                 "data": user.json()
+#             }
+#         )
+#     return jsonify(
+#         {
+#             "code": 404,
+#             "message": "User not found."
+#         }
+#     ), 404
     
 @app.route("/find-user/<string:email>")
 def findUser(email):
