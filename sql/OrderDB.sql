@@ -15,8 +15,6 @@ create table `order`
 -- `status` varchar(10) not null default "NEW",
 `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
--- `seller_id` int not null, 
-
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8; 
 
 create table `item`
@@ -25,13 +23,6 @@ create table `item`
 `quantity` int not null,
 constraint `item_fk` foreign key(`order_id`) references `order`(`order_id`) on delete cascade on update cascade
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- create table `contact`
--- (`order_id` int not null primary key,
--- `seller_chat_id` int not null,
--- `buyer_chat_id` int not null,
--- constraint `contact_fk` foreign key(`order_id`) references `order`(`order_id`) on delete cascade on update cascade
--- )ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 insert into `order`(buyer_id,price,seller_id) values 
 (1,30.23,2),

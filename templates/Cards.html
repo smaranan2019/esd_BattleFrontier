@@ -63,7 +63,13 @@
           </div>
     </nav>
 
-    <div class="card-columns" id="cards">
+
+    <div class="layout">
+        <div id="cards"></div>
+    </div>
+    
+
+
     </div>                
 
     <div id='msg'></div>
@@ -105,7 +111,7 @@
                                             quantity:quantity}})
                                 }
                     );
-                    console.log('U there?');
+                    // console.log('U there?');
                     const result = await response.json();
                     if (response.status === 201) {
                         // success case
@@ -150,7 +156,7 @@
                  if (response.status === 200) {
                     // success case
                     var cards = result.data.cards_result.data.cards; 
-                    console.log(cards)
+                    // console.log(cards)
                     var card_add_on = "";
                     var count = 0;
 
@@ -183,7 +189,7 @@
                                             <h3 class="modal-title">`+pokemon_name+`</h3>
                                             </div>
                                             <div class="modal-body" style="width: 25 rem;">
-                                                <img class="card-img-top card_popup" src="`+image_path+`" alt="Card image cap">
+                                                <img class="card-img-top modal_img" src="`+image_path+`" alt="Card image cap">
                                             <h4 class="modal-title">`+pokemon_type+` Type</h4>
                                             <h5 class="modal-title">Price: $`+card_details.price+`</h5>
                                             <p> Sold By: `+card_details.seller_username+`</p>

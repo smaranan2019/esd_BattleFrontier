@@ -82,24 +82,24 @@ class Item(db.Model):
 #         return {'seller_chat_id': self.seller_chat_id, 'buyer_chat_id': self.buyer_chat_id, 'order_id': self.order_id}
 
 
-@app.route("/order")
-def get_all():
-    orderlist = Order.query.all()
-    if len(orderlist):
-        return jsonify(
-            {
-                "code": 200,
-                "data": {
-                    "orders": [order.json() for order in orderlist]
-                }
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "message": "There are no orders."
-        }
-    ), 404
+# @app.route("/order")
+# def get_all():
+#     orderlist = Order.query.all()
+#     if len(orderlist):
+#         return jsonify(
+#             {
+#                 "code": 200,
+#                 "data": {
+#                     "orders": [order.json() for order in orderlist]
+#                 }
+#             }
+#         )
+#     return jsonify(
+#         {
+#             "code": 404,
+#             "message": "There are no orders."
+#         }
+#     ), 404
 
 
 @app.route("/order/<string:order_id>")
@@ -122,45 +122,45 @@ def find_by_order_id(order_id):
         }
     ), 404
     
-@app.route("/order-buyer/<string:buyer_id>")
-def find_by_buyer_id(buyer_id):
-    order = Order.query.filter_by(buyer_id=buyer_id)
-    if order:
-        return jsonify(
-            {
-                "code": 200,
-                "data": order.json()
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "data": {
-                "buyer_id": buyer_id
-            },
-            "message": "You have not placed any order."
-        }
-    ), 404
+# @app.route("/order-buyer/<string:buyer_id>")
+# def find_by_buyer_id(buyer_id):
+#     order = Order.query.filter_by(buyer_id=buyer_id)
+#     if order:
+#         return jsonify(
+#             {
+#                 "code": 200,
+#                 "data": order.json()
+#             }
+#         )
+#     return jsonify(
+#         {
+#             "code": 404,
+#             "data": {
+#                 "buyer_id": buyer_id
+#             },
+#             "message": "You have not placed any order."
+#         }
+#     ), 404
     
-@app.route("/order-seller/<string:seller_id>")
-def find_by_seller_id(seller_id):
-    order = Order.query.filter_by(seller_id=seller_id)
-    if order:
-        return jsonify(
-            {
-                "code": 200,
-                "data": order.json()
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "data": {
-                "seller_id": seller_id
-            },
-            "message": "You don't have any order yet."
-        }
-    ), 404
+# @app.route("/order-seller/<string:seller_id>")
+# def find_by_seller_id(seller_id):
+#     order = Order.query.filter_by(seller_id=seller_id)
+#     if order:
+#         return jsonify(
+#             {
+#                 "code": 200,
+#                 "data": order.json()
+#             }
+#         )
+#     return jsonify(
+#         {
+#             "code": 404,
+#             "data": {
+#                 "seller_id": seller_id
+#             },
+#             "message": "You don't have any order yet."
+#         }
+#     ), 404
 
 
 @app.route("/order", methods=['POST'])

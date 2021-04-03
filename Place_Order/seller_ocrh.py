@@ -57,7 +57,7 @@ def update_shipping(shipping_id):
                 }
             )
 
-    elif data["shipping_status"] == "SENT":
+    elif data["shipping_status"] == "SHIPPED":
         try:
             shipping_updated = invoke_http(shipping_URL + "shipping/" + shipping_id, method="PUT", json=data)
 

@@ -4,11 +4,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/shipping.css">
   
     <title>All Aboard S.S. Ann!</title>
 
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" 
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="css/shipping.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script 
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+    crossorigin="anonymous"></script>
+    
+    <script 
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+    crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -43,79 +62,240 @@
           </div>
     </nav>
 
-    <div class="col d-flex justify-content-center space_above">
-        <div class="card card_box">
-            <div class="card-body" >
-                <table>
-                    <tr>
-                        <td> 
-                            <img class="card-img-top card_img" src="../assets/charizard.jpg" alt="Card image cap">
-                        </td>
+    <h1>Arriving Orders!</h1>
+    <div id='confirm'></div>
+    <br>
+    <h1>Completed Orders</h1>
+    <div id='completed'></div>
+    <div id='msg'></div>
 
-                        <td class="space"></td>
-                        
-                        <td class="card_details">
-                            <h5 class="card-title">Charizard (Buyer)</h5>
-                            <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
-                            <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
-                            <h6 class="card-subtitle mb-2">Description: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam laboriosam praesentium autem, eaque unde provident sequi quae dolores quam molestiae, saepe nihil non alias!</h6>
+<script>
+    // Helper function to display error message
+    function showError(message) {
+        // Display an error under the main container
+        $('#msg')
+            .append("<label>"+message+"</label>");
+  
+    }
 
-                        </td>
+    function confirm(shipping_id) {
 
-                        <td class="space"></td>
-
-                        <td>
-                            <button type="button" class="btn btn-success width_btn">Received!</button>
+            $(async() => {           
+                var serviceURL = "http://127.0.0.1:5100/change-receive-status/"+String(shipping_id);
         
-                            <p class="spacing"></p>
+                try {
+                    const response =
+                    await fetch(
+                    serviceURL, {
+                                method: 'PUT',
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ 
+                                    shipping_id:shipping_id,
+                                    receive_status:"RECEIVED"
+                                    })
+                                }
+                    );
+                    console.log('U there?');
+                    const result = await response.json();
+                    if (response.status === 201) {
+                        // success case
+                        var data = result.data; //get data of new account
+                        console.log(data);
+                        // showMsg('Account created successfully :>');
 
-                            <button type="button" class="btn btn-danger width_btn">Did not receive!</button>
-                        </td>
+                        //redirect to buy_sell.html
+                        //<meta http-equiv="Refresh" content="0; url='buy_sell.html'" />
+                        window.location.reload();
 
-                    </tr>
-                </table>
 
-            </div>
-        </div>
-    </div>
+                        } else if (response.status == 500) {
+                            // Cannot create account
+                        
+                            showError(result.message);
+                        } else {
+                            // unexpected outcome, throw the error
+                            throw response.status;
+                        }
+                    } catch (error) {
+                        // Errors when calling the service; such as network error, 
+                        // service offline, etc
+                        showError
+                        ('There is a problem logging in, please try again later.<br />' + error);
+                    } // error
+            });
+            
+        }
 
-    <div class="col d-flex justify-content-center space_above">
-      <div class="card card_box">
-          <div class="card-body" >
-              <table>
-                  <tr>
-                      <td> 
-                          <img class="card-img-top card_img" src="../assets/charizard.jpg" alt="Card image cap">
-                      </td>
+    $(async() => {           
+        // Change serviceURL to your own
+        var buyer_id = 1
+        var serviceURL = "http://127.0.0.1:5400/display-cards-shipping-buyer/" + String(buyer_id);
+        console.log(serviceURL);
+ 
+        try {
+            const response =
+             await fetch(
+               serviceURL, {method: 'GET'}
+            );
+            const result = await response.json();
+             if (response.status === 200) {
+                // success case
+                if (result.code == 200){
+                    var shippings_add_on = "";
+                    var shippings = result.data.shippings_result.data.shippings; 
 
-                      <td class="space"></td>
-                      
-                      <td class="card_details" >
-                          <h5 class="card-title">Charizard (seller)</h5>
-                          <h6 class="card-subtitle mb-2">Sold by: Hangers_Pood</h6>
-                          <h6 class="card-subtitle mb-2">Amount: SGD$50</h6>
-                          <h6 class="card-subtitle mb-2">Description: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aperiam laboriosam praesentium autem, eaque unde provident sequi quae dolores quam molestiae, saepe nihil non alias!</h6>
+                    for (const shipping of shippings){
+                        var shipping_id = shipping.shipping_id;
+                        var image_path = shipping.card_display.image_path;
+                        var pokemon_name = shipping.card_display.pokemon_name;
+                        var pokemon_type = shipping.card_display.pokemon_type;
+                        var description = shipping.card_display.description;
+                        var card_details = shipping.card_display.card_details[0];
+                        var payment_details = shipping.payment_details[0];
 
-                      </td>
+                        eachShipping = `<div class="col d-flex justify-content-center space_above">
+                                            <div class="card card_box">
+                                                <div class="card-body" >
+                                                    <table>
+                                                        <tr>
+                                                            <td> 
+                                                                <img class="card-img-top card_img" src="`+image_path+`" alt="Card image cap">
+                                                            </td>
 
-                      <td class="space"></td>
+                                                            <td class="space"></td>
+                                                            
+                                                            <td class="card_details">
+                                                                <h5 class="card-title">`+pokemon_name+`</h5>
+                                                                <h6 class="card-subtitle mb-2">Sold by: `+card_details.seller_username+`</h6>
+                                                                <h6 class="card-subtitle mb-2">Amount: SGD$`+payment_details.amount+`</h6>
+                                                                <h6 class="card-subtitle mb-2">Description: `+description+`</h6>
 
-                      <td>
-                          <button type="button" class="btn btn-success width_btn">Shipped!</button>
-                          <!-- <br> -->
-                          <p class="spacing"></p>
-                          <button type="button" class="btn btn-danger width_btn">Did not ship!</button>
-                      </td>
+                                                            </td>
 
-                  </tr>
-              </table>
+                                                            <td class="space"></td>
 
-          </div>
-      </div>
-  </div>
+                                                            <td>
+                                                                <button id="`+shipping_id+`" type="button" class="btn btn-success width_btn" onClick="confirm(this.id)">Received!</button>
+                                                            </td>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+                                                        </tr>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        `
+                        shippings_add_on += eachShipping;
+
+                    }                  
+                    // add all the rows to the table
+                    $('#confirm').append(shippings_add_on);
+                }
+                else {
+                    $('#confirm').append(`<h3>No shipping yet!</h3>`);
+                }
+                } else if (response.status == 400) {
+                    // No payments
+                    $('#confirm').append(`<h3>No shipping yet!</h3>`);
+                } else {
+                    // unexpected outcome, throw the error
+                    throw response.status;
+                }
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+                showError
+    ('There is a problem retrieving payment data, please try again later.<br />' + error);
+            } // error
+    });
+
+    $(async() => {           
+        // Change serviceURL to your own
+        var buyer_id = 1
+        var serviceURL = "http://127.0.0.1:5400/display-cards-complete-buyer/" + String(buyer_id);
+ 
+        try {
+            const response =
+             await fetch(
+               serviceURL, {method: 'GET'}
+            );
+            const result = await response.json();
+             if (response.status === 200) {
+                // success case
+                
+                if (result.code == 200){
+                    var shippings = result.data.shippings_result.data.shippings; 
+                    var shippings_add_on = "";
+
+                    for (const shipping of shippings){
+                        var shipping_id = shipping.shipping_id;
+                        var image_path = shipping.card_display.image_path;
+                        var pokemon_name = shipping.card_display.pokemon_name;
+                        var pokemon_type = shipping.card_display.pokemon_type;
+                        var description = shipping.card_display.description;
+                        var card_details = shipping.card_display.card_details[0];
+                        var payment_details = shipping.payment_details[0];
+
+                        eachShipping = `<div class="col d-flex justify-content-center space_above">
+                                            <div class="card card_box">
+                                                <div class="card-body" >
+                                                    <table>
+                                                        <tr>
+                                                            <td> 
+                                                                <img class="card-img-top card_img" src="`+image_path+`" alt="Card image cap">
+                                                            </td>
+
+                                                            <td class="space"></td>
+                                                            
+                                                            <td class="card_details">
+                                                                <h5 class="card-title">`+pokemon_name+`</h5>
+                                                                <h6 class="card-subtitle mb-2">Sold by: `+card_details.seller_username+`</h6>
+                                                                <h6 class="card-subtitle mb-2">Amount: SGD$`+payment_details.amount+`</h6>
+                                                                <h6 class="card-subtitle mb-2">Description: `+description+`</h6>
+
+                                                            </td>
+
+                                                            <td class="space"></td>
+
+                                                            <td>
+                                                                <h1>Complete already see for what</h1>
+                                                            </td>
+
+                                                        </tr>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        `
+                        shippings_add_on += eachShipping;
+
+                    }                  
+                    // add all the rows to the table
+                    $('#completed').append(shippings_add_on);
+                }
+                else {
+                    $('#completed').append(`<h3>No completed order yet!</h3>`);
+                }
+                } else if (response.status == 400) {
+                    // No payments
+                    $('#completed').append(`<h3>No completed order yet!</h3>`);
+                } else {
+                    // unexpected outcome, throw the error
+                    throw response.status;
+                }
+            } catch (error) {
+                // Errors when calling the service; such as network error, 
+                // service offline, etc
+                showError
+    ('There is a problem retrieving payment data, please try again later.<br />' + error);
+            } // error
+    });
+    
+
+
+</script>
+
+
 </body>
 </html>

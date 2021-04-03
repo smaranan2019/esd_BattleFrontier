@@ -119,7 +119,7 @@ def find_all_need_release():
     
 @app.route("/payment-refund")
 def find_all_need_refund():
-    paymentlist = Payment.query.filter(Payment.payment_status=="RELEASEABLE")
+    paymentlist = Payment.query.filter(Payment.payment_status=="REFUNDABLE")
     
     if paymentlist.count():
         return jsonify(
@@ -155,26 +155,26 @@ def find_by_payment_id(payment_id):
         }
     ), 404
     
-@app.route("/payment-buyer/<string:buyer_id>")
-def find_by_buyer_id(buyer_id):
-    paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.buyer_id==buyer_id)
+# @app.route("/payment-buyer/<string:buyer_id>")
+# def find_by_buyer_id(buyer_id):
+#     paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.buyer_id==buyer_id)
     
-    if paymentlist.count():
-        return jsonify(
-            {
-                "code": 200,
-                "data": [payment.json() for payment in paymentlist]
-            }
-        )
-    return jsonify(
-        {
-            "code": 404,
-            "data": {
-                "buyer_id": buyer_id
-            },
-            "message": "You haven't made any payment yet."
-        }
-    ), 404
+#     if paymentlist.count():
+#         return jsonify(
+#             {
+#                 "code": 200,
+#                 "data": [payment.json() for payment in paymentlist]
+#             }
+#         )
+#     return jsonify(
+#         {
+#             "code": 404,
+#             "data": {
+#                 "buyer_id": buyer_id
+#             },
+#             "message": "You haven't made any payment yet."
+#         }
+#     ), 404
 
 @app.route("/payment-new-buyer/<string:buyer_id>")
 def find_new_by_buyer_id(buyer_id):
@@ -193,6 +193,26 @@ def find_new_by_buyer_id(buyer_id):
                 "buyer_id": buyer_id
             },
             "message": "You haven't made any payment yet."
+        }
+    ), 404
+    
+@app.route("/payment-refund-buyer/<string:buyer_id>")
+def find_refund_by_buyer_id(buyer_id):
+    paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.buyer_id==buyer_id,Payment.payment_status=="REFUNDED")
+    if paymentlist.count():
+        return jsonify(
+            {
+                "code": 200,
+                "data": [payment.json() for payment in paymentlist]
+            }
+        )
+    return jsonify(
+        {
+            "code": 404,
+            "data": {
+                "buyer_id": buyer_id
+            },
+            "message": "You don't have any refunded payment yet."
         }
     ), 404
     

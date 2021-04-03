@@ -14,7 +14,7 @@ a {
 .card_popup {
     max-width:70%; 
     height: auto;   
- 
+    
 }
 
 .modal_width {
@@ -28,12 +28,14 @@ a {
 }
 
 .card {
-    float: left;
+    /* float: left; */
     width: 25rem;
     /* overflow:hidden; */
+    float:left;
 
 }
 
-.table {
+.layout {
+    display:block;
     margin-left:6%;
 }
