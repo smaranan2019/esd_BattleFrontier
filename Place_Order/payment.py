@@ -149,7 +149,7 @@ def find_all_need_release_by_payment_id(payment_id):
     return jsonify(
         {
             "code": 404,
-            "message": "There is no payment with the payment_id to refund."
+            "message": "There is no payment with the payment_id to release."
         }
     ), 404
 
