@@ -7,8 +7,8 @@ from os import environ
 import requests
 from invokes import invoke_http
 
-# import amqp_setup
-# import pika
+import ampq_setup as amqp_setup
+import pika
 import json
 
 app = Flask(__name__)
@@ -152,12 +152,16 @@ def processChangePaymentStatus(payment,payment_id):
     else:
         seller_chat_id = seller["data"]["telechat_ID"]
     
-    message = jsonify({
+    message = {
         "telechat_id": seller_chat_id,
         "message": "You have a new order to ship!"
-    })
+    }
             
-    # Invoking pikapika
+    # # Invoking pikapika
+    message = json.dumps(message)
+
+    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="#", 
+    body=message, properties=pika.BasicProperties(delivery_mode = 2))
     
 
     # 7. Return changed payment, created shipping
