@@ -95,9 +95,8 @@
             $(async() => {           
                 var username = $('#username').val();
                 var telehandle = $('#telehandle').val();
-                var Paypal_Email = $("#Paypal_Email").val();
+                var Paypal_email = $("#Paypal_Email").val();
                 var password = $("#password").val();
-                var telechat_ID = 307267966;
 
                 var serviceURL = "http://127.0.0.1:5000/add-user";
         
@@ -110,8 +109,7 @@
                                 body: JSON.stringify({ 
                                   username: username, 
                                   telehandle: telehandle, 
-                                  Paypal_Email: Paypal_Email, 
-                                  telechat_ID: telechat_ID,
+                                  Paypal_email: Paypal_email,
                                   password: password})
                                 }
                     );

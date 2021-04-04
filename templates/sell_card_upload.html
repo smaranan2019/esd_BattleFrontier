@@ -89,8 +89,8 @@
         </div>
 
         <div class="form-group ">
-          <label for="paypal_client_id">Paypal Client ID</label>
-          <input type="text" class="form-control" id="paypal_client_id" placeholder="AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78">
+          <label for="seller_paypal_id">Paypal Client ID</label>
+          <input type="text" class="form-control" id="seller_paypal_id" placeholder="AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78">
         </div>
 
 
@@ -120,7 +120,7 @@
 
                               <!-- logout button-->
                               <li class="nav-item">
-                              <a class="nav-link" href="login.html?buyer_id=`+buyer_id+`" ><button class="btn btn-outline-danger" " type="submit">Logout</button></a>
+                              <a class="nav-link" href="login.html?buyer_id=`+seller_id+`" ><button class="btn btn-outline-danger" " type="submit">Logout</button></a>
                               </li>
                             </ul>
                             `);
@@ -145,7 +145,7 @@
           var image_path =  $("#poke_img").val();
           var description = $("#poke_desc").val();
           var price = $("#poke_price").val();
-          var paypal_client_id = $("#paypal_client_id").val();
+          var seller_paypal_id = $("#seller_paypal_id").val();
 
           var serviceURL = "http://127.0.0.1:5005/addPokemonCard";
     
@@ -162,7 +162,7 @@
                               description: description, 
                               price: price, 
                               seller_id: seller_id,
-                              paypal_client_id: paypal_client_id
+                              seller_paypal_id: seller_paypal_id
                             })
                 });
                 const result = await response.json();
