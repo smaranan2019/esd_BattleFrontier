@@ -66,6 +66,7 @@ def processNotifLog(order):
     print("Recording a notification log:")
     print(order)
 
+
     notification_sent = sendNotif(order)
     print(notification_sent)
 
@@ -74,4 +75,4 @@ if __name__ == "__main__":  # execute this program only if it is run as a script
     print("\nThis is " + os.path.basename(__file__), end='')
     print(": monitoring routing key '{}' in exchange '{}' ...".format(monitorBindingKey, amqp_setup.exchangename))
     receiveNotifLog()
-    app.run(port=5300, debug=True, threaded=True)
+    app.run(port=5006, debug=True, threaded=True)
