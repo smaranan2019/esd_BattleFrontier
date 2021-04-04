@@ -18,6 +18,7 @@ description text NOT NULL
 create table card_details
 (card_id int not null primary key,
 seller_id int not null,
+seller_paypal_id varchar(250) not null,
 price decimal(4,2) NOT NULL,
 constraint card_details_fk foreign key(card_id) references card(card_id) on delete cascade on update cascade
 )ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -78,18 +79,18 @@ insert into card (pokemon_name, pokemon_type, image_path) values
 ('Butterfree', 'Flying', 'https://assets.pokemon.com/assets/cms2/img/cards/web/SM1/SM1_EN_3.png');
 */
 
-insert into card_details (card_id, seller_id, price) values
-((select card_id from card where pokemon_name='Charizard'), 2, 40.10),
-((select card_id from card where pokemon_name='Bulbasaur'), 2, 10.99),
-((select card_id from card where pokemon_name='Squirtle'), 2, 10.99),
-((select card_id from card where pokemon_name='Charmander'), 2, 10.99),
-((select card_id from card where pokemon_name='Caterpie'), 2, 12.15),
-((select card_id from card where pokemon_name='Metapod'), 2, 12.15),
-((select card_id from card where pokemon_name='Wartortle'), 2, 25.78),
-((select card_id from card where pokemon_name='Rattata'), 2, 10.99),
-((select card_id from card where pokemon_name='Pidgeot'), 2, 12.45),
-((select card_id from card where pokemon_name='Kakuna'), 2, 12.76),
-((select card_id from card where pokemon_name='Ivysaur'), 2, 20.78),
-((select card_id from card where pokemon_name='Butterfree'), 2, 18.99);
+insert into card_details (card_id, seller_id, seller_paypal_id, price) values
+((select card_id from card where pokemon_name='Charizard'), 2, "AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78", 40.10),
+((select card_id from card where pokemon_name='Bulbasaur'), 2, "AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78", 10.99),
+((select card_id from card where pokemon_name='Squirtle'), 2, "AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78", 10.99),
+((select card_id from card where pokemon_name='Charmander'), 2, "AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78", 10.99),
+((select card_id from card where pokemon_name='Caterpie'), 2, "AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78", 12.15),
+((select card_id from card where pokemon_name='Metapod'), 2, "AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78", 12.15),
+((select card_id from card where pokemon_name='Wartortle'), 2, "AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78", 25.78),
+((select card_id from card where pokemon_name='Rattata'), 2, "AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78", 10.99),
+((select card_id from card where pokemon_name='Pidgeot'), 2, "AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78", 12.45),
+((select card_id from card where pokemon_name='Kakuna'), 2, "AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78", 12.76),
+((select card_id from card where pokemon_name='Ivysaur'), 2, "AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78", 20.78),
+((select card_id from card where pokemon_name='Butterfree'), 2, "AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78", 18.99);
 
 select * from `card`;

@@ -6,17 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokemon Center</title>
 
-    <link rel="stylesheet" href="css/BF_UI.css">
+    <link rel="stylesheet" href="css/BF UI.css">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-    <script src="https://www.paypal.com/sdk/js?client-id=AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78"></script>
-    
-
 </head>
 
 
@@ -26,8 +22,6 @@
       <img src="../assets/BF_Logo.png" height="100" >
       <h1> Welcome Battle Frontier Admin</h1>
     </div>
-    
-
 
     <!-- To pay seller  -->
     <div>  
@@ -52,7 +46,6 @@
 
     
   <script>
-
     // Helper function to display error message
     function showError(message) {
         // Display an error under the main container
@@ -61,8 +54,8 @@
     
     }
 
-    function release(payment_id){
-        var queryString = "?payment_id=" + payment_id;
+    function release(payment_id, seller_paypal_id){
+        var queryString = "?payment_id=" + payment_id +"&seller_paypal_id=" + seller_paypal_id;
         window.location.replace(
             'BF_release.html'+queryString,
             '_blank' // <- This is what makes it open in a new window.
@@ -166,7 +159,7 @@
                                                         <td class="space"></td>
                                 
                                                         <td>
-                                                            <button id="`+payment_id_1+`" type="button" class="btn btn-success" onClick="release(this.id)">Pay Seller!</button>
+                                                            <button id="`+payment_id_1+`" type="button" class="btn btn-success" value="`+card_details_1.seller_paypal_id+`" onClick="release(this.id, this.value)">Pay Seller!</button>
                                                         </td>
                                 
                                                     </tr>

@@ -43,13 +43,14 @@ class Card_details(db.Model):
     card_id = db.Column(db.ForeignKey(
         'card.card_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True, primary_key=True)
     seller_id = db.Column(db.Integer, nullable=False)
+    seller_paypal_id = db.Column(db.String(250), nullable=False)
     price = db.Column(db.Numeric(4,2), nullable=False)
 
     card = db.relationship(
         'Card', primaryjoin='Card_details.card_id == Card.card_id', backref='card_details')
 
     def json(self):
-        return {'seller_id': self.seller_id, 'price': self.price, 'card_id': self.card_id}
+        return {'seller_id': self.seller_id, 'seller_paypal_id': self.seller_paypal_id, 'price': self.price, 'card_id': self.card_id}
     
 @app.route('/')
 def serviceIsRunning():
@@ -107,7 +108,7 @@ def addPokemonCard():
     
     # seller_id = request.get_json('seller_id', None)
     # price = request.get_json('price', None)
-    card.card_details.append(Card_details(seller_id=data["seller_id"], price=data['price']))
+    card.card_details.append(Card_details(seller_id=data["seller_id"], seller_paypal_id=data["seller_paypal_id"], price=data['price']))
     
     try:
         db.session.add(card)

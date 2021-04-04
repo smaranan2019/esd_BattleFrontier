@@ -93,4 +93,4 @@ def index():
     return "Service is running!"
 
 if __name__ == "__main__":
-    app.run(port=5300, debug=True, threaded=True)
+    app.run(port=5004, debug=True, threaded=True)

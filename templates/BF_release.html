@@ -14,8 +14,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-    <script src="https://www.paypal.com/sdk/js?client-id=AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78"></script>
-    
+    <!-- <script src="https://www.paypal.com/sdk/js?client-id=AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78"></script> -->
+
 </head>
 
 
@@ -40,6 +40,21 @@
     
   <script>
 
+    var queryString = decodeURIComponent(window.location.search);
+    queryString = queryString.substring(1);
+    var temp = queryString.split("&");
+    // var payment_id = temp[0].split("=")[1];
+    var seller_paypal_id = temp[1].split("=")[1];
+
+    // console.log(seller_paypal_id);
+
+    let myScript = document.createElement("script");
+    myScript.setAttribute("src", "https://www.paypal.com/sdk/js?client-id="+String(seller_paypal_id));
+    myScript.setAttribute("async", "false");
+
+    let head = document.head;
+    head.insertBefore(myScript, head.firstElementChild);
+
     // Helper function to display error message
     function showError(message) {
         // Display an error under the main container
@@ -48,7 +63,7 @@
     
     }
 
-    function complete(payment_id){
+    function release(payment_id){
         $(async() => {           
             var serviceURL = "http://127.0.0.1:5600/change-payment-release-status/" + String(payment_id);
             console.log(serviceURL);
@@ -76,7 +91,7 @@
 
                     //redirect to buy_sell.html
                     //<meta http-equiv="Refresh" content="0; url='buy_sell.html'" />
-                    window.location.reload();
+                    window.location.replace("BF_UI.html");
 
                     } else if (response.status == 500) {
                         // Cannot create account
@@ -95,117 +110,124 @@
         });
     }
 
+    function view_card(){
+        $(async() => {           
+            // Change serviceURL to your own
 
-    $(async() => {           
-        // Change serviceURL to your own
-        var queryString = decodeURIComponent(window.location.search);
-        queryString = queryString.substring(1);
-        var temp = queryString.split("=");
-        var payment_id = temp[1];
+            var queryString = decodeURIComponent(window.location.search);
+            queryString = queryString.substring(1);
+            var temp = queryString.split("&");
+            var payment_id = temp[0].split("=")[1];
 
-        var serviceURL = "http://127.0.0.1:5400/display-cards-releasable/"+String(payment_id);
-    
-        try {
-            const response =
-                await fetch(
-                serviceURL, {method: 'GET'}
-            );
-            const result = await response.json();
-                if (response.status === 200) {
-                // success case
-                if (result.code == 200){
-                    var payment = result.data.payment_result.data; 
-                    var payment_add_on = "";
+            var serviceURL = "http://127.0.0.1:5400/display-cards-releasable/"+String(payment_id);
+            console.log(serviceURL);
+        
+            try {
+                const response =
+                    await fetch(
+                    serviceURL, {method: 'GET'}
+                );
+                const result = await response.json();
+                    if (response.status === 200) {
+                    // success case
+                    if (result.code == 200){
+                        var payment = result.data.payment_result.data; 
+                        var payment_add_on = "";
 
-                    var payment_id = payment.payment_id;
-                    var modified = payment.modified;
-                    var image_path = payment.card_display.image_path;
-                    var pokemon_name = payment.card_display.pokemon_name;
-                    var pokemon_type = payment.card_display.pokemon_type;
-                    var description = payment.card_display.description;
-                    var card_details = payment.card_display.card_details[0];
-                    var payment_details = payment.payment_details[0];
+                        var payment_id = payment.payment_id;
+                        var modified = payment.modified;
+                        var image_path = payment.card_display.image_path;
+                        var pokemon_name = payment.card_display.pokemon_name;
+                        var pokemon_type = payment.card_display.pokemon_type;
+                        var description = payment.card_display.description;
+                        var card_details = payment.card_display.card_details[0];
+                        var payment_details = payment.payment_details[0];
+                        var seller_paypal_id = card_details.seller_paypal_id;
 
-                    eachPayment = `<div class="col d-flex justify-content-center space_above">
-                                    <div class="card card_box">
-                                        <div class="card-body" >
-                                            <table>
-                                                <tr>
-                                                    <td> 
-                                                        <img class="card-img-top card_img" src="`+image_path+`" alt="Card image cap">
-                                                    </td>
-                            
-                                                    <td class="space"></td>
-                                                    
-                                                    <td class="card_details">
-                                                        <h5 class="card-title">`+pokemon_name+`</h5>
-                                                        <h6 class="card-subtitle mb-2">Sold by: `+card_details.seller_username+`</h6>
-                                                        <h6 class="card-subtitle mb-2">Amount: SGD$ `+payment_details.amount+` </h6>
-                                                        <h6 class="card-subtitle mb-2">Description: `+description+`</h6>
-                            
-                                                    </td>
-                            
-                                                    <td class="space"></td>
-                            
-                                                    <td>
-                                                            <div id="paypal-button-container"></div>
-                                                    </td>
-                            
-                                                </tr>
-                                            </table>
-                            
+                        eachPayment = `<div class="col d-flex justify-content-center space_above">
+                                        <div class="card card_box">
+                                            <div class="card-body" >
+                                                <table>
+                                                    <tr>
+                                                        <td> 
+                                                            <img class="card-img-top card_img" src="`+image_path+`" alt="Card image cap">
+                                                        </td>
+                                
+                                                        <td class="space"></td>
+                                                        
+                                                        <td class="card_details">
+                                                            <h5 class="card-title">`+pokemon_name+`</h5>
+                                                            <h6 class="card-subtitle mb-2">Sold by: `+card_details.seller_username+`</h6>
+                                                            <h6 class="card-subtitle mb-2">Amount: SGD$ `+payment_details.amount+` </h6>
+                                                            <h6 class="card-subtitle mb-2">Description: `+description+`</h6>
+                                
+                                                        </td>
+                                
+                                                        <td class="space"></td>
+                                
+                                                        <td>
+                                                                <div id="paypal-button-container"></div>
+                                                        </td>
+                                
+                                                    </tr>
+                                                </table>
+                                
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <p></p>
-                                </div>
-                                `
-                    payment_add_on += eachPayment;  
-                    // add all the rows to the table
-                    $('#releasable').append(payment_add_on);
+                                    <div>
+                                        <p></p>
+                                    </div>
+                                    `
+                        payment_add_on += eachPayment;  
+                        // add all the rows to the table
+                        $('#releasable').append(payment_add_on);
 
-                    paypal.Buttons({
-                            createOrder: function(data, actions) {
-                                // This function sets up the details of the transaction, including the amount and line item details.
-                                return actions.order.create({
-                                purchase_units: [{
-                                    amount: {
-                                    value: payment_details.amount
-                                    }
-                            }]
-                            });
-                            },
-                            onApprove: function(data, actions) {
-                                // This function captures the funds from the transaction.
-                                return actions.order.capture().then(function(details) {
-                                // This function shows a transaction success message to your buyer.
-                                alert('Transaction completed by ' + details.payer.name.given_name);
-                                
-                                release(payment_id);
+
+                        paypal.Buttons({
+                                createOrder: function(data, actions) {
+                                    // This function sets up the details of the transaction, including the amount and line item details.
+                                    return actions.order.create({
+                                    purchase_units: [{
+                                        amount: {
+                                        value: payment_details.amount
+                                        }
+                                }]
                                 });
-                            }
-                            }).render('#paypal-button-container');
-                            //This function displays Smart Payment Buttons on your web page.
-                }
-                else {
-                    //document.getElementById("refundable").innerHTML = "";
-                    $('#releasable').append(`<h2>You have no orders that need releasing at the moment!</h2>`);
-                }
-                } else if (response.status == 404) {
-                    // No payments
-                    showError(result.message);
-                } else {
-                    // unexpected outcome, throw the error
-                    throw response.status;
-                }
-            } catch (error) {
-                // Errors when calling the service; such as network error, 
-                // service offline, etc
-                showError
-                ('There is a problem retrieving payment data, please try again later.<br />' + error);
-            } // error
-    });    
+                                },
+                                onApprove: function(data, actions) {
+                                    // This function captures the funds from the transaction.
+                                    return actions.order.capture().then(function(details) {
+                                    // This function shows a transaction success message to your buyer.
+                                    alert('Transaction completed by ' + details.payer.name.given_name);
+                                    
+                                    release(payment_id);
+                                    });
+                                }
+                                }).render('#paypal-button-container');
+                                //This function displays Smart Payment Buttons on your web page.
+                    }
+                    else {
+                        //document.getElementById("refundable").innerHTML = "";
+                        $('#releasable').append(`<h2>You have no orders that need releasing at the moment!</h2>`);
+                    }
+                    } else if (response.status == 404) {
+                        // No payments
+                        showError(result.message);
+                    } else {
+                        // unexpected outcome, throw the error
+                        throw response.status;
+                    }
+                } catch (error) {
+                    // Errors when calling the service; such as network error, 
+                    // service offline, etc
+                    showError
+                    ('There is a problem retrieving payment data, please try again later.<br />' + error);
+                } // error
+        });    
+    }
+
+    window.onload = view_card;
 
   </script>
 </body>
