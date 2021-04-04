@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+import requests
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/accountdb'
@@ -17,7 +18,7 @@ class User(db.Model):
     User_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(255), nullable=False)
     telehandle = db.Column(db.String(255), nullable=False)
-    telechat_ID = db.Column(db.Integer, nullable=False, default=307267966)
+    telechat_ID = db.Column(db.String(255), nullable=False, default="961849285")
     Paypal_Email = db.Column(db.String(255))
     password = db.Column(db.String(255))
 
@@ -43,6 +44,23 @@ class User(db.Model):
 def addUser():
     data = request.get_json()
     print(data)
+
+    if "@" in data["telehandle"]:
+        data["telehandle"] = data["telehandle"].replace("@", "")
+
+    updates = requests.get("https://api.telegram.org/bot1641597329:AAFVhB4MAHU39OUZs_JhyY0SexezTHwDvIg/getUpdates")
+
+    updates_json = updates.json()
+
+    chat_id = ""
+
+    for item in updates_json["result"]:
+        if item["message"]["chat"]["username"] == data["telehandle"]:
+            chat_id = item["message"]["chat"]["id"]
+
+    
+    data["telechat_ID"] = chat_id
+
     try:
         existing_user = User.query.filter_by(Username=data["username"]).first() 
         if (existing_user):
@@ -55,7 +73,7 @@ def addUser():
     except:
         pass
 
-    user = User(**data)
+    user = User(username=data["username"], telehandle=data["telehandle"], telechat_ID=data["telechat_ID"], Paypal_Email=data["Paypal_email"], password=data["password"])
 
     try:
         db.session.add(user)

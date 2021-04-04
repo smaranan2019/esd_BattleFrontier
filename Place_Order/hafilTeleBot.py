@@ -33,7 +33,7 @@ def sendNotif():
         return jsonify(
             {
                 "code" : 500,
-                "message" : str(e)
+                "message" : "Failed to send notification." + str(e)
             }
         )
     return jsonify(
