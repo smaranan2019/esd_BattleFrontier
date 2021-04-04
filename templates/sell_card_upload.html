@@ -88,6 +88,12 @@
           <input type="float" class="form-control" id="poke_price" placeholder="50">
         </div>
 
+        <div class="form-group ">
+          <label for="paypal_client_id">Paypal Client ID</label>
+          <input type="text" class="form-control" id="paypal_client_id" placeholder="AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78">
+        </div>
+
+
 
       <button type="submit" id="submit" class="btn btn-primary mb-2 release_btn">Release pokemon!</button>  
       </div>
@@ -139,6 +145,7 @@
           var image_path =  $("#poke_img").val();
           var description = $("#poke_desc").val();
           var price = $("#poke_price").val();
+          var paypal_client_id = $("#paypal_client_id").val();
 
           var serviceURL = "http://127.0.0.1:5005/addPokemonCard";
     
@@ -154,7 +161,8 @@
                               image_path: image_path,
                               description: description, 
                               price: price, 
-                              seller_id: seller_id
+                              seller_id: seller_id,
+                              paypal_client_id: paypal_client_id
                             })
                 });
                 const result = await response.json();
