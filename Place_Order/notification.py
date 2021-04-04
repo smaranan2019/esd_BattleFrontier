@@ -40,11 +40,11 @@ def sendNotif(data):
         return json.dumps({
                 "code" : 500,
                 "message" : "Failed to send notification." + str(e)
-            }), 500
+            })
     return json.dumps({
             "code": 200,
             "message": "Notification has been sent"
-        }), 200
+        })
 def receiveNotifLog():
     # with app.app_context():
 
