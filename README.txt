@@ -4,11 +4,18 @@ ESD_BATTLEFRONTIER/BF_backend_ms/docker-compose.yml is used for creating and sta
 
 To run the application, here's what you need to do :>
 
-1) Open /BF_backend_ms and see the docker-compose.yml file. Run
+1) Start WAMP and go to phpMyAdmin. Import all the sql files in /sql folder. These includes:
+    - AccountDB.sql
+    - CardDB.sql
+    - OrderDB.sql
+    - PaymentDB.sql
+    - ShippingDB.sql
+
+2) Open /BF_backend_ms and see the docker-compose.yml file. Run
     docker-compose build
-2) Run WAMP
-3) Go to localhost phpmyadmin and create an sql user called is213
-4) Run
+3) Make sure that WAMP/MAMP is running
+4) Go to localhost phpmyadmin and create an sql user called is213
+5) Run
     docker-compose up -d
 5) Run
     docker image ls 
