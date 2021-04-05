@@ -109,7 +109,7 @@ def processChangePaymentReleaseStatus(payment,payment_id):
     shipping_id =  shipping_result_1["data"]["shipping_id"]
     shipping = {
         "shipping_id": shipping_id,
-        "receive_status": "COMPLETE"
+        "receive_status": "COMPLETED"
     }
 
     print('\n-----Invoking shipping microservice-----')
