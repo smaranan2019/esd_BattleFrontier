@@ -5,10 +5,12 @@
 import json
 import os
 
-import ampq_setup as amqp_setup
+import amqp_setup as amqp_setup 
 import requests
 from invokes import invoke_http
+from os import environ
 
+bftelebot_URL = environ.get('bftelebot_URL') or "http://127.0.0.1:5004/send-notification"
 
 monitorBindingKey='#'
 
@@ -31,7 +33,7 @@ def processNotifLog(order):
     print("Recording a notification log:")
     print(order)
 
-    notification_sent = invoke_http('http://127.0.0.1:5004/send-notification', method='POST', json=order)
+    notification_sent = invoke_http(bftelebot_URL, method='POST', json=order)
     print(notification_sent)
 
 

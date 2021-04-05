@@ -7,7 +7,7 @@ from os import environ
 import requests
 from invokes import invoke_http
 
-import ampq_setup as amqp_setup 
+import amqp_setup as amqp_setup 
 import pika
 import json
 
@@ -16,8 +16,9 @@ import time
 app = Flask(__name__)
 CORS(app)
 
-payment_URL = "http://localhost:5002/"
-shipping_URL = "http://localhost:5003/"
+account_URL = environ.get('account_URL') or "http://127.0.0.1:5000/find-user-id/"
+payment_URL = environ.get('payment_URL') or "http://localhost:5002/"
+shipping_URL = environ.get('shipping_URL') or "http://localhost:5003/"
 
 @app.route('/update-shipping/<string:shipping_id>', methods=["PUT"])
 def update_shipping(shipping_id):
@@ -93,10 +94,26 @@ def update_shipping(shipping_id):
             # order_id = shipping_updated["data"]["shipping_details"][0]["order_id"]
             # order_details = invoke_http(order_URL + "order/" + str(order_id))
 
+            # message = {
+            #     "code": 201,
+            #     "message": "Order has been shipped!",
+            #     "status": "shipped"
+            # }
+            
+            buyer_id = shipping_updated["data"]["shipping_details"][0]["seller_id"]
+    
+            print('\n-----Invoking account microservice-----')
+            buyer = invoke_http(account_URL+str(buyer_id), method="GET")
+            
+            code = buyer["code"]
+            if code not in range(200, 300):
+                buyer_chat_id = 835159639 #default chat_id
+            else:
+                buyer_chat_id = buyer["data"]["telechat_ID"]
+            
             message = {
-                "code": 201,
-                "message": "Order has been shipped!",
-                "status": "shipped"
+                "telechat_id": buyer_chat_id,
+                "message": "You have a new ship on the way!"
             }
 
             message = json.dumps(message)
