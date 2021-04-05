@@ -4,5 +4,41 @@ ESD_BATTLEFRONTIER/BF_backend_ms/docker-compose.yml is used for creating and sta
 
 To run the application, here's what you need to do :>
 
-1) Build rabbitmq-mgmt image. We are using the same image as Lab 6, but if you don't have a rabbitmq-mgmt image when running docker images, open CMD window and run:
-    docker run -d --hostname esd-rabbit --name rabbitmq-mgmt -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+1) Open /BF_backend_ms and see the docker-compose.yml file. Run
+    docker-compose build
+2) Run WAMP
+3) Go to localhost phpmyadmin and create an sql user called is213
+4) Run
+    docker-compose up -d
+5) Run
+    docker image ls 
+    to make sure that all the images are created
+5) Copy the file BF_frontend to C:\wamp64\www\ and open it in a browser by accessing http://localhost/BF_frontend/templates/login.html 
+6) Use cases:
+    1) As Seller:
+        a) Sign up
+            Go to http://localhost/BF_frontend/templates/signup.html and key in:
+                Username: Ash Ketchum
+                Telehandle: (Your telehandle)
+                Paypal Email: gotta_ketchum_all@personal.example.com
+                Password: Anything can
+            Once succeeded, proceed to login
+        b) Add cards as Seller
+        c) Receive notification for new shipping and Approve/ Reject Shipping
+        d) See all new, in transit and complete Shipping
+    2) As Buyer:
+        a) Sign up
+            Go to http://localhost/BF_frontend/templates/signup.html and key in:
+                Username: Ash Ketchum
+                Telehandle: (Your telehandle)
+                Paypal Email: gotta_ketchum_all@personal.example.com
+                Password: Anything can
+            Once succeeded, click _____ and log in
+        b) View all available cards
+        c) Select cards and make payment
+        d) Receive notification for shipped order and Confirm received order
+        e) See all Completed Shipping and Refunded order
+    3) As Business:
+        a) Release payment to Seller for completed order
+        b) Refund payment to Buyer with failed orders 
+
