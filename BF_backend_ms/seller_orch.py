@@ -100,10 +100,12 @@ def update_shipping(shipping_id):
             #     "status": "shipped"
             # }
             
-            buyer_id = shipping_updated["data"]["shipping_details"][0]["seller_id"]
+            buyer_id = shipping_updated["data"]["shipping_details"][0]["buyer_id"]
     
             print('\n-----Invoking account microservice-----')
             buyer = invoke_http(account_URL+str(buyer_id), method="GET")
+            
+            print(buyer)
             
             code = buyer["code"]
             if code not in range(200, 300):
@@ -115,7 +117,7 @@ def update_shipping(shipping_id):
                 "telechat_id": buyer_chat_id,
                 "message": "You have a new ship on the way!"
             }
-
+            
             message = json.dumps(message)
 
             amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="#", 

@@ -80,20 +80,6 @@ services:
     ports:
         - "5003:5003"
 
-  #######################################
-  # BFTelebot: The BFTelebot microservice
-  #######################################
-  bftelebot:
-    build:
-      context: ./
-      dockerfile: bftelebot.Dockerfile
-    image: royaladvisor26/bftelebot:esdg9t6
-    restart: always
-    environment:
-      PYTHONUNBUFFERED: 1
-    ports:
-        - "5004:5004"
-
   ###############################################
   # Display_Cards: The Display_Cards microservice
   ###############################################
@@ -160,9 +146,7 @@ services:
     restart: always
     depends_on:
       - rabbitmq
-      - bftelebot
     environment:
-      bftelebot_URL: "http://bftelebot:5004/send-notification"
       rabbit_host: rabbitmq
       rabbit_port: 5672
       PYTHONUNBUFFERED: 1
@@ -183,7 +167,6 @@ services:
       - shipping
       - rabbitmq
       - notification
-      - bftelebot
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672
@@ -210,7 +193,6 @@ services:
       - shipping
       - rabbitmq
       - notification
-      - bftelebot
     environment:
       rabbit_host: rabbitmq
       rabbit_port: 5672

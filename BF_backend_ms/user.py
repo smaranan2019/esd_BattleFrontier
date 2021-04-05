@@ -59,7 +59,6 @@ def addUser():
     for item in updates_json["result"]:
         if item["message"]["chat"]["username"] == data["telehandle"]:
             chat_id = item["message"]["chat"]["id"]
-
     
     data["telechat_ID"] = chat_id
 
