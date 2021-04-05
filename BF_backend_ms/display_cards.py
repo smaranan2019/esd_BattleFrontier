@@ -10,8 +10,8 @@ from invokes import invoke_http
 app = Flask(__name__)
 CORS(app)
 
-account_URL = "http://127.0.0.1:5000/find-user-id/"
-card_URL = "http://localhost:5005/"
+account_URL = environ.get('account_URL') or "http://127.0.0.1:5000/find-user-id/"
+card_URL = environ.get('card_URL') or "http://localhost:5005/"
 
 @app.route("/display-cards", methods=['GET'])
 def display_cards():

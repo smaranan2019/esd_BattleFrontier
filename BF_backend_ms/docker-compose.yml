@@ -1,0 +1,242 @@
+version: "3.8"
+
+volumes:
+  rabbitmq_data:
+
+services:
+ 
+  #############################
+  # User: The User microservice
+  #############################
+  user:
+    build:
+      context: ./
+      dockerfile: user.Dockerfile
+    image: royaladvisor26/user:esdg9t6
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/accountDB
+      PYTHONUNBUFFERED: 1
+    ports:
+        - "5000:5000"
+ 
+  #############################
+  # Card: The Card microservice
+  #############################
+  card_upload:
+    build:
+      context: ./
+      dockerfile: card_upload.Dockerfile
+    image: royaladvisor26/card_upload:esdg9t6
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/cardDB
+      PYTHONUNBUFFERED: 1
+    ports:
+        - "5005:5005"
+    
+  ###############################
+  # Order: The Order microservice
+  ###############################
+  order:
+    build:
+      context: ./
+      dockerfile: order.Dockerfile
+    image: royaladvisor26/order:esdg9t6
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/orderDB
+      PYTHONUNBUFFERED: 1
+    ports:
+        - "5001:5001"
+
+  ###################################
+  # Payment: The Payment microservice
+  ###################################
+  payment:
+    build:
+      context: ./
+      dockerfile: payment.Dockerfile
+    image: royaladvisor26/payment:esdg9t6
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/paymentDB
+      PYTHONUNBUFFERED: 1
+    ports:
+        - "5002:5002"
+
+  #####################################
+  # Shipping: The Shipping microservice
+  #####################################
+  shipping:
+    build:
+      context: ./
+      dockerfile: shipping.Dockerfile
+    image: royaladvisor26/shipping:esdg9t6
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/shippingDB
+      PYTHONUNBUFFERED: 1
+    ports:
+        - "5003:5003"
+
+  #######################################
+  # BFTelebot: The BFTelebot microservice
+  #######################################
+  bftelebot:
+    build:
+      context: ./
+      dockerfile: bftelebot.Dockerfile
+    image: royaladvisor26/bftelebot:esdg9t6
+    restart: always
+    environment:
+      PYTHONUNBUFFERED: 1
+    ports:
+        - "5004:5004"
+
+  ###############################################
+  # Display_Cards: The Display_Cards microservice
+  ###############################################
+  display_cards:
+    build:
+      context: ./
+      dockerfile: display_cards.Dockerfile
+    image: royaladvisor26/display_cards:esdg9t6
+    restart: always
+    depends_on:
+        - user
+        - card_upload
+    environment:
+      account_URL: "http://user:5000/find-user-id/"
+      card_URL: "http://card_upload:5005/"
+      PYTHONUNBUFFERED: 1
+    ports:
+        - "5300:5300"
+
+  ###############################################
+  # Display_Order: The Display_Order microservice
+  ###############################################
+  display_order:
+    build:
+      context: ./
+      dockerfile: display_order.Dockerfile
+    image: royaladvisor26/display_order:esdg9t6
+    restart: always
+    depends_on:
+        - display_cards
+        - order
+        - payment
+        - shipping
+    environment:
+        display_card_URL: "http://display_cards:5300/display-card/"
+        order_URL: "http://order:5001/order/"
+        payment_URL: "http://payment:5002/"
+        shipping_URL: "http://shipping:5003/"
+        PYTHONUNBUFFERED: 1
+    ports:
+        - "5400:5400"
+
+  ################################
+  # RabbitMQ: The messaging broker   
+  ################################
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: esd-rabbit
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  #############################################
+  # Notification: The Notification microservice
+  #############################################
+  notification:
+    build:
+      context: ./
+      dockerfile: notification.Dockerfile
+    image: royaladvisor26/notifcation:esdg9t6
+    restart: always
+    depends_on:
+      - rabbitmq
+      - bftelebot
+    environment:
+      bftelebot_URL: "http://bftelebot:5004/send-notification"
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+
+  #########################################################
+  # Buyer_Orchestrator: The Buyer_Orchestrator microservice
+  #########################################################
+  buyer_orch:
+    build:
+      context: ./
+      dockerfile: buyer_orch.Dockerfile
+    image: royaladvisor26/buyer_orch:esdg9t6
+    restart: always
+    depends_on:
+      - user
+      - order
+      - payment
+      - shipping
+      - rabbitmq
+      - notification
+      - bftelebot
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      account_URL: "http://user:5000/find-user-id/"
+      order_URL: "http://order:5001/"
+      payment_URL: "http://payment:5002/"
+      shipping_URL: "http://shipping:5003/"
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5100:5100"
+
+  ###########################################################
+  # Seller_Orchestrator: The Seller_Orchestrator microservice
+  ###########################################################
+  seller_orch:
+    build:
+      context: ./
+      dockerfile: seller_orch.Dockerfile
+    image: royaladvisor26/seller_orch:esdg9t6
+    restart: always
+    depends_on:
+      - user
+      - payment
+      - shipping
+      - rabbitmq
+      - notification
+      - bftelebot
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      account_URL: "http://user:5000/find-user-id/"
+      payment_URL: "http://payment:5002/"
+      shipping_URL: "http://shipping:5003/"
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5200:5200"
+
+  ###############################################################
+  # Business_Orchestrator: The Business_Orchestrator microservice
+  ###############################################################
+  business_orch:
+    build:
+      context: ./
+      dockerfile: business_orch.Dockerfile
+    image: royaladvisor26/business_orch:esdg9t6
+    restart: always
+    depends_on:
+      - payment
+      - shipping
+    environment:
+      payment_URL: "http://payment:5002/"
+      shipping_URL: "http://shipping:5003/"
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5600:5600"
+

@@ -12,8 +12,8 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-payment_URL = "http://127.0.0.1:5002/"
-shipping_URL = "http://127.0.0.1:5003/"
+payment_URL = environ.get('payment_URL') or "http://127.0.0.1:5002/"
+shipping_URL = environ.get('shipping_URL') or "http://127.0.0.1:5003/"
 
 @app.route("/change-payment-refund-status/<string:payment_id>", methods=["PUT"])
 def change_payment_refund_status(payment_id):
@@ -46,7 +46,7 @@ def processChangePaymentRefundStatus(payment,payment_id):
         return {
             "code": 500,
             "data": {"payment_result": payment_result},
-            "message": "Payment status change failture."
+            "message": "Payment status change failure."
         }
     return {
         "code": 201,
@@ -109,7 +109,7 @@ def processChangePaymentReleaseStatus(payment,payment_id):
     shipping_id =  shipping_result_1["data"]["shipping_id"]
     shipping = {
         "shipping_id": shipping_id,
-        "receive_status": "COMPLETE"
+        "receive_status": "COMPLETED"
     }
 
     print('\n-----Invoking shipping microservice-----')

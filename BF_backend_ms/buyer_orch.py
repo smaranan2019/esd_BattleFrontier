@@ -7,17 +7,17 @@ from os import environ
 import requests
 from invokes import invoke_http
 
-import ampq_setup as amqp_setup
+import amqp_setup as amqp_setup
 import pika
 import json
 
 app = Flask(__name__)
 CORS(app)
 
-account_URL = "http://127.0.0.1:5000/find-user-id/"
-order_URL = "http://127.0.0.1:5001/"
-payment_URL = "http://127.0.0.1:5002/"
-shipping_URL = "http://127.0.0.1:5003/"
+account_URL = environ.get('account_URL') or "http://127.0.0.1:5000/find-user-id/"
+order_URL = environ.get('order_URL') or "http://127.0.0.1:5001/"
+payment_URL = environ.get('payment_URL') or "http://127.0.0.1:5002/"
+shipping_URL = environ.get('shipping_URL') or "http://127.0.0.1:5003/"
 
 
 @app.route("/place-order", methods=['POST'])
@@ -148,7 +148,7 @@ def processChangePaymentStatus(payment,payment_id):
        
     code = seller["code"]
     if code not in range(200, 300):
-        seller_chat_id = 307267966 #default chat_id
+        seller_chat_id = "961849285" #default chat_id
     else:
         seller_chat_id = seller["data"]["telechat_ID"]
     

@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 import telegram
 
+import os
+
 app = Flask(__name__)
 
 TOKEN = "1641597329:AAFVhB4MAHU39OUZs_JhyY0SexezTHwDvIg"
@@ -12,23 +14,22 @@ bot = telegram.Bot(token=TOKEN)
 def sendNotif():
     data = request.get_json()
 
-    # if "chat_id" in data:
-    #     chat_id = data["chat_id"]
-    # else:
-    # chat_id = "961849285"
-    chat_id = "37579573"
-    
-    msg = {
-        "Shipped": "Your order has been shipped",
-        "Received": "Your order has been received"
-    }
+    if "telechat_id" in data:
+        telechat_id = data["telechat_id"]
+    else:
+        telechat_id = "835159639"
+        
+    if "message" in data:
+        message = data["message"]
+    else:
+        message = "This is a generated text for business user. Some user just paid/ shipped"
 
     print("#############################################################")
     print(data)
     print("#############################################################")
 
     try:
-        bot.sendMessage(chat_id=chat_id, text="Shipped!")
+        bot.sendMessage(chat_id=telechat_id, text=message)
     except Exception as e:
         return jsonify(
             {
@@ -92,5 +93,8 @@ def sendNotif():
 def index():
     return "Service is running!"
 
+# Execute this program if it is run as a main script (not by 'import')
 if __name__ == "__main__":
-    app.run(port=5004, debug=True, threaded=True)
+    print("This is flask " + os.path.basename(__file__) +
+          " for sending telegram message...")
+    app.run(host="0.0.0.0", port=5004, debug=True, threaded=True)

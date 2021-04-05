@@ -10,16 +10,16 @@ from invokes import invoke_http
 app = Flask(__name__)
 CORS(app)
 
-display_card_URL = "http://127.0.0.1:5300/display-card/"
-order_URL = "http://127.0.0.1:5001/order/"
-payment_URL = "http://127.0.0.1:5002/"
-shipping_URL = "http://127.0.0.1:5003/"
+display_card_URL = environ.get('display_card_URL') or "http://127.0.0.1:5300/display-card/"
+order_URL = environ.get('order_URL') or "http://127.0.0.1:5001/order/"
+payment_URL = environ.get('payment_URL') or "http://127.0.0.1:5002/"
+shipping_URL = environ.get('shipping_URL') or "http://127.0.0.1:5003/"
 
 @app.route("/display-cards-payment-buyer/<string:buyer_id>", methods=['GET'])
 def display_cards_payment_buyer(buyer_id):
     print('\n-----Invoking payment microservice-----')
     payment_result = invoke_http(payment_URL+'payment-new-buyer/'+buyer_id, method='GET')
-    print('payments_result:', payment_result)
+    print('payment_result:', payment_result)
     
     code = payment_result["code"]
     if code not in range(200, 300):

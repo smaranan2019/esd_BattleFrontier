@@ -6,7 +6,7 @@ create table account
 (User_ID int not null primary key AUTO_INCREMENT,
 Username varchar(255) not null,
 telehandle varchar(255) not null,
-telechat_ID int not null default 307267966,
+telechat_ID varchar(255) not null default "961849285",
 Paypal_Email varchar(255) not null,
 password varchar(255) not null 
 );

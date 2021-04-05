@@ -5,9 +5,10 @@
 import json
 import os
 
-import ampq_setup as amqp_setup
+import amqp_setup as amqp_setup 
 import requests
 from invokes import invoke_http
+from os import environ
 
 from flask import Flask, request, jsonify, make_response
 import telegram
@@ -65,7 +66,6 @@ def callback(channel, method, properties, body): # required signature for the ca
 def processNotifLog(order):
     print("Recording a notification log:")
     print(order)
-
 
     notification_sent = sendNotif(order)
     print(notification_sent)
