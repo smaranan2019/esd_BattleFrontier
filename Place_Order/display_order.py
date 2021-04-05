@@ -37,7 +37,7 @@ def display_cards_payment_buyer(buyer_id):
 
     order_id = payment["order_id"]
     order = invoke_http(order_URL + str(order_id), method="GET")
-    
+
     code = order["code"]
     if code not in range(200, 300):
         # 7. Return error
