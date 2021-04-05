@@ -46,7 +46,7 @@ def processChangePaymentRefundStatus(payment,payment_id):
         return {
             "code": 500,
             "data": {"payment_result": payment_result},
-            "message": "Payment status change failture."
+            "message": "Payment status change failure."
         }
     return {
         "code": 201,
