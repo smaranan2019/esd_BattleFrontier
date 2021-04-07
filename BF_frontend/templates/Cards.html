@@ -28,6 +28,9 @@
     src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
     integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
     crossorigin="anonymous"></script>
+
+    <!-- to html file  -->
+    <style>@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');</style>
    
 </head>
 <body>
@@ -35,7 +38,7 @@
     <!-- Nav Bar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="login.html">
-            <img src="../assets/BF_Logo.png" height="70">
+            <img src="../assets/BF_Logo.png"height ="50">
         </a>
       
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,17 +69,17 @@
                                     </li>
 
                                     <!-- purchases -->
-                                    <li class="nav-item">
+                                    <li class="nav-item" style="width:150%;">
                                     <a class="nav-link" href="buy_payment.html?buyer_id=`+buyer_id+`">Trainer's Coins</a>
                                     </li>
 
                                     <!-- shipping -->
-                                    <li class="nav-item">
+                                    <li class="nav-item" >
                                     <a class="nav-link" href="buy_ship.html?buyer_id=`+buyer_id+`">S.S. Ann</a>
                                     </li>
 
                                     <!-- logout button-->
-                                    <li class="nav-item">
+                                    <li class="nav-item logout-btn">
                                     <a class="nav-link" href="login.html?buyer_id=`+buyer_id+`" ><button class="btn btn-outline-danger" " type="submit">Logout</button></a>
                                     </li>
 
@@ -87,7 +90,13 @@
         function showError(message) {
             // Display an error under the main container
             $('#msg')
-                .append("<label>"+message+"</label>");
+                .append(`
+                <div class="card error_msg">
+                    <div class="card-body">
+                        <label>${message}<label>
+                    </div>
+                </div>
+                `);
       
         }
         console.log('Hi');

@@ -3,7 +3,8 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    /* display: block; */
+    font-family: 'Poppins';
+    /* header*/
 
 }
 
@@ -17,10 +18,6 @@ a {
     
 }
 
-.modal_width {
-    /* width: 40%; */
-    /* width: 40; */
-}
 
 .modal_img {
     width: 40%; 
@@ -43,4 +40,14 @@ a {
 
 .card_img {
     width: 40%;
+}
+
+.logout-btn{
+    margin-left:330%;
+}
+
+.error_msg {
+    position: fixed;
+    top: 50%;
+    left: 30%;
 }

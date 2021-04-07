@@ -15,7 +15,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <!-- <script src="https://www.paypal.com/sdk/js?client-id=AYQc_qAbEPG6CkSMMeg5UKH3jMacRzyZgFkas5omdcccW7A4cBe8mjxcj8iIkRogp3jqJamMhw0mS-78"></script> -->
-
+    <style>@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');</style> 
 </head>
 
 
@@ -59,7 +59,14 @@
     function showError(message) {
         // Display an error under the main container
         $('#msg')
-            .append("<label>"+message+"</label>");
+            .append(`
+                <div class="card error_msg">
+                    <div class="card-body">
+                        <label>${message}<label>
+                    </div>
+                </div>
+                `);
+
     
     }
 

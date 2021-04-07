@@ -1,3 +1,6 @@
+body { 
+    font-family: 'Poppins';
+}
 .box {
     width:300px;
     height:300px;
@@ -38,4 +41,14 @@ a {
 
 .spacing {
     height: 10px;
+}
+
+.logout-btn{
+    margin-left:330%;
+}
+
+.error_msg {
+    position: fixed;
+    top: 50%;
+    left: 30%;
 }

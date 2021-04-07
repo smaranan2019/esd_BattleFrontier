@@ -32,7 +32,7 @@
 
     <!-- paypal script -->
     <script src="https://www.paypal.com/sdk/js?client-id=ARxtF6H9G4ED_9g2UiYQ37WAL3UXcoIMe19yWaYRiKWOYFUYZihDRlj2yc54zABJ4nMjHvNFeg49z-2J"></script>
-
+    <style>@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');</style>
 
 </head>
 <body>
@@ -85,7 +85,7 @@
 
                                     <!-- logout button-->
                                     <li class="nav-item">
-                                    <a class="nav-link" href="login.html?buyer_id=`+buyer_id+`" ><button class="btn btn-outline-danger" "type="submit">Logout</button></a>
+                                    <a class="nav-link " href="login.html?buyer_id=`+buyer_id+`" ><button class="btn btn-outline-danger" "type="submit">Logout</button></a>
                                     </li>
                                     </ul>
                                 `);
@@ -94,7 +94,14 @@
         function showError(message) {
             // Display an error under the main container
             $('#msg')
-                .append("<label>"+message+"</label>");
+                .append(`
+                    <div class="card error_msg">
+                        <div class="card-body">
+                            <label>${message}<label>
+                        </div>
+                    </div>
+                    `);
+
         }
 
         function success(payment_id) {

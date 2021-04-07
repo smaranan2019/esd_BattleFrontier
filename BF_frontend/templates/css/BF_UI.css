@@ -5,3 +5,17 @@
 .space {
     width:5%;
 }
+
+.logout-btn{
+    margin-left:330%;
+}
+
+body {
+    font-family: 'Poppins';
+}
+
+.error_msg {
+    position: fixed;
+    top: 50%;
+    left: 30%;
+}

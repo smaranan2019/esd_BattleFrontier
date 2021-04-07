@@ -28,6 +28,7 @@
   src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
   integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
   crossorigin="anonymous"></script>
+  <style>@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');</style>
 </head>
 <body>
 
@@ -127,7 +128,15 @@
 
         function showMsg(message) {
       // Display an error under the main container
-        $('#msg').append("<label>"+message+"</label>");
+        $('#msg')
+          .append(`
+                  <div class="card error_msg">
+                      <div class="card-body">
+                          <label>${message}<label>
+                      </div>
+                  </div>
+                  `);
+
       }
 
       console.log("Hihihiih");

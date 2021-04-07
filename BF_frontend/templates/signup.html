@@ -9,6 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Join Us!</title>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');</style>
 </head>
 <body>
   
@@ -41,7 +42,7 @@
                     <input type="text" id="Paypal_Email" class="fadeIn second form-control" name="email" placeholder="paypal email">
                   </div>
                   <div class="form-group">
-                    <input type="text" id="password" class="fadeIn third form-control" name="login" placeholder="password">
+                    <input type="password" id="password" class="fadeIn third form-control" name="login" placeholder="password">
                   </div>          
                   <input type="submit" id='submit' class="fadeIn fourth" value="Join the Club!">
                
@@ -73,7 +74,14 @@
         function showMsg(message) {
             // Display an error under the main container
             $('#msg')
-                .append("<label>"+message+"</label>");
+              .append(`
+                  <div class="card error_msg">
+                      <div class="card-body">
+                          <label>${message}<label>
+                      </div>
+                  </div>
+                  `);
+
 
         }
 

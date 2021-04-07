@@ -1,3 +1,8 @@
+/* header to css*/
+body {
+   font-family: 'Poppins';
+   }
+
 .box {
     width:30%;
     height: auto;
@@ -27,3 +32,13 @@
  .release_btn {
     margin-left: 30%;
  }
+
+ .logout-btn{
+   margin-left:330%;
+}
+
+.error_msg {
+   position: fixed;
+   top: 50%;
+   left: 30%;
+}

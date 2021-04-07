@@ -3,6 +3,7 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
+    font-family: 'Poppins';
 }
 
 .paid {
@@ -36,3 +37,13 @@ body {
   .spacing {
     margin-top: 5px;
   }
+
+  .logout-btn{
+    margin-left:330%;
+}
+
+.error_msg {
+    position: fixed;
+    top: 50%;
+    left: 30%;
+}
