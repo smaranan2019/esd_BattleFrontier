@@ -24,8 +24,10 @@ create table `shipping_details`
 constraint `shipping_details_fk` foreign key(`shipping_id`) references `shipping`(`shipping_id`)
 ); 
 
-insert into `shipping`(`payment_id`) values 
-(2),(3);
+insert into `shipping`(`payment_id`, `shipping_status`) values 
+(2, "SHIPPED"),
+(3, "PENDING");
 
 insert into `shipping_details` (`shipping_id`, `order_id`, `seller_id`, `buyer_id`) values 
-((select shipping_id from `shipping` where payment_id = 2), 2, 2, 1);
+((select shipping_id from `shipping` where payment_id = 2), 2, 2, 1),
+((select shipping_id from `shipping` where payment_id = 3), 3, 2, 1);
