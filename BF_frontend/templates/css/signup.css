@@ -5,8 +5,8 @@ html {
   }
   
   body {
-    font-family: "Poppins", sans-serif;
     height: 100vh;
+    font-family: 'Poppins';
   }
   
   a {
@@ -302,4 +302,6 @@ html {
   }
   
 
-  
+  .logout-btn{
+    margin-left:330%;
+}

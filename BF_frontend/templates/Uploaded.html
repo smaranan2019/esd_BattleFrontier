@@ -27,18 +27,23 @@
     src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
     integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
     crossorigin="anonymous"></script>
+
+    <style>@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');</style>
+
 </head>
 <body>
             <!-- Nav Bar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <a class="navbar-brand" href="login.html">
-              <img src="../assets/BF_Logo.png" height="70">
+              <img src="../assets/BF_Logo.png" height="50">
            </a>
         
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+              <!-- <h1> HEllo World  </h1> -->
+
             </div>
       </nav>
 
@@ -59,22 +64,25 @@
         var temp = queryString.split("=");
         var seller_id = temp[1];
 
-        $('#navbarNav').append(`<ul class="navbar-nav">
+          $('#navbarNav').append(`<ul class="navbar-nav">
                                   <!-- list of cards -->
                                   <li class="nav-item">
-                                  <a class="nav-link" href="sell_card_upload.html?seller_id=`+seller_id+`">Upload Card!<span class="sr-only">(current)</span></a>
+                                  <a class="nav-link" href="sell_card_upload.html?seller_id=${seller_id}">Upload Card!<span class="sr-only">(current)</span></a>
                                   </li>
 
                                   <!-- shipping -->
                                   <li class="nav-item active">
-                                  <a class="nav-link" href="seller_order.html?seller_id=`+seller_id+`">Pokemon Center</a>
+                                  <a class="nav-link" href="seller_order.html?seller_id=${seller_id}">Pokemon Center</a>
                                   </li>
                                   <!-- logout button-->
-                                  <li class="nav-item">
-                                  <a class="nav-link" href="login.html?buyer_id=`+buyer_id+`" ><button class="btn btn-outline-danger" " type="submit">Logout</button></a>
+                                  <li class="nav-item logout-btn">
+                                  <a class="nav-link" href="login.html?buyer_id=${seller_id}" ><button class="btn btn-outline-danger" " type="submit">Logout</button></a>
                                   </li>
                                 </ul>
                                 `);
+       
+
+        
     </script>    
 </body>
 </html>

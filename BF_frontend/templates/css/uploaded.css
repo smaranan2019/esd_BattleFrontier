@@ -3,6 +3,7 @@ body {
     background-repeat: no-repeat;
     /* background-: ; */
     background-attachment: fixed;
+    font-family: 'Poppins';
 }
 
 .box {
@@ -13,4 +14,9 @@ body {
     margin-top:-150px;  /* half of height */
     top:50%;
     left:50%;
+}
+
+
+.logout-btn{
+    margin-left:330%;
 }
