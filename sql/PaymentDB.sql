@@ -32,7 +32,9 @@ constraint `payment_details_fk` foreign key(`payment_id`) references `payment`(`
 -- )ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 insert into `payment`(`order_id`,`payment_status`) values 
-(2, 'PAID');
+(2, 'PAID'),
+(3, 'PAID');
 
 insert into `payment_details` values 
-((select payment_id from `payment` where order_id=2), 30.23, 2, 1);
+((select payment_id from `payment` where order_id=2), 30.23, 2, 1),
+((select payment_id from `payment` where order_id=3), 12.15, 2, 1);

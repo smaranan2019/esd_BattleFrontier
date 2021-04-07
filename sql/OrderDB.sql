@@ -25,7 +25,9 @@ constraint `item_fk` foreign key(`order_id`) references `order`(`order_id`) on d
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 insert into `order`(buyer_id,price,seller_id) values 
-(1,30.23,2);
+(1,30.23,2),
+(1,12.15,2);
 
 insert into item(order_id,card_id,quantity) values 
-((select order_id from `order` where buyer_id=1 and price=30.23),2,1);
+((select order_id from `order` where buyer_id=1 and price=30.23),2,1),
+((select order_id from `order` where buyer_id=1 and price=12.15),6,1);
