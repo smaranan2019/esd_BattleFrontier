@@ -36,3 +36,9 @@ body {
  .logout-btn{
    margin-left:330%;
 }
+
+.error_msg {
+   position: fixed;
+   top: 50%;
+   left: 30%;
+}

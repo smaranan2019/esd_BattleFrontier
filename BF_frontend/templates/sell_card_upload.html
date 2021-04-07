@@ -128,7 +128,15 @@
 
         function showMsg(message) {
       // Display an error under the main container
-        $('#msg').append("<label>"+message+"</label>");
+        $('#msg')
+          .append(`
+                  <div class="card error_msg">
+                      <div class="card-body">
+                          <label>${message}<label>
+                      </div>
+                  </div>
+                  `);
+
       }
 
       console.log("Hihihiih");

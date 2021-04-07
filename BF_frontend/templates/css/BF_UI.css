@@ -13,3 +13,9 @@
 body {
     font-family: 'Poppins';
 }
+
+.error_msg {
+    position: fixed;
+    top: 50%;
+    left: 30%;
+}
