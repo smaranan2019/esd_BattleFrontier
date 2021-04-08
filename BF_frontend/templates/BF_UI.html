@@ -19,14 +19,19 @@
 
 <body>
   
-    <div style="text-align: center;">
+    <div style="text-align: center;" >
       <img src="../assets/BF_Logo.png" height="100" >
       <h1> Welcome Battle Frontier Admin</h1>
     </div>
 
+    
+    <div class="height">
+        <p></p>
+    </div> 
+
     <!-- To pay seller  -->
     <div>  
-        <h2 style="margin-left:13.5%; margin-bottom: 2%;">Successful Transaction</h2>
+        <h2 style="margin-left:16%; margin-bottom: 2%; margin-top:3%">Successful Transaction</h2>
         <!-- card to insert here -->
         <div id="releasable">
         </div>
@@ -37,7 +42,7 @@
     </div>
 
     <div>  
-      <h2 style="margin-left:13.5%; margin-bottom: 2%; margin-top: 2%;">Refund seller has rejected </h2>
+      <h2 style="margin-left:16%; margin-bottom: 2%; margin-top: 2%;">Refund seller has rejected </h2>
       <!-- card to insert here -->
       <div id="refundable">
       </div>
@@ -187,7 +192,14 @@
                 }
                 else {
                     //document.getElementById("refundable").innerHTML = "";
-                    $('#releasable').append(`<h2>You have no orders that need releasing at the moment!</h2>`);
+                    $('#releasable').append(`
+                    <div class="card" style="width:60%; margin-left:16%;">
+                        <div class="card-body text-info">
+                            You have no orders that need releasing at the moment!
+                        </div>
+                    </div>
+                    
+                    `);
                 }
                 } else if (response.status == 404) {
                     // No payments
@@ -272,7 +284,15 @@
                         $('#refundable').append(payment_add_on_2);
                 }
                 else {
-                    $('#refundable').append(`<h2>You have no orders that need refund at the moment!</h2>`);
+                    $('#refundable').append(`
+            
+                    <div class="card" style="width:60%; margin-left:16%;">
+                        <div class="card-body text-info">
+                            You have no orders that need refund at the moment!
+                        </div>
+                    </div>
+                    
+                    `);
                 }
                 } else if (response.status == 404) {
                     // No payments
