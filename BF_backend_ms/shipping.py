@@ -211,7 +211,7 @@ def find_sent_by_buyer_id(buyer_id):
     
 @app.route("/shipping-received-buyer/<string:buyer_id>")
 def find_received_by_buyer_id(buyer_id):
-    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.buyer_id==buyer_id,Shipping.shipping_status=="SHIPPED",Shipping.receive_status=="RECEIVED")
+    shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.buyer_id==buyer_id,Shipping.shipping_status=="SHIPPED",(Shipping.receive_status=="RECEIVED") | (Shipping.receive_status=="COMPLETED"))
     
     if shippinglist.count():
         return jsonify(
