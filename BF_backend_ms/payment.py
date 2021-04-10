@@ -41,10 +41,6 @@ class Payment(db.Model):
         for detail in self.payment_details:
             dto['payment_details'].append(detail.json())
             
-        # dto['contact'] = []
-        # for ct in self.contact:
-        #     dto['contact'].append(ct.json())
-        
         return dto
 
 
@@ -63,22 +59,6 @@ class Payment_details(db.Model):
     def json(self):
         return {'amount': self.amount, 'seller_id': self.seller_id, 'buyer_id': self.buyer_id, 'payment_id': self.payment_id}
     
-
-# class Contact(db.Model):
-#     __tablename__ = 'contact'
-
-#     payment_id = db.Column(db.ForeignKey(
-#         'payment.payment_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True, primary_key=True)
-
-#     seller_chat_id = db.Column(db.Integer, nullable=False)
-#     buyer_chat_id = db.Column(db.Integer, nullable=False)
-
-#     payment = db.relationship(
-#         'Payment', primaryjoin='Contact.payment_id == Payment.payment_id', backref='contact')
-
-#     def json(self):
-#         return {'seller_chat_id': self.seller_chat_id, 'buyer_chat_id': self.buyer_chat_id, 'payment_id': self.payment_id}
-
 
 @app.route("/payment")
 def get_all():
@@ -172,27 +152,6 @@ def find_by_payment_id(payment_id):
             "message": "Payment not found."
         }
     ), 404
-    
-# @app.route("/payment-buyer/<string:buyer_id>")
-# def find_by_buyer_id(buyer_id):
-#     paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.buyer_id==buyer_id)
-    
-#     if paymentlist.count():
-#         return jsonify(
-#             {
-#                 "code": 200,
-#                 "data": [payment.json() for payment in paymentlist]
-#             }
-#         )
-#     return jsonify(
-#         {
-#             "code": 404,
-#             "data": {
-#                 "buyer_id": buyer_id
-#             },
-#             "message": "You haven't made any payment yet."
-#         }
-#     ), 404
 
 @app.route("/payment-new-buyer/<string:buyer_id>")
 def find_new_by_buyer_id(buyer_id):
@@ -233,48 +192,6 @@ def find_refund_by_buyer_id(buyer_id):
             "message": "You don't have any refunded payment yet."
         }
     ), 404
-    
-# @app.route("/payment-seller/<string:seller_id>")
-# def find_by_seller_id(seller_id):
-#     paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.seller_id==seller_id)
-    
-#     if paymentlist.count():
-#         return jsonify(
-#             {
-#                 "code": 200,
-#                 "data": [payment.json() for payment in paymentlist]
-#             }
-#         )
-#     return jsonify(
-#         {
-#             "code": 404,
-#             "data": {
-#                 "seller_id": seller_id
-#             },
-#             "message": "You haven't had any payment yet."
-#         }
-#     ), 404
-    
-# @app.route("/payment-new-seller/<string:seller_id>")
-# def find_new_by_seller_id(seller_id):
-#     paymentlist = Payment.query.join(Payment_details, Payment.payment_id == Payment_details.payment_id).filter(Payment_details.seller_id==seller_id, Payment.payment_status=="NEW")
-    
-#     if paymentlist.count():
-#         return jsonify(
-#             {
-#                 "code": 200,
-#                 "data": [payment.json() for payment in paymentlist]
-#             }
-#         )
-#     return jsonify(
-#         {
-#             "code": 404,
-#             "data": {
-#                 "seller_id": seller_id
-#             },
-#             "message": "You haven't had any payment yet."
-#         }
-#     ), 404
 
 
 @app.route("/payment", methods=['POST'])
@@ -289,10 +206,6 @@ def create_order():
     payment.payment_details.append(Payment_details(
         buyer_id=buyer_id, seller_id=seller_id, amount=price))
     
-    # contact = request.json.get('contact')
-    # payment.contact.append(Contact(
-    #     seller_chat_id=contact['seller_chat_id'], buyer_chat_id=contact['buyer_chat_id']))
-
     try:
         db.session.add(payment)
         db.session.commit()
@@ -342,16 +255,6 @@ def update_payment(payment_id):
                     "data": payment.json()
                 }
             ), 201
-            
-        # elif data['refund_status']:
-        #     payment.refund_status = data['refund_status']
-        #     db.session.commit()
-        #     return jsonify(
-        #         {
-        #             "code": 201,
-        #             "data": payment.json()
-        #         }
-        #     ), 201
             
     except Exception as e:
         return jsonify(

@@ -13,12 +13,12 @@ CORS(app)
 account_URL = environ.get('account_URL') or "http://127.0.0.1:5000/find-user-id/"
 card_URL = environ.get('card_URL') or "http://localhost:5005/"
 
+#Display all cards
 @app.route("/display-cards", methods=['GET'])
 def display_cards():
     print('\n-----Invoking cards microservice-----')
     cards_result = invoke_http(card_URL+'cards', method='GET')
-    #print('cards_result:', cards_result)
-    
+
     code = cards_result["code"]
     if code not in range(200, 300):
 
@@ -51,6 +51,7 @@ def display_cards():
         }
     })
     
+#Display card by card_id
 @app.route("/display-card/<string:card_id>", methods=['GET'])
 def display_card_by_id(card_id):
     print('\n-----Invoking cards microservice-----')

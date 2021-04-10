@@ -24,9 +24,6 @@ def sendNotif(data):
         message = data["message"]
     else:
         message = "This is a generated text for business user. Some user just paid/ shipped."
-    
-    # telechat_id = "835159639"
-    # message = "Hi"
 
     print("#############################################################")
     print(data)

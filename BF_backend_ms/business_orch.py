@@ -15,6 +15,7 @@ CORS(app)
 payment_URL = environ.get('payment_URL') or "http://127.0.0.1:5002/"
 shipping_URL = environ.get('shipping_URL') or "http://127.0.0.1:5003/"
 
+#Change payment_status from REFUNDABLE to REFUNDED
 @app.route("/change-payment-refund-status/<string:payment_id>", methods=["PUT"])
 def change_payment_refund_status(payment_id):
     # Simple check of input format and data of the request are JSON
@@ -34,7 +35,7 @@ def change_payment_refund_status(payment_id):
 
             return jsonify({
                 "code": 500,
-                "message": "buyerOrch.py internal error: " + ex_str
+                "message": "business_orch.py internal error: " + ex_str
             }), 500
 
 def processChangePaymentRefundStatus(payment,payment_id):
@@ -53,7 +54,7 @@ def processChangePaymentRefundStatus(payment,payment_id):
         "data": {"payment_result": payment_result}
     }
 
-
+#Change paymment_status from RELEASABLE to COMPLETED and receive_status from RECEIVED to COMPLETED
 @app.route("/change-payment-release-status/<string:payment_id>", methods=["PUT"])
 def change_payment_release_status(payment_id):
     # Simple check of input format and data of the request are JSON
@@ -73,7 +74,7 @@ def change_payment_release_status(payment_id):
 
             return jsonify({
                 "code": 500,
-                "message": "buyerOrch.py internal error: " + ex_str
+                "message": "business_orch.py internal error: " + ex_str
             }), 500
 
 def processChangePaymentReleaseStatus(payment,payment_id):
@@ -81,9 +82,6 @@ def processChangePaymentReleaseStatus(payment,payment_id):
     payment_result = invoke_http(payment_URL+"/payment/"+payment_id, method='PUT', json=payment)
     print('payment_result:', payment_result)
 
-    # # 4. Record new payment
-
-    # Check the payment result; if a failure, send it to the error microservice.
     code = payment_result["code"]
     if code not in range(200, 300):
         # 7. Return error
@@ -103,7 +101,7 @@ def processChangePaymentReleaseStatus(payment,payment_id):
             "code": 500,
             "data": {"payment_result": payment_result,
                      "shipping_result": shipping_result_1},
-            "message": "Payment status change failure sent for error handling."
+            "message": "Payment status change failure."
         }
         
     shipping_id =  shipping_result_1["data"]["shipping_id"]
@@ -122,7 +120,7 @@ def processChangePaymentReleaseStatus(payment,payment_id):
             "code": 500,
             "data": {"payment_result": payment_result,
                      "shipping_result": shipping_result_2},
-            "message": "Payment status change failure sent for error handling."
+            "message": "Payment status change failure."
         }
 
     # 7. Return changed payment, created shipping

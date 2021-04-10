@@ -40,10 +40,6 @@ class Shipping(db.Model):
         dto['shipping_details'] = []
         for detail in self.shipping_details:
             dto['shipping_details'].append(detail.json())
-            
-        # dto['contact'] = []
-        # for ct in self.contact:
-        #     dto['contact'].append(ct.json())
         
         return dto
 
@@ -63,22 +59,6 @@ class Shipping_details(db.Model):
     def json(self):
         return {'order_id': self.order_id, 'seller_id': self.seller_id, 'buyer_id': self.buyer_id, 'shipping_id': self.shipping_id}
     
-
-# class Contact(db.Model):
-#     __tablename__ = 'contact'
-
-#     shipping_id = db.Column(db.ForeignKey(
-#         'shipping.shipping_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True, primary_key=True)
-
-#     seller_chat_id = db.Column(db.Integer, nullable=False)
-#     buyer_chat_id = db.Column(db.Integer, nullable=False)
-
-#     shipping = db.relationship(
-#         'Shipping', primaryjoin='Contact.shipping_id == Shipping.shipping_id', backref='contact')
-
-#     def json(self):
-#         return {'seller_chat_id': self.seller_chat_id, 'buyer_chat_id': self.buyer_chat_id, 'shipping_id': self.shipping_id}
-
 
 @app.route("/shipping")
 def get_all():
@@ -140,52 +120,6 @@ def find_by_payment_id(payment_id):
         }
     ), 404
     
-# @app.route("/shipping/<string:buyer_id>")
-# def find_by_buyer_id(buyer_id):
-#     shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.buyer_id==buyer_id)
-    
-#     if len(shippinglist):
-#         return jsonify(
-#             {
-#                 "code": 200,
-#                 "data": {
-#                     "shippings": [shipping.json() for shipping in shippinglist]
-#                 }
-#             }
-#         )
-#     return jsonify(
-#         {
-#             "code": 404,
-#             "data": {
-#                 "buyer_id": buyer_id
-#             },
-#             "message": "You haven't made any shipping yet."
-#         }
-#     ), 404
-    
-# @app.route("/shipping-new-buyer/<string:buyer_id>")
-# def find_new_by_buyer_id(buyer_id):
-#     shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.buyer_id==buyer_id,Shipping.shipping_status=="PENDING")
-    
-#     if len(shippinglist):
-#         return jsonify(
-#             {
-#                 "code": 200,
-#                 "data": {
-#                     "shippings": [shipping.json() for shipping in shippinglist]
-#                 }
-#             }
-#         )
-#     return jsonify(
-#         {
-#             "code": 404,
-#             "data": {
-#                 "buyer_id": buyer_id
-#             },
-#             "message": "You haven't made any shipping yet."
-#         }
-#     ), 404
-    
 @app.route("/shipping-sent-buyer/<string:buyer_id>")
 def find_sent_by_buyer_id(buyer_id):
     shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.buyer_id==buyer_id,Shipping.shipping_status=="SHIPPED",Shipping.receive_status=="PENDING")
@@ -231,29 +165,6 @@ def find_received_by_buyer_id(buyer_id):
             "message": "You haven't received any shipping yet."
         }
     ), 404
-    
-# @app.route("/shipping/<string:seller_id>")
-# def find_by_seller_id(seller_id):
-#     shippinglist = Shipping.query.join(Shipping_details, Shipping.shipping_id == Shipping_details.shipping_id).filter(Shipping_details.seller_id==seller_id)
-    
-#     if shippinglist.count():
-#         return jsonify(
-#             {
-#                 "code": 200,
-#                 "data": {
-#                     "shippings": [shipping.json() for shipping in shippinglist]
-#                 }
-#             }
-#         )
-#     return jsonify(
-#         {
-#             "code": 404,
-#             "data": {
-#                 "seller_id": seller_id
-#             },
-#             "message": "You haven't had any shipping yet."
-#         }
-#     ), 404
     
 @app.route("/shipping-new-seller/<string:seller_id>")
 def find_new_by_seller_id(seller_id):

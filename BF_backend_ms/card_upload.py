@@ -56,6 +56,7 @@ class Card_details(db.Model):
 def serviceIsRunning():
     return "Service is running!"
 
+#Get all cards
 @app.route('/cards')
 def show_all_cards():
     cardlist = Card.query.all()
@@ -75,6 +76,7 @@ def show_all_cards():
         }
     ), 404
 
+#Find card by card_id
 @app.route('/card/<string:card_id>')
 def show_card_by_id(card_id):
     card = Card.query.filter_by(card_id=card_id).first()
@@ -92,22 +94,13 @@ def show_card_by_id(card_id):
         }
     ), 404
 
+#Add pokemon card
 @app.route('/addPokemonCard', methods=['POST'])
 def addPokemonCard():
-    
-    # pokemon_name = request.get_json('pokemon_name', None)
-    # pokemon_type = request.get_json('pokemon_type', None)
-    # image_path = request.get_json('image_path', None)
-    # description = request.get_json('description', None)
         
     data = request.get_json()
-
-    # price = float(data["price"])
-    print(data)
     card = Card(pokemon_name=data["pokemon_name"], pokemon_type=data["pokemon_type"], image_path=data["image_path"], description=data["description"])
     
-    # seller_id = request.get_json('seller_id', None)
-    # price = request.get_json('price', None)
     card.card_details.append(Card_details(seller_id=data["seller_id"], seller_paypal_id=data["seller_paypal_id"], price=data['price']))
     
     try:
@@ -128,24 +121,6 @@ def addPokemonCard():
             "data": card.json()
         }
     ), 201
-
-# @app.route("/findPokemonCard")
-# def findPokemon():
-#     data = request.get_json()
-#     # DataModel:
-#     # {
-#     #     "name": name,
-#     #     "level": level,
-#     #     "price": price
-#     # }
-#     print(data)
-#     card = Card.query.filter_by(name=data["name"], level=data["level"], price=data["price"])
-#     if (card):
-#         # print(type(card))
-#         print(card)
-#         return "Card found!"
-#     else:
-#         return "Card not found!"
 
 if __name__ == "__main__":
     print("This is flask for " + os.path.basename(__file__) + ": manage cards ...")
