@@ -246,10 +246,6 @@ def create_order():
 
     shipping.shipping_details.append(Shipping_details(
         order_id=order_id, buyer_id=payment_details[0]['buyer_id'], seller_id=payment_details[0]['seller_id']))
-    
-    # contact = request.json.get('contact')
-    # shipping.contact.append(Contact(
-    #     seller_chat_id=contact['seller_chat_id'], buyer_chat_id=contact['buyer_chat_id']))
 
     try:
         db.session.add(shipping)
